@@ -1,4 +1,5 @@
 // MODIFIED FROM SA7
+// NOT NEEDED FOR OUR PROJECT
 import mongoose, { Schema } from 'mongoose';
 
 const PostSchema = new Schema({
