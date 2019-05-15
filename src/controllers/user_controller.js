@@ -83,27 +83,23 @@ export const createUser = (req, res) => {
     });
 };
 
-export const getUsers = () => {
-  console.log("get users called");
-  res.send({ message: "hello" });
+export const getUsers = (req, res) => {
+  console.log('get users called');
+  res.json({ message: 'hello there' });
 };
 
 //
 
 export const getUser = (req, res) => {
-  // res.send('posts should be returned');
   console.log('in getPosts function');
   Post.find({})
     .then((result) => {
-      // console.log('result is ', result)
       res.send(result);
     })
     .catch((error) => {
       res.status(500).json({ error });
     });
 };
-
-//
 
 export const deleteUser = (req, res) => {
   // res.send('delete a post here');
