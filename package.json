@@ -4,7 +4,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "./node_modules/.bin/eslint **.js"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",

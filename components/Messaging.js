@@ -1,3 +1,5 @@
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable no-use-before-define */
 import React, { Component } from 'react';
 import {
   StyleSheet, View, Text, Image,
