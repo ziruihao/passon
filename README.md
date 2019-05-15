@@ -11,7 +11,7 @@ TODO:  descriptions of code organization and tools and libraries used
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+After pulling from the repo, run yarn to install all of the dependencies on your local environment. Additionally, remember to add a .env file in the root directory, since that is ignored.
 
 ## Deployment
 

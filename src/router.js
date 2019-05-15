@@ -12,16 +12,16 @@ router.get('/', (req, res) => {
 // /your routes will go here
 
 router.route('/skills/:id')
-  .post(requireAuth, Posts.createPost)
-  .get(Posts.getPosts);
+  .post(requireAuth, User.getUsers)
+  .get(User.getUsers);
 
   router.route('/skills')
-  .post(requireAuth, Posts.createPost)
-  .get(Posts.getPosts);
+  .post(requireAuth, User.getUsers)
+  .get(User.getUsers);
 
   router.route('/users/:id')
-  .post(requireAuth, Posts.createPost)
-  .get(Posts.getPosts);
+  .post(requireAuth, User.getUsers)
+  .get(User.getUsers);
 
   router.route('/users')
   .get(User.getUsers);
