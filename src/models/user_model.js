@@ -3,14 +3,32 @@ import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new Schema({
-  username: { type: String },
+  username: String,
   email: { type: String, unique: true, lowercase: true },
-  password: { type: String },
+  password: String,
+  teach: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+  learn: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+  profile_pic_url: String,
+  rating: [{type: Schema.Types.ObjectId, ref: 'Rating'}],
+
 });
 
 UserSchema.set('toJSON', {
   virtuals: true,
 });
+
+const RatingSchema = new Schema({
+  score: Number,
+  user: {type: Schema.Types.ObjectId, ref: 'User'},
+
+})
+
+const SkillSchema = new Schema({
+  title: String,
+  description: String,
+  icon_url: String,
+  youtube: String,
+})
 
 const SALT_WORK_FACTOR = 10;
 
@@ -45,5 +63,9 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
 
 // create model class
 const UserModel = mongoose.model('User', UserSchema);
+const RatingModel = mongoose.model('Rating', RatingSchema);
+const SkillModel = mongoose.model('Skill', SkillSchema);
 
 export default UserModel;
+export default RatingModel;
+export default SkillModel;
