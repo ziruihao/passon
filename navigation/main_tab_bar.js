@@ -2,7 +2,7 @@ import React from 'react';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 // import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-import Profile from '../components/Profile';
+import Profile from '../containers/Profile';
 import Messaging from '../components/Messaging';
 import Home from '../components/Home';
 
