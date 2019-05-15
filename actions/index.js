@@ -32,9 +32,9 @@ export function fetchSkills() {
 
 export function fetchUser(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts/${id}`)
+    axios.get(`${ROOT_URL}/users/`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        dispatch({ type: ActionTypes.FETCH_POST, payload: response });
       })
       .catch((error) => {
         console.log(error);

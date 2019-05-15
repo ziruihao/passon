@@ -3,7 +3,7 @@ import { ActionTypes } from '../actions';
 // From assignment page
 const initialState = {
   all: [],
-  current: {},
+  current: '',
 };
 
 // This is between the Firebase DB and the actual display
