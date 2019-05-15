@@ -1,4 +1,5 @@
 import Post from '../models/post_model';
+// NOT NEEDED FOR OUR PROJECT
 
 // I found these commands on the Mongoose documentation
 // Source: https://mongoosejs.com/docs/queries.html
