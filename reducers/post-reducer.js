@@ -14,7 +14,7 @@ const PostReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.FETCH_POST:
       return Object.assign({}, state, {
-        current: action.payload,
+        current: action.payload.message,
       });
     case ActionTypes.FETCH_POSTS:
       return Object.assign({}, state, {

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text,
+  StyleSheet, View, Text, Button
 } from 'react-native';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { fetchUser } from '../actions/index';
 
 const styles = StyleSheet.create({
@@ -30,11 +29,19 @@ class Profile extends Component {
   };
 
   render() {
-    return (
+    return ( // Button source: https://stackoverflow.com/questions/43895772/the-title-prop-of-a-button-must-be-a-string-react-native
       <View style={styles.container}>
         <Text>
           Click the button below to update the text.
         </Text>
+        <Button
+          style={{fontSize: 20, color: 'green'}}
+          styleDisabled={{color: 'red'}}
+          onPress={() => this.props.fetchUser()}
+          title="Press Me"
+        >
+          Press Me
+        </Button>
       </View>
     );
   }
@@ -47,4 +54,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default withRouter(connect(mapStateToProps, { fetchUser })(Profile));
+export default connect(mapStateToProps, { fetchUser })(Profile);

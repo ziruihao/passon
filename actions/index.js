@@ -22,19 +22,22 @@ export function fetchSkills() {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/posts`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POSTS, payload: response.data });
+        dispatch({ type: ActionTypes.FETCH_POSTS, payload: response });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 }
 
-export function fetchUser(id) {
+export function fetchUser() {
+  // console.log('here');
+
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users/`)
+    axios.get(`${ROOT_URL}/users`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POST, payload: response });
+        console.log(response.data.message);
+        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
