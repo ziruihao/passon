@@ -59,50 +59,50 @@ export const signup = (req, res, next) => {
 
 
 export const getUsers = (req, res) => {
-  console.log('get users called');
-  res.send({ message: 'hello' });
+  // console.log('get users called');
+  res.json({ message: 'hello' });
 };
 
 //
 
 export const getUser = (req, res) => {
-  // res.send('posts should be returned');
-  console.log('in getPosts function');
-  User.find({})
-    .then((result) => {
-      // console.log('result is ', result)
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+  // // res.send('posts should be returned');
+  // console.log('in getPosts function');
+  // User.find({})
+  //   .then((result) => {
+  //     // console.log('result is ', result)
+  //     res.send(result);
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({ error });
+  //   });
 };
 
 //
 
 export const deleteUser = (req, res) => {
-  // res.send('delete a post here');
-  Post.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.json({ message: 'Post deleted!' });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+  // // res.send('delete a post here');
+  // Post.findByIdAndDelete(req.params.id)
+  //   .then(() => {
+  //     res.json({ message: 'Post deleted!' });
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({ error });
+  //   });
 };
 
 export const updateUser = (req, res) => {
-  Post.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-      Post.findById(req.params.id)
-        .then((result) => {
-          res.send(result);
-        })
-        .catch((error) => {
-          res.status(500).json({ error });
-        });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+  // Post.findByIdAndUpdate(req.params.id, req.body)
+  //   .then(() => {
+  //     Post.findById(req.params.id)
+  //       .then((result) => {
+  //         res.send(result);
+  //       })
+  //       .catch((error) => {
+  //         res.status(500).json({ error });
+  //       });
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({ error });
+  //   });
 };
