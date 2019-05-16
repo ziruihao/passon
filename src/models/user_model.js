@@ -6,11 +6,10 @@ const UserSchema = new Schema({
   username: String,
   email: { type: String, unique: true, lowercase: true },
   password: String,
-  teach: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
-  learn: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+  teach: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
+  learn: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
   profile_pic_url: String,
-  rating: [{type: Schema.Types.ObjectId, ref: 'Rating'}],
-
+  rating: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
 });
 
 UserSchema.set('toJSON', {
