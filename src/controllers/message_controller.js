@@ -1,5 +1,5 @@
-import Message from '../models/message_model';
-import Chat from '../models/chat_model';
+// import Message from '../models/message_model';
+// import Chat from '../models/chat_model';
 
 export const createPost = (req, res) => {
   // const post = new Post();

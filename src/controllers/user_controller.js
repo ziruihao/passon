@@ -59,8 +59,8 @@ export const signup = (req, res, next) => {
 
 
 export const getUsers = (req, res) => {
-  // console.log('get users called');
-  res.json({ message: 'hello' });
+  console.log('get users called');
+  res.json({ message: 'hello there' });
 };
 
 //
@@ -77,8 +77,6 @@ export const getUser = (req, res) => {
   //     res.status(500).json({ error });
   //   });
 };
-
-//
 
 export const deleteUser = (req, res) => {
   // // res.send('delete a post here');
