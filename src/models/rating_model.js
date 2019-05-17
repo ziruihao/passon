@@ -5,7 +5,6 @@ import mongoose, { Schema } from 'mongoose';
 const RatingSchema = new Schema({
   score: Number,
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-
 });
 
 const RatingModel = mongoose.model('Rating', RatingSchema);
