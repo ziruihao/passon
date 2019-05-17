@@ -18,6 +18,7 @@ import {
   Right,
 } from 'native-base';
 
+
 const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
 

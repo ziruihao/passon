@@ -2,7 +2,7 @@ import axios from 'axios/index';
 
 // From assignment page
 export const ActionTypes = {
-  FETCH_POSTS: 'FETCH_POSTS',
+  FETCH_SKILLS: 'FETCH_SKILLS',
   FETCH_POST: 'FETCH_POST',
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
@@ -17,15 +17,17 @@ const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://sulljohn-cs52-blog.herokuapp.com/api';
 // const API_KEY = '?key=j_sullivan';
 
-// From assignment page
 export function fetchSkills() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts`)
+    axios.get(`${ROOT_URL}`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POSTS, payload: response });
+        dispatch({
+          type: ActionTypes.FETCHSKILLS,
+          payload: response.data,
+        });
       })
       .catch((error) => {
-        // console.log(error);
+        dispatch({ type: ActionTypes.ERROR_SET, error });
       });
   };
 }
