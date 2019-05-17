@@ -66,7 +66,6 @@ export const getUsers = (req, res) => {
   });
 };
 
-
 export const getUser = (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
@@ -78,28 +77,28 @@ export const getUser = (req, res) => {
 };
 
 export const deleteUser = (req, res) => {
-  // // res.send('delete a post here');
-  // Post.findByIdAndDelete(req.params.id)
-  //   .then(() => {
-  //     res.json({ message: 'Post deleted!' });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  // res.send('delete a post here');
+  User.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.json({ message: 'User deleted!' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 export const updateUser = (req, res) => {
-  // Post.findByIdAndUpdate(req.params.id, req.body)
-  //   .then(() => {
-  //     Post.findById(req.params.id)
-  //       .then((result) => {
-  //         res.send(result);
-  //       })
-  //       .catch((error) => {
-  //         res.status(500).json({ error });
-  //       });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  User.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+      User.findById(req.params.id)
+        .then((result) => {
+          res.send(result);
+        })
+        .catch((error) => {
+          res.status(500).json({ error });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };

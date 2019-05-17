@@ -22,6 +22,9 @@ router.route('/users/:id')
   .post(requireAuth, User.updateUser)
   .get(User.getUser);
 
+router.route('/users/:id/delete')
+  .post(requireAuth, User.deleteUser);
+
 router.route('/users')
   .get(User.getUsers);
 
