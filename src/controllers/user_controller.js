@@ -27,7 +27,7 @@ export const signup = (req, res, next) => {
   const { password } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
-    return res.status(422).send('You must provide name, username, and password');
+    return res.status(422).send('You must provide name, email, and password');
   }
 
   User.findOne({ email: req.body.email })
@@ -37,10 +37,10 @@ export const signup = (req, res, next) => {
       } else {
         const user = new User();
 
-        user.email = req.body.email;
-        user.password = req.body.password;
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
+        user.email = req.body.email;
+        user.password = req.body.password;
 
         user.save()
           .then((result2) => {
