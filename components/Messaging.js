@@ -1,7 +1,11 @@
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable no-use-before-define */
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import {
+  StyleSheet, View, Text, Image,
+} from 'react-native';
 
-class About extends Component {
+class Messaging extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -29,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default About;
+export default Messaging;
