@@ -58,7 +58,7 @@ export const signup = (req, res, next) => {
 };
 
 
-export const getUsers = (req, res) => {
+export const getUsers = (req, res) => { // TODO: return based on searched skill
   User.find({}).then((result) => {
     res.send(result);
   }).catch((error) => {
