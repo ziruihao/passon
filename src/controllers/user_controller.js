@@ -59,23 +59,22 @@ export const signup = (req, res, next) => {
 
 
 export const getUsers = (req, res) => {
-  console.log('get users called');
-  res.json({ message: 'hello there' });
+  User.find({}).then((result) => {
+    res.send(result);
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
 };
 
-//
 
 export const getUser = (req, res) => {
-  // // res.send('posts should be returned');
-  // console.log('in getPosts function');
-  // User.find({})
-  //   .then((result) => {
-  //     // console.log('result is ', result)
-  //     res.send(result);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  User.findById(req.params.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 export const deleteUser = (req, res) => {
