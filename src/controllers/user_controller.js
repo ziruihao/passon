@@ -21,12 +21,13 @@ export const signin = (req, res) => {
 };
 
 export const signup = (req, res, next) => {
-  const { username } = req.body;
+  const { firstName } = req.body;
+  const { lastName } = req.body;
   const { email } = req.body;
   const { password } = req.body;
 
-  if (!username || !email || !password) {
-    return res.status(422).send('You must provide email and password and username');
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(422).send('You must provide name, username, and password');
   }
 
   User.findOne({ email: req.body.email })
@@ -36,9 +37,10 @@ export const signup = (req, res, next) => {
       } else {
         const user = new User();
 
-        user.username = req.body.username;
         user.email = req.body.email;
         user.password = req.body.password;
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
 
         user.save()
           .then((result2) => {

@@ -3,8 +3,8 @@ import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new Schema({
-  first_name: String,
-  last_name: String,
+  firstName: String,
+  lastName: String,
   email: { type: String, unique: true, lowercase: true },
   password: String,
   teach: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
