@@ -78,6 +78,11 @@ class Home extends Component {
       <Container style={styles.container}>
         <Header searchBar rounded iosBarStyle>
           <Item>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Item>
+          <Item>
             <Icon name="ios-search" />
             <Input placeholder="Search" onChangeText={text => this.search(text)} />
           </Item>
@@ -88,7 +93,7 @@ class Home extends Component {
               <CardItem header>
                 <Text>Skillname</Text>
               </CardItem>
-              <CardItem cardBody>
+              <CardItem footer>
                 <CardItem>
                   <Left>
                     <Icon active name="star" />

@@ -4,7 +4,6 @@ import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 // import Profile from '../containers/profile';
 import Messaging from '../components/messaging';
 import HomeTab from './home_tab';
-import Home from '../components/home';
 
 const MainTabBar = createBottomTabNavigator(
   {
