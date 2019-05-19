@@ -33,8 +33,6 @@ export function fetchSkills() {
 }
 
 export function fetchUser() {
-  // console.log('here');
-
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {

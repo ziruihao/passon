@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-pascal-case */
-/* eslint-disable react/prefer-stateless-function */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -12,110 +11,118 @@ import {
   ListView,
   TouchableHighlight,
 } from 'react-native';
-import Skill_Card from './Skill_Card';
-import { fetchSkills } from '../actions';
+import {
+  Container,
+  Header,
+  Content,
+  Item,
+  Button,
+  Icon,
+  Card,
+  CardItem,
+  Thumbnail,
+  Left,
+  Input,
+  Body,
+  Right,
+} from 'native-base';
 
 const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#4000F4',
   },
   mb: {
-    marginBottom: 15,
+    marginBottom: 17,
+    width: 297,
+    height: 170,
   },
 });
 
 class Home extends Component {
+  static navigationOptions = {
+    header: null,
+    // title: 'Home',
+    // headerStyle: {
+    //   backgroundColor: 'white',
+    // },
+    // headerTintColor: 'black',
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      search_query: '',
+      profile: {},
+    };
+  }
+
   componentDidMount() {
-    this.props.fetchSkills();
+    // this.props.fetchSkills();
   }
 
   intoProfile(profile) {
-    this.props.navigation.navigate('User Profile', { profile });
+    this.props.navigation.navigate('Profile', profile);
+  }
+
+  search(search_query) {
+    this.setState({ search_query });
+    console.log('querying search');
+    console.log(this.state.search_query);
   }
 
   render() {
-    const skill_list = this.props.AllSkills.map((element) => {
-      return (
-        <div>
-          <h1>{element.username}</h1>
-          <h1>{element.skillname}</h1>
-          <h1>{element.description}</h1>
-          <h1>{element.rating}</h1>
-        </div>
-      );
+    return (
+      <Container style={styles.container}>
+        <Header searchBar rounded iosBarStyle>
+          <Item>
+            <Icon name="ios-search" />
+            <Input placeholder="Search" onChangeText={text => this.search(text)} />
+          </Item>
+        </Header>
+        <Content padder>
+          <TouchableHighlight onPress={() => this.intoProfile(this.state.profile)} underlayColor="orange">
+            <Card style={styles.mb}>
+              <CardItem header>
+                <Text>Skillname</Text>
+              </CardItem>
+              <CardItem cardBody>
+                <CardItem>
+                  <Left>
+                    <Icon active name="star" />
+                    <Text>5 stars</Text>
+                    <Text>X yrs</Text>
+                  </Left>
+                </CardItem>
 
-      // return (
-      //   // <TouchableHighlight onPress={() => { this.intoProfile(profile); }} underlayColor="orange">
-      //     <div className="posts">
-      //       <h1>{element.title}</h1>
-      //       <h3>{element.tags}</h3>
-      //       <img src={element.cover_url} alt="cover" />
-      //     </div>
-      //           <Container style={styles.container}>
-      //           <Header>
-      //             <Body>
-      //               <Title>{element.name}</Title>
-      //             </Body>
-      //             <Right />
-      //           </Header>
+                <CardItem>
+                  <Image
+                    style={{
+                      resizeMode: 'cover',
+                      width: null,
+                      height: 200,
+                      flex: 1,
+                    }}
+                    source={cardImage}
+                  />
+                </CardItem>
+              </CardItem>
 
-      //           <Content padder>
-      //             <Card style={styles.mb}>
-      //               <CardItem>
-      //                 <Left>
-      //                   <Thumbnail source={logo} />
-      //                   <Body>
-      //                     <Text>{element.description}</Text>
-      //                   </Body>
-      //                 </Left>
-      //               </CardItem>
 
-      //               <CardItem cardBody>
-      //                 <Image
-      //                   style={{
-      //                     resizeMode: 'cover',
-      //                     width: null,
-      //                     height: 200,
-      //                     flex: 1,
-      //                   }}
-      //                   source={cardImage}
-      //                 />
-      //               </CardItem>
-
-      //               <CardItem style={{ paddingVertical: 0 }}>
-      //                 <Left>
-      //                   <Button transparent>
-      //                     <Icon active name="thumbs-up" />
-      //                     <Text>{element.skill}</Text>
-      //                   </Button>
-      //                 </Left>
-      //                 <Body>
-      //                   <Button transparent>
-      //                     <Icon active name="chatbubbles" />
-      //                     <Text>{element.rating}</Text>
-      //                   </Button>
-      //                 </Body>
-      //                 <Right>
-      //                   <Text>11h ago</Text>
-      //                 </Right>
-      //               </CardItem>
-      //             </Card>
-      //           </Content>
-      //         </Container>
-      //   {/* </TouchableHighlight> */}
-      // );
-    });
-    return skill_list;
+            </Card>
+          </TouchableHighlight>
+        </Content>
+      </Container>
+    );
   }
 }
 
 function mapReduxStateToProps(reduxState) {
   return {
-    AllSkills: reduxState.posts.all,
+    AllSkills: reduxState.skills.all,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchSkills })(Home);
+export default connect(mapReduxStateToProps, null)(Home);

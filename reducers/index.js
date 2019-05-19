@@ -5,7 +5,7 @@ import SkillReducer from './skill-reducer';
 import AuthReducer from './auth-reducer';
 
 const rootReducer = combineReducers({
-  posts: SkillReducer,
+  skills: SkillReducer,
   auth: AuthReducer,
 });
 
