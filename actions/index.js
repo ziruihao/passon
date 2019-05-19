@@ -1,4 +1,5 @@
 import axios from 'axios/index';
+// import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
@@ -95,7 +96,7 @@ export function authError(error) {
   };
 }
 
-export function signinUser({ email, password }, history) {
+export function signinUser({ email, password }) {
   // takes in an object with email and password (minimal user object)
   // returns a thunk method that takes dispatch as an argument (just like our create post method really)
   // does an axios.post on the /signin endpoint
@@ -108,18 +109,19 @@ export function signinUser({ email, password }, history) {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then((response) => {
-        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.username });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', response.data.username);
-        history.push('/');
+        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // AsyncStorage.setItem('token', response.data.token);
+        // history.push('/');
       })
       .catch((error) => {
-        dispatch(authError(`Sign In Failed: ${error.response.data}`));
+        dispatch(authError(`Sign In Failed: ${error.data}`));
       });
   };
 }
 
-export function signupUser({ username, email, password }, history) {
+export function signupUser({
+  firstName, lastName, email, password, university,
+}) {
   // takes in an object with email and password (minimal user object)
   // returns a thunk method that takes dispatch as an argument (just like our create post method really)
   // does an axios.post on the /signup endpoint (only difference from above)
@@ -130,15 +132,15 @@ export function signupUser({ username, email, password }, history) {
 
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/signup`, { username, email, password })
+    axios.post(`${ROOT_URL}/signup`, {
+      firstName, lastName, email, password, university,
+    })
       .then((response) => {
-        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.username });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', response.data.username);
-        history.push('/');
+        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // history.push('/');
       })
       .catch((error) => {
-        dispatch(authError(`Sign Up Failed: ${error.response.data}`));
+        dispatch(authError(`Sign Up Failed: ${error}`));
       });
   };
 }
