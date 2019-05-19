@@ -18,6 +18,9 @@ router.route('/skills')
   .post(requireAuth, User.getUsers)
   .get(User.getUsers);
 
+router.route('/addSkill')
+  .post(User.addSkill);
+
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
   .get(User.getUser);
