@@ -19,7 +19,7 @@ router.route('/skills')
   .get(User.getUsers);
 
 router.route('/users/:id')
-  .post(requireAuth, User.updateUser)
+  .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
   .get(User.getUser);
 
 router.route('/users/:id/delete')
