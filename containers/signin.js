@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+// import { connect } from 'react-redux';
 // import Card from '@material-ui/core/Card';
 // import Button from '@material-ui/core/Button';
-// import { signupUser } from '../actions';
+// import { signinUser } from '../actions';
 import {
   Text, View, Button, Input,
 } from 'react-native';
 
-class SignUp extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
       email: '',
       password: '',
-      university: '',
     };
 
     // this.onInputChange = this.onInputChange.bind(this);
@@ -26,17 +24,11 @@ class SignUp extends Component {
 
   onInputChange = (e) => {
     switch (e.target.id) {
-      case 'name':
-        this.setState({ name: e.target.value });
-        break;
       case 'email':
         this.setState({ email: e.target.value });
         break;
       case 'password':
         this.setState({ password: e.target.value });
-        break;
-      case 'university':
-        this.setState({ university: e.target.value });
         break;
       default:
         break;
@@ -44,19 +36,15 @@ class SignUp extends Component {
   };
 
   post = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.name === ''
-      || this.state.email === ''
-      || this.state.password === ''
-      || this.state.university === '') {
+    if (this.state.email === ''
+      || this.state.password === '') {
       this.setState({ valid_entry: false });
     } else {
-      // this.props.signupUser({
-      //   name: this.state.name,
-      //   email: this.state.email,
-      //   password: this.state.password,
-      //   university: this.state.university,
-      // }, this.props.history);
-      console.log('sign up');
+    //   this.props.signinUser({
+    //     email: this.state.email,
+    //     password: this.state.password,
+    //   }, this.props.history);
+      console.log('sign in');
     }
   };
 
@@ -75,13 +63,7 @@ class SignUp extends Component {
   render() {
     return (
       <View>
-        <Text>Create an Account</Text>
-        <Input
-          placeholder="Full Name"
-          onChange={this.onInputChange}
-          className="post_content"
-          id="name"
-        />
+        <Text>Sign In</Text>
         <Input
           placeholder="Email"
           onChange={this.onInputChange}
@@ -95,22 +77,16 @@ class SignUp extends Component {
           id="password"
           type="password"
         />
-        <Input
-          placeholder="University"
-          onChange={this.onInputChange}
-          className="post_content"
-          id="university"
-        />
         <div className="post_footer">
           {this.renderResponse()}
-          <Button variant="contained" color="primary" onClick={this.post}>Sign Up</Button>
-          <Button variant="contained"><NavLink to="/signin" className="link">I already have an account.</NavLink></Button>
+          <Button variant="contained" color="primary" onClick={this.post}>Sign In</Button>
+          <Button variant="contained"><NavLink to="/signin" className="link">I don't have an account yet.</NavLink></Button>
         </div>
       </View>
     );
   }
 }
 
-// export default withRouter(connect(null, { signupUser })(SignUp));
-// export default withRouter((SignUp));
-export default SignUp;
+// export default withRouter(connect(null, { signinUser }(SignIn)));
+// export default withRouter((SignIn));
+export default SignIn;

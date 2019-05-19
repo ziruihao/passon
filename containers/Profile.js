@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button
+  StyleSheet, View, Text, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/index';
@@ -35,8 +35,8 @@ class Profile extends Component {
           Click the button below to update the text.
         </Text>
         <Button
-          style={{fontSize: 20, color: 'green'}}
-          styleDisabled={{color: 'red'}}
+          style={{ fontSize: 20, color: 'green' }}
+          styleDisabled={{ color: 'red' }}
           onPress={() => this.props.fetchUser()}
           title="Press Me"
         >
