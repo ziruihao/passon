@@ -2,14 +2,25 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+
+
+// For information on the users
+
+const SkillSchema = new Schema({
+  title: String,
+  years: Number,
+  description: String,
+});
+
 const UserSchema = new Schema({
-  username: String,
+  firstName: String,
+  lastName: String,
   email: { type: String, unique: true, lowercase: true },
   password: String,
-  teach: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
-  learn: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
+  teach: [SkillSchema],
+  learn: [SkillSchema],
   profile_pic_url: String,
-  rating: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
+  rating: [Number],
 });
 
 UserSchema.set('toJSON', {
