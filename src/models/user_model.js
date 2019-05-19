@@ -3,7 +3,6 @@ import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 
-
 // For information on the users
 
 const SkillSchema = new Schema({
@@ -21,6 +20,7 @@ const UserSchema = new Schema({
   learn: [SkillSchema],
   profile_pic_url: String,
   rating: [Number],
+  university: String,
 });
 
 UserSchema.set('toJSON', {
