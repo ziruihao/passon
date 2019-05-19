@@ -76,8 +76,11 @@
 // export default createAppContainer(FirstScreen);
 
 import React from 'react';
-// import { createAppContainer } from 'react-navigation';
-import { View, Button, Text } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { View, Button } from 'react-native';
+import SignIn from '../containers/signin';
+import SignUp from '../containers/signup';
+// import { withNavigation } from 'react-navigation';
 
 // const TempSearch = props => (<Button onPress={() => { props.navigation.navigate('Detail'); }} title="Sign In" />);
 // const TempDetail = props => (<Button onPress={() => { props.navigation.pop(); }} title="Sign Up" />);
@@ -93,15 +96,33 @@ import { View, Button, Text } from 'react-native';
 
 // }
 
-const FirstScreen = (props) => {
-  return (
-    <View>
-      <Text>PassOn</Text>
-      <Button onPress={() => { props.navigation.navigate('SignIn'); }} title="Sign In" />
-      <Button onPress={() => { props.navigation.navigate('SignUp'); }} title="Sign Up" />
-    </View>
-  );
-};
+
+class FirstScreen extends React.Component {
+    static navigationOptions = {
+      title: 'Welcome to PassOn',
+    };
+
+    render() {
+      return (
+        <View>
+          <Button title="Sign In" onPress={this.props.navigation.navigate('SignIn')} />
+          <Button title="Sign Up" onPress={this.props.navigation.navigate('SignUp')} />
+        </View>
+      );
+    }
+}
+const AuthStack = createStackNavigator({ First: FirstScreen, SignIn, SignUp });
+
+// const FirstScreen = (props) => {
+//   return (
+//     <View>
+//       <Text>PassOn</Text>
+//       <Button onPress={() => { props.navigation.navigate('SignIn'); }} title="Sign In" />
+//       <Button onPress={() => { props.navigation.navigate('SignUp'); }} title="Sign Up" />
+//     </View>
+//   );
+// };
 
 // export default createAppContainer(FirstScreen);
-export default FirstScreen;
+
+export default createAppContainer(AuthStack);
