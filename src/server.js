@@ -6,6 +6,9 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import apiRouter from './router';
+// import * as Message from './controllers/message_controller';
+import Message from './models/message_model';
+// import Chat from './models/chat_model';
 
 dotenv.config({ silent: true });
 
@@ -51,9 +54,41 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 
-// default index route
-app.get('/', (req, res) => {
-  res.send('hi');
-});
-
 app.use('/api', apiRouter);
+
+
+// SOCKET
+
+const http = require('http');
+const socketio = require('socket.io');
+
+const app2 = express();
+// eslint-disable-next-line new-cap
+const server = http.Server(app2);
+const io = socketio(server);
+server.listen(3000, () => { return console.log('listening on *:3000'); });
+
+// The event will be called when a client is connected.
+io.on('connection', (socket) => {
+  console.log('A client just joined on', socket.id);
+  socket.on('room', (room) => {
+    console.log(`client joined room: ${room}`);
+    socket.join(room);
+  });
+  socket.on('message', (message) => {
+    console.log(`message received: ${JSON.stringify(message)} on socket ${socket.id}`);
+    socket.broadcast.emit('received', { message });
+    const chatMessage = new Message({
+      text: message.body.text,
+      createdAt: new Date(),
+      userId: message.body.userId,
+      chatId: message.body.chatId,
+    });
+    chatMessage.save().then((result) => {
+      console.log('chat message saved');
+    })
+      .catch((error) => {
+        console.log('chat message save failed');
+      });
+  });
+});

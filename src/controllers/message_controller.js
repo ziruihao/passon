@@ -1,22 +1,21 @@
-// import Message from '../models/message_model';
+import Message from '../models/message_model';
 // import Chat from '../models/chat_model';
 
-export const createPost = (req, res) => {
-  // const post = new Post();
+export const saveMessage = (req, res) => {
+  const msg = new Message();
 
-  // post.title = req.body.title;
-  // post.content = req.body.content;
-  // post.tags = req.body.tags;
-  // post.cover_url = req.body.cover_url;
-  // post.author = req.body.author;
+  msg.text = req.body.text;
+  msg.createdAt = new Date();
+  msg.userId = req.body.userId;
+  msg.chatId = req.body.chatId;
 
-  // post.save()
-  //   .then(() => {
-  //     res.json({ message: 'Post created!' });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  msg.save()
+    .then(() => {
+      res.json({ message: 'Message saved!' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 //
