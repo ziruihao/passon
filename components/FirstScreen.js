@@ -52,30 +52,56 @@
 
 // export default createAppContainer(AppNavigator);
 
+// import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+// import SignUp from '../containers/signup';
+// import SignIn from '../containers/signin';
 
-import SignUp from '../containers/signup';
-import SignIn from '../containers/signin';
+// const FirstScreen = createStackNavigator({
+//   // keys are the names of the "routes"
+//   SignUp: {
+//     screen: SignUp,
+//     navigationOptions: {
+//       title: 'Sign Up',
+//     },
+//   },
+//   SignIn: {
+//     screen: SignIn,
+//     navigationOptions: {
+//       title: 'Sign In',
+//     },
+//   },
+// });
 
-const FirstScreen = createStackNavigator({
-  // keys are the names of the "routes"
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: 'Sign Up',
-    },
-  },
-  SignIn: {
-    screen: SignIn,
-    navigationOptions: {
-      title: 'Sign In',
-    },
-  },
-});
+// export default createAppContainer(FirstScreen);
 
-const Container = createAppContainer(FirstScreen);
+import React from 'react';
+// import { createAppContainer } from 'react-navigation';
+import { View, Button, Text } from 'react-native';
 
-export default Container;
+// const TempSearch = props => (<Button onPress={() => { props.navigation.navigate('Detail'); }} title="Sign In" />);
+// const TempDetail = props => (<Button onPress={() => { props.navigation.pop(); }} title="Sign Up" />);
 
-// export default FirstScreen;
+// nest stack navigator to handle two internal views
+// const FirstScreen = createStackNavigator({
+//   // keys are the names of the "routes"
+//   Search: TempSearch,
+//   Detail: TempDetail,
+// });
+
+// class FirstScreen extends Component {
+
+// }
+
+const FirstScreen = (props) => {
+  return (
+    <View>
+      <Text>PassOn</Text>
+      <Button onPress={() => { props.navigation.navigate('SignIn'); }} title="Sign In" />
+      <Button onPress={() => { props.navigation.navigate('SignUp'); }} title="Sign Up" />
+    </View>
+  );
+};
+
+// export default createAppContainer(FirstScreen);
+export default FirstScreen;

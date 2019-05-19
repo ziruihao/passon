@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import Card from '@material-ui/core/Card';
 // import Button from '@material-ui/core/Button';
@@ -77,11 +77,12 @@ class SignIn extends Component {
           id="password"
           type="password"
         />
-        <div className="post_footer">
+        <View>
           {this.renderResponse()}
-          <Button variant="contained" color="primary" onClick={this.post}>Sign In</Button>
-          <Button variant="contained"><NavLink to="/signin" className="link">I don't have an account yet.</NavLink></Button>
-        </div>
+          <Button onPress={this.post}>Sign In</Button>
+          <Button>I don't have an account yet.</Button>
+          {/* <Button variant="contained"><NavLink to="/signin" className="link">I don't have an account yet.</NavLink></Button> */}
+        </View>
       </View>
     );
   }

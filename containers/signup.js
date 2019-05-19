@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 // import Card from '@material-ui/core/Card';
 // import Button from '@material-ui/core/Button';
 // import { signupUser } from '../actions';
@@ -101,11 +101,12 @@ class SignUp extends Component {
           className="post_content"
           id="university"
         />
-        <div className="post_footer">
+        <View>
           {this.renderResponse()}
-          <Button variant="contained" color="primary" onClick={this.post}>Sign Up</Button>
-          <Button variant="contained"><NavLink to="/signin" className="link">I already have an account.</NavLink></Button>
-        </div>
+          <Button onPress={this.post}>Sign Up</Button>
+          <Button>I already have an account.</Button>
+          {/* <Button variant="contained"><NavLink to="/signin" className="link">I already have an account.</NavLink></Button> */}
+        </View>
       </View>
     );
   }
