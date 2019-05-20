@@ -2,8 +2,9 @@ import React from 'react';
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 // import { View, Text } from 'react-native';
 // import Profile from '../containers/profile';
-import Messaging from '../components/messaging';
+import Messaging from '../components/Messaging';
 import HomeTab from './home_tab';
+import My_Profile from '../components/my_profile';
 
 const MainTabBar = createBottomTabNavigator(
   {
@@ -17,12 +18,12 @@ const MainTabBar = createBottomTabNavigator(
 
       }),
     },
-    // Profile: {
-    //   screen: Profile,
-    //   navigationOptions: ({ navigation }) => ({
-    //     tabBarLabel: 'Profile',
-    //   }),
-    // },
+    My_Profile: {
+      screen: My_Profile,
+      navigationOptions: ({ navigation }) => ({
+        tabBarLabel: 'My Profile',
+      }),
+    },
   },
   {
     initialRouteName: 'HomeTab',
