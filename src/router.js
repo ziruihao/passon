@@ -8,18 +8,12 @@ router.get('/', (req, res) => {
   res.json({ message: 'welcome to passOn!' });
 });
 
-// /your routes will go here
+// SIGN IN / OUT ROUTES
 
-router.route('/skills/:id')
-  .post(requireAuth, User.getUsers)
-  .get(User.getUsers);
+router.post('/signin', requireSignin, User.signin);
+router.post('/signup', User.signup);
 
-router.route('/skills')
-  .post(requireAuth, User.getUsers)
-  .get(User.getUsers);
-
-router.route('/addSkill')
-  .post(User.addSkill);
+// USER ROUTERS
 
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
@@ -31,12 +25,30 @@ router.route('/users/:id/delete')
 router.route('/users')
   .get(User.getUsers);
 
-// router.route('/posts/:id')
-//   .get(Posts.getPost)
-//   .put(requireAuth, Posts.updatePost)
-//   .delete(requireAuth, Posts.deletePost);
+// SKILL (TO LEARN) ROUTERS
 
-router.post('/signin', requireSignin, User.signin);
-router.post('/signup', User.signup);
+router.route('/skills/:id/delete')
+  .post(requireAuth, User.delSkill);
+
+router.route('/skills/:id')
+  .post(requireAuth, User.updateSkill)
+  .get(User.getSkill);
+
+router.route('/skills')
+  .get(User.getSkills);
+
+router.route('/addSkill')
+  .post(requireAuth, User.addSkill);
+
+// SKILL (TO TEACH) ROUTERS
+
+router.route('/teach/:id/delete')
+  .post(requireAuth, User.delTeach);
+
+router.route('/teach/:id')
+  .post(requireAuth, User.updateTeach);
+
+router.route('/addTeach')
+  .post(requireAuth, User.addTeach);
 
 export default router;
