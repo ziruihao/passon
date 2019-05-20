@@ -176,7 +176,7 @@ export const addTeach = (req, res) => {
         skill.users = [req.body._id];
 
         skill.save()
-          .then((result2) => {
+          .then(() => {
             // res.json({ message: 'good' }); // send the token for the new user
             res.json({ message: 'Skill saved' }); // send the token for the new user
           })
