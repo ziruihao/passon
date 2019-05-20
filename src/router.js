@@ -8,33 +8,18 @@ router.get('/', (req, res) => {
   res.json({ message: 'welcome to passOn!' });
 });
 
-// /your routes will go here
-
-router.route('/skills/:id')
-  .post(requireAuth, User.getUsers)
-  .get(User.getUsers);
-
-router.route('/skills')
-  .post(requireAuth, User.getUsers)
-  .get(User.getUsers);
-
-router.route('/addSkill')
-  .post(User.addSkill);
-
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-  .get(User.getUser);
+  .get(requireAuth, User.getUser)
+  .delete(requireAuth, User.deleteUser);
 
-router.route('/users/:id/delete')
-  .post(requireAuth, User.deleteUser);
+router.route('users/:id/skills')
+  .post(requireAuth, User.addSkill)
+  .get(User.getSkills);
 
 router.route('/users')
+  .post(User.createUser)
   .get(User.getUsers);
-
-// router.route('/posts/:id')
-//   .get(Posts.getPost)
-//   .put(requireAuth, Posts.updatePost)
-//   .delete(requireAuth, Posts.deletePost);
 
 router.post('/signin', requireSignin, User.signin);
 router.post('/signup', User.signup);

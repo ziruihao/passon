@@ -102,7 +102,6 @@ export const getUser = (req, res) => {
 };
 
 export const deleteUser = (req, res) => {
-  // res.send('delete a post here');
   User.findByIdAndDelete(req.params.id)
     .then(() => {
       res.json({ message: 'User deleted!' });
