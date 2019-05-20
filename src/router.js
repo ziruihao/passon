@@ -39,7 +39,7 @@ router.route('/skills')
   .get(User.getSkills);
 
 router.route('/addSkill')
-  .post(User.addSkill);
+  .post(requireAuth, User.addSkill);
 
 // SKILL (TO TEACH) ROUTERS
 
@@ -50,6 +50,6 @@ router.route('/teach/:id')
   .post(requireAuth, User.updateTeach);
 
 router.route('/addTeach')
-  .post(User.addTeach);
+  .post(requireAuth, User.addTeach);
 
 export default router;
