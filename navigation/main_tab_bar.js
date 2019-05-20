@@ -5,8 +5,6 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import Profile from '../containers/Profile';
 import Messaging from '../components/Messaging';
 import Home from '../components/Home';
-import SignInScreen from '../containers/signin';
-import SignUpScreen from '../containers/signup';
 
 // const AboutTab = (props) => {
 //   return <View style={{ flex: 1, justifyContent: 'center' }}><Text>about</Text></View>;
@@ -16,16 +14,8 @@ import SignUpScreen from '../containers/signup';
 //   return <View style={{ flex: 1, justifyContent: 'center' }}><Text>Search</Text></View>;
 // };
 
-// const FirstScreen = createStackNavigator({
-//   SignIn: { screen: SignInScreen },
-//   SignUp: { screen: SignUpScreen },
-// });
-
 const MainTabBar = createBottomTabNavigator(
   {
-    SignUpScreen,
-    SignInScreen,
-    // FirstScreen,
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
@@ -67,7 +57,7 @@ const MainTabBar = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'SignInScreen',
+    initialRouteName: 'Home',
   },
 );
 

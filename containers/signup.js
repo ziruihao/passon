@@ -49,7 +49,6 @@ class SignUp extends Component {
       || this.state.university === '') {
       this.setState({ valid_entry: false });
     } else {
-      console.log(this.state);
       this.props.signupUser({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
@@ -57,6 +56,9 @@ class SignUp extends Component {
         password: this.state.password,
         university: this.state.university,
       });
+      if (this.props.authenticated) {
+        this.props.navigation.navigate('Main');
+      }
     }
   };
 
@@ -106,4 +108,10 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, { signupUser })(SignUp);
+function mapStateToProps(reduxState) {
+  return {
+    authenticated: reduxState.auth.authenticated,
+  };
+}
+
+export default connect(mapStateToProps, { signupUser })(SignUp);

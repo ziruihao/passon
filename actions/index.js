@@ -105,6 +105,8 @@ export function signinUser({ email, password }) {
   //  localStorage.setItem('token', response.data.token);
   // on error should dispatch(authError(`Sign In Failed: ${error.response.data}`));
 
+  // const token = await AsyncStorage.getItem('token');
+
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })

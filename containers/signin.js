@@ -41,7 +41,9 @@ class SignIn extends Component {
         email: this.state.email,
         password: this.state.password,
       });
-      // console.log('sign in');
+      if (this.props.authenticated) {
+        this.props.navigation.navigate('Main');
+      }
     }
   };
 
@@ -72,11 +74,17 @@ class SignIn extends Component {
         <View>
           {this.renderResponse()}
           <Button onPress={() => { this.post(); }} title="Sign In" />
-          <Button onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I don't have an account yet." />
+          <Button onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." />
         </View>
       </View>
     );
   }
 }
 
-export default connect(null, { signinUser })(SignIn);
+function mapStateToProps(reduxState) {
+  return {
+    authenticated: reduxState.auth.authenticated,
+  };
+}
+
+export default connect(mapStateToProps, { signinUser })(SignIn);

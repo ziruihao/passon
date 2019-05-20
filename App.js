@@ -6,8 +6,9 @@ import { Platform } from 'react-native';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import MainTabBar from './navigation/main_tab_bar';
+// import MainTabBar from './navigation/main_tab_bar';
 import rootReducer from './reducers/index';
+import Main from './components/main';
 
 // Source: https://stackoverflow.com/questions/53737943/typeerror-undefined-is-not-an-object-evaluating-store-getstate
 const middleware = applyMiddleware(thunk, promise, logger);
@@ -21,7 +22,7 @@ const Store = createStore(rootReducer, compose(middleware, devTools({
 const App = () => {
   return (
     <Provider store={Store}>
-      <MainTabBar />
+      <Main />
     </Provider>
   );
 };
