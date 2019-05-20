@@ -5,6 +5,8 @@ import Skill from '../models/skills_model';
 
 dotenv.config({ silent: true });
 
+// THE FOLLOWING FUNCTIONS DEAL WITH HANDLING USERS
+
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
@@ -21,6 +23,7 @@ export const signin = (req, res) => {
     });
 };
 
+// Signs up a user and generates a token for them
 export const signup = (req, res, next) => {
   console.log(`REQ BODY: ${req.body.firstName}`);
   const { firstName } = req.body;
@@ -63,28 +66,28 @@ export const signup = (req, res, next) => {
   return next;
 };
 
-
+// Gets all users (modified so that it does not return any password information; add other fields to return as needed
 export const getUsers = (req, res) => { // TODO: return based on searched skill
   User.find({}).then((result) => {
-    // const out = [];
+    const out = [];
 
-    // result.forEach((elem) => {
-    //   out.push({
-    //     firstName: elem.firstName,
-    //     lastName: elem.lastName,
-    //     email: elem.email,
-    //   });
-    // });
+    result.forEach((elem) => {
+      out.push({
+        firstName: elem.firstName,
+        lastName: elem.lastName,
+        email: elem.email,
+      });
+    });
 
     // DO NOT WANT TO DIRECTLY SEND RESULT, IT WOULD CONTAIN PASSWORD INFO
 
-    // res.send(out);
-    res.send(result);
+    res.send(out);
   }).catch((error) => {
     res.status(500).json({ error });
   });
 };
 
+// Gets a user (also modified not to return too much information)
 export const getUser = (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
@@ -101,6 +104,7 @@ export const getUser = (req, res) => {
     });
 };
 
+// Deletes an entire user
 export const deleteUser = (req, res) => {
   // res.send('delete a post here');
   User.findByIdAndDelete(req.params.id)
@@ -112,6 +116,7 @@ export const deleteUser = (req, res) => {
     });
 };
 
+// Update user parameters (just use this for username, email, simple fields (NOT skills)
 export const updateUser = (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body)
     .then(() => {
@@ -128,6 +133,9 @@ export const updateUser = (req, res) => {
     });
 };
 
+// THE FOLLOWING FUNCTIONS DEAL WITH HANDLING SKILLS
+
+// Add a skill for a user to learn
 export const addSkill = (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
@@ -140,6 +148,23 @@ export const addSkill = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
+};
+
+// Add a skill that a user can teach
+export const addTeach = (req, res) => {
+  // Only push to that user's teach library
+  User.findById(req.params.id)
+    .then((result) => {
+      result.teach.push({
+        title: req.body.title,
+        years: req.body.years,
+        description: req.body.description,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+
 
   Skill.findOne({ title: req.body.title })
     .then((result) => {
@@ -154,7 +179,7 @@ export const addSkill = (req, res) => {
         skill.users = [req.body._id];
 
         skill.save()
-          .then((result2) => {
+          .then(() => {
             // res.json({ message: 'good' }); // send the token for the new user
             res.json({ message: 'Skill saved' }); // send the token for the new user
           })
@@ -168,14 +193,94 @@ export const addSkill = (req, res) => {
     });
 };
 
+// Delete a skill a user wants to learn
 export const delSkill = (req, res) => {
-
+  User.findById(req.params.id)
+    .then((result) => {
+      result.learn.forEach((element, index, object) => {
+        if (element.title === req.params.title) {
+          object.splice(index, 1);
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
+// Delete a skill a user wants to teach
+export const delTeach = (req, res) => {
+  User.findById(req.params.id)
+    .then((result) => {
+      result.teach.forEach((element, index, object) => {
+        if (element.title === req.params.title) {
+          object.splice(index, 1);
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+
+  Skill.findById(req.params.id)
+    .then((result) => {
+      result.users.forEach((user, index, object) => {
+        if (user === req.params.id) {
+          object.splice(index, 1);
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+// Update a skill for a user
+export const updateSkill = (req, res) => {
+  User.findById(req.params.id)
+    .then((result) => {
+      result.learn.forEach((element) => {
+        if (element.title === req.params.title) {
+          element.description = req.params.description;
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+// Update a skill that a user wants to teach
+export const updateTeach = (req, res) => {
+  User.findById(req.params.id)
+    .then((result) => {
+      result.teach.forEach((element) => {
+        if (element.title === req.params.title) {
+          element.description = req.params.description;
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+// Get information on a specific skill (the users associated with it)
 export const getSkill = (req, res) => {
-
+  Skill.findById(req.params.id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
+// Get information on all skills (and all users associated with them)
 export const getSkills = (req, res) => {
-
+  Skill.find({}).then((result) => {
+    res.send(result);
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
 };
