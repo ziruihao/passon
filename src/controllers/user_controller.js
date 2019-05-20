@@ -5,11 +5,13 @@ import Skill from '../models/skills_model';
 
 dotenv.config({ silent: true });
 
+// THE FOLLOWING FUNCTIONS DEAL WITH HANDLING USERS
+
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
-};
+}
 
 export const signin = (req, res) => {
   User.findOne({ email: req.body.email })
@@ -128,6 +130,8 @@ export const updateUser = (req, res) => {
     });
 };
 
+// THE FOLLOWING FUNCTIONS DEAL WITH HANDLING SKILLS
+
 // Add a skill for a user to learn
 export const addSkill = (req, res) => {
   User.findById(req.params.id)
@@ -141,6 +145,23 @@ export const addSkill = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
+};
+
+// Add a skill that a user can teach
+export const addTeach = (req, res) => {
+  // Only push to that user's teach library
+  User.findById(req.params.id)
+    .then((result) => {
+      result.teach.push({
+        title: req.body.title,
+        years: req.body.years,
+        description: req.body.description,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+
 
   Skill.findOne({ title: req.body.title })
     .then((result) => {
@@ -169,15 +190,14 @@ export const addSkill = (req, res) => {
     });
 };
 
-// Add a skill that a user can teach
-export const addTeach = (req, res) => {
-  // Only push to that user's teach library
+// Delete a skill a user wants to learn
+export const delSkill = (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
-      result.teach.push({
-        title: req.body.title,
-        years: req.body.years,
-        description: req.body.description,
+      result.learn.forEach((element, index, object) => {
+        if (element.title === req.params.title) {
+          object.splice(index, 1);
+        }
       });
     })
     .catch((error) => {
@@ -185,14 +205,31 @@ export const addTeach = (req, res) => {
     });
 };
 
-// Delete a skill a user wants to learn
-export const delSkill = (req, res) => {
-
-};
-
 // Delete a skill a user wants to teach
 export const delTeach = (req, res) => {
+  User.findById(req.params.id)
+    .then((result) => {
+      result.teach.forEach((element, index, object) => {
+        if (element.title === req.params.title) {
+          object.splice(index, 1);
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 
+  Skill.findById(req.params.id)
+    .then((result) => {
+      result.users.forEach((user, index, object) => {
+        if (user === req.params.id) {
+          object.splice(index, 1);
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 // Update a skill for a user
