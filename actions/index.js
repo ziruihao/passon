@@ -11,6 +11,9 @@ export const ActionTypes = {
   AUTH_USER: 'AUTH_USER',
   DEAUTH_USER: 'DEAUTH_USER',
   AUTH_ERROR: 'AUTH_ERROR',
+  FETCH_SKILLS: 'FETCH_SKILLS',
+  FETCH_SKILL: 'FETCH_SKILL',
+  UPDATE_SKILL: 'UPDATE_SKILL',
 };
 
 // From assignment page
@@ -18,15 +21,66 @@ const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://sulljohn-cs52-blog.herokuapp.com/api';
 // const API_KEY = '?key=j_sullivan';
 
-// From assignment page
+// // From assignment page
 export function fetchSkills() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts`)
+    axios.get(`${ROOT_URL}/skills`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POSTS, payload: response });
+        dispatch({ type: ActionTypes.FETCH_SKILLS, payload: response.data });
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
+      });
+  };
+}
+
+export function fetchSkill(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/skills/${id}`)
+      .then((response) => {
+        dispatch({ type: ActionTypes.FETCH_SKILL, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function createSkill(skill) {
+  return (dispatch) => {
+    // axios.post(`${ROOT_URL}/posts`, post)
+    axios.post(`${ROOT_URL}/skills`, skill)
+      .then((response) => {
+        // dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function updateSkill(id, skill) {
+  return (dispatch) => {
+    // axios.put(`${ROOT_URL}/posts/${id}`, post)
+    axios.put(`${ROOT_URL}/skills/${id}`, skill)
+      .then((response) => {
+        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function deleteSkill(id) {
+  return (dispatch) => {
+    // axios.delete(`${ROOT_URL}/posts/${id}`)
+    axios.delete(`${ROOT_URL}/skills/${id}`)
+      .then(() => {
+        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: null });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 }

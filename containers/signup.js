@@ -16,32 +16,9 @@ class SignUp extends Component {
       password: '',
       university: '',
     };
-
-    // this.onInputChange = this.onInputChange.bind(this);
-    // this.post = this.post.bind(this);
-    // this.renderResponse = this.renderResponse.bind(this);
   }
 
-  // onInputChange = (e) => {
-  //   switch (e.target.id) {
-  //     case 'name':
-  //       this.setState({ name: e.target.value });
-  //       break;
-  //     case 'email':
-  //       this.setState({ email: e.target.value });
-  //       break;
-  //     case 'password':
-  //       this.setState({ password: e.target.value });
-  //       break;
-  //     case 'university':
-  //       this.setState({ university: e.target.value });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  post = () => { // Check that there are no bad or empty values that the user is attempting to post
+  signUp = () => { // Check that there are no bad or empty values that the user is attempting to signup
     if (this.state.firstName === ''
       || this.state.lastName === ''
       || this.state.email === ''
@@ -100,7 +77,7 @@ class SignUp extends Component {
         />
         <View>
           {this.renderResponse()}
-          <Button onPress={() => { this.post(); }} title="Sign Up" />
+          <Button onPress={() => { this.signUp(); }} title="Sign Up" />
           <Button onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." />
         </View>
       </View>

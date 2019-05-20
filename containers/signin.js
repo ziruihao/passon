@@ -13,26 +13,9 @@ class SignIn extends Component {
       email: '',
       password: '',
     };
-
-    // this.onInputChange = this.onInputChange.bind(this);
-    // this.post = this.post.bind(this);
-    // this.renderResponse = this.renderResponse.bind(this);
   }
 
-  // onInputChange = (e) => {
-  //   switch (e.target.id) {
-  //     case 'email':
-  //       this.setState({ email: e.target.value });
-  //       break;
-  //     case 'password':
-  //       this.setState({ password: e.target.value });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  post = () => { // Check that there are no bad or empty values that the user is attempting to post
+  signIn = () => { // Check that there are no bad or empty values that the user is attempting to signin
     if (this.state.email === ''
       || this.state.password === '') {
       this.setState({ valid_entry: false });
@@ -73,7 +56,7 @@ class SignIn extends Component {
         />
         <View>
           {this.renderResponse()}
-          <Button onPress={() => { this.post(); }} title="Sign In" />
+          <Button onPress={() => { this.signIn(); }} title="Sign In" />
           <Button onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." />
         </View>
       </View>
