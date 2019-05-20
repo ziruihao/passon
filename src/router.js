@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
 router.post('/signin', requireSignin, User.signin);
 router.post('/signup', User.signup);
 
-
 // USER ROUTERS
 
 router.route('/users/:id')
