@@ -16,7 +16,7 @@ function tokenForUser(user) {
 export const signin = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((result) => {
-      res.send({ token: tokenForUser(req.user), username: result.username });
+      res.send({ token: tokenForUser(req.user) });
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -25,13 +25,15 @@ export const signin = (req, res) => {
 
 // Signs up a user and generates a token for them
 export const signup = (req, res, next) => {
+  console.log(`REQ BODY: ${req.body.firstName}`);
   const { firstName } = req.body;
   const { lastName } = req.body;
   const { email } = req.body;
   const { password } = req.body;
+  const { university } = req.body;
 
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(422).send('You must provide name, email, and password');
+  if (!firstName || !lastName || !email || !password || !university) {
+    return res.status(422).send('You must provide name, email, password, and university.');
   }
 
   User.findOne({ email: req.body.email })
@@ -45,11 +47,12 @@ export const signup = (req, res, next) => {
         user.lastName = req.body.lastName;
         user.email = req.body.email;
         user.password = req.body.password;
+        user.university = req.body.university;
 
         user.save()
           .then((result2) => {
             // res.json({ message: 'good' }); // send the token for the new user
-            res.json({ token: tokenForUser(result2), username: user.username }); // send the token for the new user
+            res.json({ token: tokenForUser(result2) }); // send the token for the new user
           })
           .catch((error) => {
             res.status(500).json({ error });
