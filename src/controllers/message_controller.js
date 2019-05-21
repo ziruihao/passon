@@ -24,8 +24,8 @@ export const saveMessage = (req, res) => {
 
 export const createChat = (req, res) => {
   const chat = new Chat();
-  const user1 = new User(); // fetching from req.body.userId
-  const user2 = new User(); // fetching from req.user
+  const user1 = new User(); // fetching from req.body.email (of the other user)
+  const user2 = new User(); // fetching from req.user (which is email)
   chat.userId = [user1, user2];
   // first is the other user, second is self
   // second should really be req.user since it's in token in the header
