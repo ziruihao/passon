@@ -2,7 +2,7 @@ import { ActionTypes } from '../actions';
 
 // From assignment page
 const initialState = {
-  username: '',
+  token: '',
   authenticated: false,
 };
 
@@ -14,17 +14,17 @@ const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.AUTH_USER:
       return Object.assign({}, state, {
-        username: action.payload,
+        token: action.payload,
         authenticated: true,
       });
     case ActionTypes.DEAUTH_USER:
       return Object.assign({}, state, {
-        username: '',
+        token: '',
         authenticated: false,
       });
     case ActionTypes.AUTH_ERROR:
       return Object.assign({}, state, {
-        username: '',
+        token: '',
         authenticated: false,
       });
     default: // Delete post uses fetch post to update central store
