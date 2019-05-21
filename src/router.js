@@ -24,13 +24,13 @@ router.route('/users/:id')
 
 router.route('/learn')
   .post(requireAuth, User.addLearn)
-  .post(requireAuth, User.updateLearn)
+  .put(requireAuth, User.updateLearn)
   .delete(requireAuth, User.deleteLearn)
   .get(User.getLearns);
 
 router.route('/teach')
   .post(requireAuth, User.addTeach)
-  .post(requireAuth, User.updateTeach)
+  .put(requireAuth, User.updateTeach)
   .delete(requireAuth, User.deleteTeach)
   .get(User.getTeaches);
 
