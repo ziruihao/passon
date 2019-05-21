@@ -1,18 +1,19 @@
 import React from 'react';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
+import {
+  createAppContainer, createBottomTabNavigator,
+  createStackNavigator,
+} from 'react-navigation';
 // import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import Profile from '../containers/Profile';
-import Messaging from '../components/Messaging';
+import MessagingScreen from '../components/Messaging';
 import Home from '../components/Home';
+import ChatScreen from '../components/Chat';
 
-// const AboutTab = (props) => {
-//   return <View style={{ flex: 1, justifyContent: 'center' }}><Text>about</Text></View>;
-// };
-
-// const SearchTab = (props) => {
-//   return <View style={{ flex: 1, justifyContent: 'center' }}><Text>Search</Text></View>;
-// };
+const Messaging = createStackNavigator({
+  Overview: { screen: MessagingScreen },
+  Chat: { screen: ChatScreen },
+});
 
 
 const MainTabBar = createBottomTabNavigator(

@@ -153,3 +153,30 @@ export function signoutUser(history) {
     history.push('/');
   };
 }
+
+
+export function fetchChats() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/users`)
+      .then((response) => {
+        console.log(response.data.message);
+        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function createChat(id, chat) {
+  return (dispatch) => {
+    // axios.post(`${ROOT_URL}/posts`, post)
+    axios.post(`${ROOT_URL}/messaging/${id}`, chat, { headers: { authorization: localStorage.getItem('token') } })
+      .then((response) => {
+        dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
