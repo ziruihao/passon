@@ -99,9 +99,10 @@ export function fetchUser() {
 }
 
 export function createUser(post, history) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/posts`, post, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/posts`, post, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
         history.push('/');
@@ -113,9 +114,10 @@ export function createUser(post, history) {
 }
 
 export function updateUser(id, post) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.put(`${ROOT_URL}/posts/${id}`, post)
-    axios.put(`${ROOT_URL}/posts/${id}`, post, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/posts/${id}`, post, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: response.data });
       })
@@ -126,9 +128,10 @@ export function updateUser(id, post) {
 }
 
 export function deleteUser(id, history) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.delete(`${ROOT_URL}/posts/${id}`)
-    axios.delete(`${ROOT_URL}/posts/${id}`, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/posts/${id}`, { headers: { authorization: value } })
       .then(() => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: null });
         history.push('/');
@@ -228,7 +231,7 @@ export function fetchChats() {
 export function createChat(chat) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
-    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } }) // authorization: localStorage.getItem('token') } })
+    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
