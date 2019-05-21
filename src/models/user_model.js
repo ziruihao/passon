@@ -1,25 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
-
-const SkillSchema = new Schema({
-  title: String,
-  user: String,
-  years: Number,
-  bio: String,
-  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
-}, {
-  toJSON: {
-    virtuals: true,
-  },
-});
+// import Skill from './skill_model';
 
 const UserSchema = new Schema({
   firstName: String,
   lastName: String,
   email: { type: String, unique: true, lowercase: true },
   password: String,
-  teach: [SkillSchema],
-  learn: [SkillSchema], // this skill model should have less info than the [teach] one, ONLY populate [title].
+  teach: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
+  learn: [{ type: Schema.Types.ObjectId, ref: 'Skill' }], // this skill model should have less info than the [teach] one, ONLY populate [title].
   profile_pic_url: String,
   university: String,
 }, {
@@ -74,5 +63,4 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
 };
 
 const UserModel = mongoose.model('User', UserSchema);
-
 export default UserModel;

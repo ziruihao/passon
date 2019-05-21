@@ -13,44 +13,42 @@ router.get('/', (req, res) => {
 router.post('/signin', requireSignin, User.signin);
 router.post('/signup', User.signup);
 
-// USER ROUTERS
+/**
+ * USER ROUTES
+ */
 
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
   .get(requireAuth, User.getUser)
   .delete(requireAuth, User.deleteUser);
 
-router.route('users/:id/skills')
-  .post(requireAuth, User.addSkill)
-  .get(User.getSkills);
+router.route('users/:id/learn')
+  .post(requireAuth, User.addLearn)
+  .post(requireAuth, User.updateLearn)
+  .delete(requireAuth, User.deleteLearn)
+  .get(User.getLearns);
+
+router.route('users/:id/teach')
+  .post(requireAuth, User.addTeach)
+  .post(requireAuth, User.updateTeach)
+  .delete(requireAuth, User.deleteTeach)
+  .get(User.getTeaches);
 
 router.route('/users')
   .get(User.getUsers);
 
-// SKILL (TO LEARN) ROUTERS
 
-router.route('/skills/:id/delete')
-  .post(requireAuth, User.delSkill);
+/**
+ * SKILL ROUTES
+ */
 
-router.route('/skills/:id')
-  .post(requireAuth, User.updateSkill)
-  .get(User.getSkill);
-
-router.route('/skills')
+router.route('skills')
   .get(User.getSkills);
 
-router.route('/addSkill')
-  .post(requireAuth, User.addSkill);
+router.route('/skills/:title')
+  .get(User.getSkill);
 
-// SKILL (TO TEACH) ROUTERS
-
-router.route('/teach/:id/delete')
-  .post(requireAuth, User.delTeach);
-
-router.route('/teach/:id')
-  .post(requireAuth, User.updateTeach);
-
-router.route('/addTeach')
-  .post(requireAuth, User.addTeach);
+router.route('/test/:id')
+  .post(User.addSkillRating);
 
 export default router;
