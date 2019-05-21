@@ -12,14 +12,41 @@ class SignIn extends Component {
     this.state = {
       email: '',
       password: '',
+      errorEmail: false,
+      errorPassword: false,
     };
   }
 
+  // typeEmail = (text) => {
+  //   if (text === '') {
+  //     this.setState({ email: text, errorEmail: true });
+  //   } else {
+  //     this.setState({ email: text, errorEmail: false });
+  //   }
+  // }
+
+  // typePassword = (text) => {
+  //   if (text === '') {
+  //     this.setState({ password: text, errorPassword: true });
+  //   } else {
+  //     this.setState({ password: text, errorPassword: false });
+  //   }
+  // }
+
   signIn = () => { // Check that there are no bad or empty values that the user is attempting to signin
-    if (this.state.email === ''
-      || this.state.password === '') {
-      this.setState({ valid_entry: false });
-    } else {
+    if (this.state.email === '') {
+      this.setState({ errorEmail: true });
+    }
+    if (this.state.email !== '') {
+      this.setState({ errorEmail: false });
+    }
+    if (this.state.password === '') {
+      this.setState({ errorPassword: true });
+    }
+    if (this.state.password !== '') {
+      this.setState({ errorPassword: false });
+    }
+    if (this.state.email !== '' && this.state.password !== '') {
       this.props.signinUser({
         email: this.state.email,
         password: this.state.password,
@@ -30,17 +57,17 @@ class SignIn extends Component {
     }
   };
 
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields.</Text>
-      );
-    }
-  };
+  // renderResponse = () => {
+  //   if (!this.state.valid_entry) {
+  //     return (
+  //       <Text>Field missing</Text>
+  //     );
+  //   } else {
+  //     return (
+  //       <Text>Please fill in missing fields.</Text>
+  //     );
+  //   }
+  // };
 
   render() {
     return (
@@ -50,12 +77,22 @@ class SignIn extends Component {
           placeholder="Email"
           onChangeText={(text) => { this.setState({ email: text }); }}
         />
+        { this.state.errorEmail === true ? (
+          <Text>
+               * Please enter the text to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Password"
           onChangeText={(text) => { this.setState({ password: text }); }}
         />
+        { this.state.errorPassword === true ? (
+          <Text>
+               * Please enter the text to proceed.
+          </Text>
+        ) : null }
         <View>
-          {this.renderResponse()}
+          {/* {this.renderResponse()} */}
           <Button onPress={() => { this.signIn(); }} title="Sign In" />
           <Button onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." />
         </View>
