@@ -54,7 +54,7 @@ class SignUp extends Component {
   render() {
     return (
       <View>
-        <Text>Create an Account</Text>
+        <Text style={{ margin: 50 }}>Create an Account</Text>
         <TextInput
           placeholder="First Name"
           onChangeText={(text) => { this.setState({ firstName: text }); }}
