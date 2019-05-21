@@ -19,6 +19,10 @@ class Messaging extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.fetch_chats();
+  }
+
   /**
    * NOTE_FOR_SELF
    * TODOs:

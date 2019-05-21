@@ -13,6 +13,7 @@ export const ActionTypes = {
   AUTH_ERROR: 'AUTH_ERROR',
   FETCH_SKILL: 'FETCH_SKILL',
   UPDATE_SKILL: 'UPDATE_SKILL',
+  GET_SELF: 'GET_SELF',
 };
 
 // From assignment page
@@ -209,13 +210,15 @@ export function signoutUser(history) {
   };
 }
 
-
+// TODO
 export function fetchChats() {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/users`)
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    console.log(`token: ${value}`);
+    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(response.data.message);
-        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        console.log(JSON.stringify(response.data));
+        dispatch({ type: ActionTypes.GET_SELF, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
