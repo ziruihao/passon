@@ -166,7 +166,7 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
-  User.findById(req.user.id).populate('teach').populate('learn')
+  User.findById(req.user.id).populate('teach')
     .then((result) => {
       const skill = new Skill();
       skill.title = req.body.skill.title;
@@ -190,52 +190,68 @@ export const addTeach = (req, res) => {
 
 // Delete a skill a user wants to learn
 export const deleteLearn = (req, res) => {
-  User.findById(req.params.id).populate('learn')
+  User.findById(req.user.id).populate('learn')
     .then((result) => {
       result.learn.forEach((element, index, object) => {
-        if (element.title === req.params.title) {
+        if (element.title === req.body.title) {
           object.splice(index, 1);
         }
       });
+      result.save().then((response) => {
+        console.log(response);
+        res.json(response);
+      }).catch((error) => {
+        res.status(500).json({ msg: error.message });
+      });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(500).json({ message: error.message });
     });
 };
 
 // Delete a skill a user wants to teach
 export const deleteTeach = (req, res) => {
-  User.findById(req.params.id).populate('teach')
+  User.findById(req.user.id).populate('teach')
     .then((result) => {
       result.teach.forEach((element, index, object) => {
-        if (element.title === req.params.title) {
+        if (element.title === req.body.skill.title) {
           object.splice(index, 1);
         }
       });
+      result.save().then((response) => {
+        res.json(response);
+      }).catch((error) => {
+        res.status(500).json({ msg: error.message });
+      });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(500).json({ message: error.message });
     });
 };
 
 // Update a skill for a user
 export const updateLearn = (req, res) => {
-  User.findById(req.params.id).populate('learn')
+  User.findById(req.user.id).populate('learn')
     .then((result) => {
-      result.learn.forEach((element) => {
-        if (element.title === req.params.title) {
-          element.description = req.params.description;
+      result.learn.forEach((element, index, object) => {
+        if (element.title === req.body.skill.title) {
+          object.splice(index, 1);
         }
+      });
+      result.save().then((response) => {
+        res.json(response);
+      }).catch((error) => {
+        res.status(500).json({ msg: error.message });
       });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(500).json({ message: error.message });
     });
 };
 
 // Update a skill that a user wants to teach
 export const updateTeach = (req, res) => {
-  User.findById(req.params.id).populate('teach')
+  User.findById(req.user.id).populate('teach')
     .then((result) => {
       result.teach.forEach((element) => {
         if (element.title === req.params.title) {
