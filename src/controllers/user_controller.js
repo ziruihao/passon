@@ -1,7 +1,10 @@
+/* eslint-disable prefer-destructuring */
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
 import Skill from '../models/skill_model';
+import Rating from '../models/rating_model';
+
 
 dotenv.config({ silent: true });
 
@@ -28,7 +31,7 @@ export const signin = (req, res) => {
 
 // Signs up a user and generates a token for them
 export const signup = (req, res, next) => {
-  console.log(`REQ BODY: ${req.body.firstName}`);
+  // console.log(`REQ BODY: ${req.body.firstName}`);
   const { firstName } = req.body;
   const { lastName } = req.body;
   const { email } = req.body;
@@ -52,7 +55,7 @@ export const signup = (req, res, next) => {
         user.password = req.body.password;
         user.university = req.body.university;
 
-        user.save().populate('learn').populate('teach').then((result2) => {
+        user.save().then((result2) => {
           res.json({
             user: result2,
             token: tokenForUser(result2),
@@ -64,7 +67,7 @@ export const signup = (req, res, next) => {
       }
     })
     .catch((error) => {
-      res.status(404).json({ error });
+      res.status(404).json({ msg: error.message });
     });
 
   return next;
@@ -72,19 +75,12 @@ export const signup = (req, res, next) => {
 
 // Gets all users (modified so that it does not return any password information; add other fields to return as needed
 export const getUsers = (req, res) => { // TODO: return based on searched skill
-  User.find().populate('learn').populate('teach')
-    .then((results) => {
-      const out = [];
-      results.forEach((result) => {
-        const removePersonalInfo = Object.assign({}, result);
-        removePersonalInfo.password = null;
-        removePersonalInfo.email = null;
-        out.push(removePersonalInfo);
-      });
-      res.json(out);
-    })
+  User.find({}).populate('teach').populate('learn').then((results) => {
+    console.log(results);
+    res.send(results);
+  })
     .catch((error) => {
-      res.status(404).json({ error });
+      res.status(404).json({ msg: error.message });
     });
 };
 
@@ -145,60 +141,55 @@ export const updateUser = (req, res) => {
 
 // THE FOLLOWING FUNCTIONS DEAL WITH HANDLING SKILLS
 
-// Add a skill for a user to learn
-export const addSkill = (req, res) => {
-  User.findById(req.params.id)
+/**
+ * Adds a skill to the [User]'s list of things they want to learn, a.k.a [User.learn].
+ * @param {*} req
+ * @param {*} res
+ */
+export const addLearn = (req, res) => {
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      console.log(result.learn);
-
-      result.learn.push({
-        title: req.body.title,
-        years: req.body.years,
-        description: req.body.description,
+      const skill = new Skill();
+      skill.title = req.body.skill.title;
+      skill.save().then((result2) => {
+        console.log(result2);
+        result.learn.push(result2);
+        console.log(result);
+        result.save().then((response) => {
+          console.log(response);
+          res.json(response);
+        }).catch((error) => {
+          res.status(500).json({ msg: error.message });
+        });
       });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(500).json({ msg: error.message });
     });
 };
 
-// Add a skill that a user can teach
+/**
+ * Adds a skill to the [User]'s list of things they want to teach, a.k.a. [User.teach].
+ * @param {*} req
+ * @param {*} res
+ */
 export const addTeach = (req, res) => {
-  // Only push to that user's teach library
-  User.findById(req.params.id)
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      result.teach.push({
-        title: req.body.title,
-        years: req.body.years,
-        description: req.body.description,
+      const skill = new Skill();
+      skill.title = req.body.skill.title;
+      skill.years = req.body.skill.years;
+      skill.bio = req.body.skill.bio;
+      skill.ratings = req.body.skill.ratings;
+
+      skill.save().then((result2) => {
+        result.teach.push(result2);
+        result.save().then((response) => {
+          res.json(response);
+        }).catch((error) => {
+          res.status(500).json({ error });
+        });
       });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-
-
-  Skill.findOne({ title: req.body.title })
-    .then((result) => {
-      if (result !== null) {
-        res.json('Skill exists'); // If the email is null
-
-        result.users.insert(req.body.email);
-      } else {
-        const skill = new Skill();
-
-        skill.title = req.body.title;
-        skill.users = [req.body._id];
-
-        skill.save()
-          .then(() => {
-            // res.json({ message: 'good' }); // send the token for the new user
-            res.json({ message: 'Skill saved' }); // send the token for the new user
-          })
-          .catch((error) => {
-            res.status(500).json({ error });
-          });
-      }
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -206,8 +197,8 @@ export const addTeach = (req, res) => {
 };
 
 // Delete a skill a user wants to learn
-export const delSkill = (req, res) => {
-  User.findById(req.params.id)
+export const deleteLearn = (req, res) => {
+  User.findById(req.params.id).populate('learn')
     .then((result) => {
       result.learn.forEach((element, index, object) => {
         if (element.title === req.params.title) {
@@ -221,8 +212,8 @@ export const delSkill = (req, res) => {
 };
 
 // Delete a skill a user wants to teach
-export const delTeach = (req, res) => {
-  User.findById(req.params.id)
+export const deleteTeach = (req, res) => {
+  User.findById(req.params.id).populate('teach')
     .then((result) => {
       result.teach.forEach((element, index, object) => {
         if (element.title === req.params.title) {
@@ -233,23 +224,11 @@ export const delTeach = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
-
-  Skill.findById(req.params.id)
-    .then((result) => {
-      result.users.forEach((user, index, object) => {
-        if (user === req.params.id) {
-          object.splice(index, 1);
-        }
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
 };
 
 // Update a skill for a user
-export const updateSkill = (req, res) => {
-  User.findById(req.params.id)
+export const updateLearn = (req, res) => {
+  User.findById(req.params.id).populate('learn')
     .then((result) => {
       result.learn.forEach((element) => {
         if (element.title === req.params.title) {
@@ -264,7 +243,7 @@ export const updateSkill = (req, res) => {
 
 // Update a skill that a user wants to teach
 export const updateTeach = (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params.id).populate('teach')
     .then((result) => {
       result.teach.forEach((element) => {
         if (element.title === req.params.title) {
@@ -277,11 +256,22 @@ export const updateTeach = (req, res) => {
     });
 };
 
+export const getLearns = () => {
+
+};
+
+export const getTeaches = () => {
+
+};
+
 // Get information on a specific skill (the users associated with it)
 export const getSkill = (req, res) => {
-  Skill.findById(req.params.id)
-    .then((result) => {
-      res.send(result);
+  User.find({}).populate('teach')
+    .then((results) => {
+      console.log(results);
+      console.log(req.params.title);
+      // results.filter((result) => { return (result.teach.filter((skill) => { return (skill.title === req.body.title); }).length === 0); });
+      res.send(results);
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -294,5 +284,18 @@ export const getSkills = (req, res) => {
     res.send(result);
   }).catch((error) => {
     res.status(500).json({ error });
+  });
+};
+
+
+// testing
+export const addSkillRating = (req, res) => {
+  Skill.findById(req.params.id).then((result) => {
+    const rating = new Rating();
+    rating.score = 5;
+    result.ratings.push(rating);
+    res.send(result);
+  }).catch((error) => {
+    res.send({ msg: error.message });
   });
 };

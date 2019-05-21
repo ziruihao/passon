@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
+// import Skill from './skill_model';
 
 const UserSchema = new Schema({
   firstName: String,
@@ -62,5 +63,4 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
 };
 
 const UserModel = mongoose.model('User', UserSchema);
-
 export default UserModel;
