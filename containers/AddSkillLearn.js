@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   Text, View, Button, TextInput,
 } from 'react-native';
-import { createSkill } from '../actions';
+import { addLearn } from '../actions';
 
 class AddSkillLearn extends Component {
   constructor(props) {
@@ -11,29 +11,19 @@ class AddSkillLearn extends Component {
 
     this.state = {
       title: '',
+      errorTitle: false,
     };
   }
 
   add = () => { // Check that there are no bad or empty values that the user is attempting to post
     if (this.state.title === '') {
-      this.setState({ valid_entry: false });
+      this.setState({ errorTitle: true });
     } else {
-      this.props.createSkill({
+      this.setState({ errorTitle: false });
+      this.props.addLearn({
         title: this.state.title,
       });
       this.props.navigation.navigate('Profile');
-    }
-  };
-
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields.</Text>
-      );
     }
   };
 
@@ -45,8 +35,12 @@ class AddSkillLearn extends Component {
           placeholder="Skill"
           onChangeText={(text) => { this.setState({ title: text }); }}
         />
+        { this.state.errorTitle === true ? (
+          <Text>
+               Please enter skill title to proceed.
+          </Text>
+        ) : null }
         <View>
-          {this.renderResponse()}
           <Button onPress={() => { this.add(); }} title="Save" />
           <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel" />
         </View>
@@ -55,4 +49,4 @@ class AddSkillLearn extends Component {
   }
 }
 
-export default connect(null, { createSkill })(AddSkillLearn);
+export default connect(null, { addLearn })(AddSkillLearn);

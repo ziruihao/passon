@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   Text, View, Button, TextInput,
 } from 'react-native';
-import { createSkill } from '../actions';
+import { addTeach } from '../actions';
 
 class AddSkillTeach extends Component {
   constructor(props) {
@@ -14,34 +14,38 @@ class AddSkillTeach extends Component {
       years: '',
       bio: '',
       ratings: [],
+      errorTitle: false,
+      errorYears: false,
+      errorBio: false,
     };
   }
 
   add = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.title === ''
-      || this.state.years === ''
-      || this.state.bio === '') {
-      this.setState({ valid_entry: false });
+    if (this.state.title === '') {
+      this.setState({ errorTitle: true });
     } else {
-      this.props.createSkill({
+      this.setState({ errorTitle: false });
+    }
+    if (this.state.years === '') {
+      this.setState({ errorYears: true });
+    } else {
+      this.setState({ errorYears: false });
+    }
+    if (this.state.bio === '') {
+      this.setState({ errorBio: true });
+    } else {
+      this.setState({ errorBio: false });
+    }
+    if (this.state.title !== ''
+    && this.state.years !== ''
+    && this.state.bio !== '') {
+      this.props.addTeach({
         title: this.state.skill,
         years: this.state.years,
         bio: this.state.description,
         ratings: this.state.ratings,
       });
       this.props.navigation.navigate('Profile');
-    }
-  };
-
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields.</Text>
-      );
     }
   };
 
@@ -53,16 +57,30 @@ class AddSkillTeach extends Component {
           placeholder="Skill"
           onChangeText={(text) => { this.setState({ title: text }); }}
         />
+        { this.state.errorTitle === true ? (
+          <Text>
+               Please enter skill title to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Years of experience"
           onChangeText={(text) => { this.setState({ years: text }); }}
         />
+        { this.state.errorYears === true ? (
+          <Text>
+               Please enter years of experience to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Description of experience"
           onChangeText={(text) => { this.setState({ bio: text }); }}
         />
+        { this.state.errorBio === true ? (
+          <Text>
+               Please enter description of experience to proceed.
+          </Text>
+        ) : null }
         <View>
-          {this.renderResponse()}
           <Button onPress={() => { this.add(); }} title="Save" />
           <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel" />
         </View>
@@ -71,4 +89,4 @@ class AddSkillTeach extends Component {
   }
 }
 
-export default connect(null, { createSkill })(AddSkillTeach);
+export default connect(null, { addTeach })(AddSkillTeach);

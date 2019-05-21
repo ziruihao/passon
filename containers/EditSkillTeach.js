@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   Text, View, Button, TextInput,
 } from 'react-native';
-import { updateSkill, deleteSkill } from '../actions';
+import { updateTeach, deleteTeach } from '../actions';
 
 class EditSkillTeach extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class EditSkillTeach extends Component {
     || this.state.bio === '') {
       this.setState({ valid_entry: false });
     } else {
-      this.props.updateSkill({
+      this.props.updateTeach({
         title: this.state.title,
         years: this.state.years,
         bio: this.state.bio,
@@ -34,7 +34,7 @@ class EditSkillTeach extends Component {
   };
 
   delete = () => {
-    this.props.deleteSkill();
+    this.props.deleteTeach();
     this.props.navigation.navigate('Profile');
   };
 
@@ -76,4 +76,4 @@ class EditSkillTeach extends Component {
   }
 }
 
-export default connect(null, { updateSkill, deleteSkill })(EditSkillTeach);
+export default connect(null, { updateTeach, deleteTeach })(EditSkillTeach);

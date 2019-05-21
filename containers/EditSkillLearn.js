@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   Text, View, Button, TextInput,
 } from 'react-native';
-import { updateSkill, deleteSkill } from '../actions';
+import { updateLearn, deleteLearn } from '../actions';
 
 class EditSkillLearn extends Component {
   constructor(props) {
@@ -11,14 +11,16 @@ class EditSkillLearn extends Component {
 
     this.state = {
       title: '',
+      errorTitle: false,
     };
   }
 
   edit = () => { // Check that there are no bad or empty values that the user is attempting to post
     if (this.state.title === '') {
-      this.setState({ valid_entry: false });
+      this.setState({ errorTitle: true });
     } else {
-      this.props.updateSkill({
+      this.setState({ errorTitle: false });
+      this.props.updateLearn({
         title: this.state.title,
       });
       this.props.navigation.navigate('Profile');
@@ -26,20 +28,8 @@ class EditSkillLearn extends Component {
   };
 
   delete = () => {
-    this.props.deleteSkill();
+    this.props.deleteLearn();
     this.props.navigation.navigate('Profile');
-  };
-
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields.</Text>
-      );
-    }
   };
 
   render() {
@@ -50,8 +40,12 @@ class EditSkillLearn extends Component {
           placeholder="Skill"
           onChangeText={(text) => { this.setState({ title: text }); }}
         />
+        { this.state.errorTitle === true ? (
+          <Text>
+               Please enter skill title to proceed.
+          </Text>
+        ) : null }
         <View>
-          {this.renderResponse()}
           <Button onPress={() => { this.edit(); }} title="Save" />
           <Button onPress={() => { this.delete(); }} title="Delete" />
         </View>
@@ -60,4 +54,4 @@ class EditSkillLearn extends Component {
   }
 }
 
-export default connect(null, { updateSkill, deleteSkill })(EditSkillLearn);
+export default connect(null, { updateLearn, deleteLearn })(EditSkillLearn);
