@@ -17,22 +17,6 @@ class SignIn extends Component {
     };
   }
 
-  // typeEmail = (text) => {
-  //   if (text === '') {
-  //     this.setState({ email: text, errorEmail: true });
-  //   } else {
-  //     this.setState({ email: text, errorEmail: false });
-  //   }
-  // }
-
-  // typePassword = (text) => {
-  //   if (text === '') {
-  //     this.setState({ password: text, errorPassword: true });
-  //   } else {
-  //     this.setState({ password: text, errorPassword: false });
-  //   }
-  // }
-
   signIn = () => { // Check that there are no bad or empty values that the user is attempting to signin
     if (this.state.email === '') {
       this.setState({ errorEmail: true });
@@ -57,18 +41,6 @@ class SignIn extends Component {
     }
   };
 
-  // renderResponse = () => {
-  //   if (!this.state.valid_entry) {
-  //     return (
-  //       <Text>Field missing</Text>
-  //     );
-  //   } else {
-  //     return (
-  //       <Text>Please fill in missing fields.</Text>
-  //     );
-  //   }
-  // };
-
   render() {
     return (
       <View>
@@ -79,7 +51,7 @@ class SignIn extends Component {
         />
         { this.state.errorEmail === true ? (
           <Text>
-               * Please enter the text to proceed.
+               Please enter email to proceed.
           </Text>
         ) : null }
         <TextInput
@@ -88,11 +60,10 @@ class SignIn extends Component {
         />
         { this.state.errorPassword === true ? (
           <Text>
-               * Please enter the text to proceed.
+               Please enter password to proceed.
           </Text>
         ) : null }
         <View>
-          {/* {this.renderResponse()} */}
           <Button onPress={() => { this.signIn(); }} title="Sign In" />
           <Button onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." />
         </View>

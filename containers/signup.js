@@ -15,17 +15,45 @@ class SignUp extends Component {
       email: '',
       password: '',
       university: '',
+      errorFirstName: false,
+      errorLastName: false,
+      errorEmail: false,
+      errorPassword: false,
+      errorUniversity: false,
     };
   }
 
   signUp = () => { // Check that there are no bad or empty values that the user is attempting to signup
-    if (this.state.firstName === ''
-      || this.state.lastName === ''
-      || this.state.email === ''
-      || this.state.password === ''
-      || this.state.university === '') {
-      this.setState({ valid_entry: false });
+    if (this.state.firstName === '') {
+      this.setState({ errorFirstName: true });
     } else {
+      this.setState({ errorFirstName: false });
+    }
+    if (this.state.lastName === '') {
+      this.setState({ errorLastName: true });
+    } else {
+      this.setState({ errorLastName: false });
+    }
+    if (this.state.email === '') {
+      this.setState({ errorEmail: true });
+    } else {
+      this.setState({ errorEmail: false });
+    }
+    if (this.state.password === '') {
+      this.setState({ errorPassword: true });
+    } else {
+      this.setState({ errorPassword: false });
+    }
+    if (this.state.university === '') {
+      this.setState({ errorUniversity: true });
+    } else {
+      this.setState({ errorUniversity: false });
+    }
+    if (this.state.firstName !== ''
+    && this.state.lastName !== ''
+    && this.state.email !== ''
+    && this.state.password !== ''
+    && this.state.university !== '') {
       this.props.signupUser({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
@@ -39,18 +67,6 @@ class SignUp extends Component {
     }
   };
 
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields</Text>
-      );
-    }
-  };
-
   render() {
     return (
       <View>
@@ -59,24 +75,48 @@ class SignUp extends Component {
           placeholder="First Name"
           onChangeText={(text) => { this.setState({ firstName: text }); }}
         />
+        { this.state.errorFirstName === true ? (
+          <Text>
+              Please enter first name to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Last Name"
           onChangeText={(text) => { this.setState({ lastName: text }); }}
         />
+        { this.state.errorLastName === true ? (
+          <Text>
+               Please enter last name to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Email"
           onChangeText={(text) => { this.setState({ email: text }); }}
         />
+        { this.state.errorEmail === true ? (
+          <Text>
+                Please enter email to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Password"
           onChangeText={(text) => { this.setState({ password: text }); }}
         />
+        { this.state.errorPassword === true ? (
+          <Text>
+              Please enter password to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="University"
           onChangeText={(text) => { this.setState({ university: text }); }}
         />
+        { this.state.errorUniversity === true ? (
+          <Text>
+              Please enter university to proceed.
+          </Text>
+        ) : null }
         <View>
-          {this.renderResponse()}
           <Button onPress={() => { this.signUp(); }} title="Sign Up" />
           <Button onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." />
         </View>
