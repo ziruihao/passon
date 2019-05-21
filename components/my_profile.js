@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -8,21 +9,9 @@ import {
   ListView,
   TouchableHighlight,
 } from 'react-native';
+import { fetchSelf } from '../actions/index';
 
-const bg = require('../assets/gradient-background.svg');
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#4000F4',
-  },
-  mb: {
-    marginBottom: 17,
-    width: 297,
-    height: 170,
-  },
-});
-
-class Profile extends React.Component {
+class My_Profile extends React.Component {
   static navigationOptions = {
     title: 'Home',
     headerStyle: {
@@ -31,13 +20,31 @@ class Profile extends React.Component {
     headerTintColor: 'black',
   }
 
+  componentDidMount() {
+    console.log('hi');
+    this.props.fetchSelf();
+    console.log(this.props.Self);
+  }
+
   render() {
-    return (
-      <View>
-        <Text>My Profile</Text>
-      </View>
-    );
+    if (this.props.Self === null) {
+      return (<Text>Loading</Text>);
+    } else {
+      console.log(`User in myprofile render: ${this.props.Self}`);
+      return (
+        <View>
+          <Text>{this.props.Self.email}</Text>
+          <Text>{this.props.Self.firstName}</Text>
+        </View>
+      );
+    }
   }
 }
 
-export default Profile;
+function mapReduxStateToProps(reduxState) {
+  return {
+    Self: reduxState.user.current,
+  };
+}
+
+export default connect(mapReduxStateToProps, { fetchSelf })(My_Profile);

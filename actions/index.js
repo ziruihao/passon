@@ -4,15 +4,19 @@ import axios from 'axios/index';
 // From assignment page
 export const ActionTypes = {
   FETCH_SKILLS: 'FETCH_SKILLS',
+  FETCH_SKILL: 'FETCH_SKILL',
+  AUTH_USER: 'AUTH_USER',
+  DEAUTH_USER: 'DEAUTH_USER',
+  UPDATE_SKILL: 'UPDATE_SKILL',
+  FETCH_USER: 'FETCH_USER',
+  FETCH_SELF: 'FETCH_SELF',
+
+  // Old actions
+  AUTH_ERROR: 'AUTH_ERROR',
   FETCH_POST: 'FETCH_POST',
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
   DELETE_POST: 'DELETE_POST',
-  AUTH_USER: 'AUTH_USER',
-  DEAUTH_USER: 'DEAUTH_USER',
-  AUTH_ERROR: 'AUTH_ERROR',
-  FETCH_SKILL: 'FETCH_SKILL',
-  UPDATE_SKILL: 'UPDATE_SKILL',
 };
 
 // From assignment page
@@ -44,6 +48,7 @@ export function fetchSkill(id) {
       });
   };
 }
+
 
 export function createSkill(skill) {
   return (dispatch) => {
@@ -84,12 +89,27 @@ export function deleteSkill(id) {
   };
 }
 
-export function fetchUser() {
+export function fetchUser(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/users`)
+    axios.get(`${ROOT_URL}/users/${id}`)
+      .then((response) => {
+        console.log('fetch user');
+        console.log(response.data.message);
+        dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function fetchSelf() {
+  return (dispatch) => {
+    console.log('fetch self');
+    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: localStorage.getItem('token') } })
       .then((response) => {
         console.log(response.data.message);
-        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
