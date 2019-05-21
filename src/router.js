@@ -8,6 +8,13 @@ router.get('/', (req, res) => {
   res.json({ message: 'welcome to passOn!' });
 });
 
+// SIGN IN / OUT ROUTES
+
+router.post('/signin', requireSignin, User.signin);
+router.post('/signup', User.signup);
+
+// USER ROUTERS
+
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
   .get(requireAuth, User.getUser)
@@ -21,7 +28,30 @@ router.route('/users')
   .post(User.createUser)
   .get(User.getUsers);
 
-router.post('/signin', requireSignin, User.signin);
-router.post('/signup', User.signup);
+// SKILL (TO LEARN) ROUTERS
+
+router.route('/skills/:id/delete')
+  .post(requireAuth, User.delSkill);
+
+router.route('/skills/:id')
+  .post(requireAuth, User.updateSkill)
+  .get(User.getSkill);
+
+router.route('/skills')
+  .get(User.getSkills);
+
+router.route('/addSkill')
+  .post(requireAuth, User.addSkill);
+
+// SKILL (TO TEACH) ROUTERS
+
+router.route('/teach/:id/delete')
+  .post(requireAuth, User.delTeach);
+
+router.route('/teach/:id')
+  .post(requireAuth, User.updateTeach);
+
+router.route('/addTeach')
+  .post(requireAuth, User.addTeach);
 
 export default router;
