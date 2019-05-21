@@ -1,5 +1,5 @@
 import axios from 'axios/index';
-// import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
@@ -13,6 +13,7 @@ export const ActionTypes = {
   AUTH_ERROR: 'AUTH_ERROR',
   FETCH_SKILL: 'FETCH_SKILL',
   UPDATE_SKILL: 'UPDATE_SKILL',
+  GET_SELF: 'GET_SELF',
 };
 
 // From assignment page
@@ -161,10 +162,9 @@ export function signinUser({ email, password }) {
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
-        // AsyncStorage.setItem('token', response.data.token);
-        // history.push('/');
+        await AsyncStorage.setItem('token', response.data.token);
       })
       .catch((error) => {
         dispatch(authError(`Sign In Failed: ${error.data}`));
@@ -188,8 +188,9 @@ export function signupUser({
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
     })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        await AsyncStorage.setItem('token', response.data.token);
         // history.push('/');
       })
       .catch((error) => {
@@ -201,21 +202,22 @@ export function signupUser({
 // deletes token from localstorage
 // and deauths
 export function signoutUser(history) {
-  return (dispatch) => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+  return async (dispatch) => {
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
     history.push('/');
   };
 }
 
-
+// TODO
 export function fetchChats() {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/users`)
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(response.data.message);
-        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        console.log(`getChats response: ${JSON.stringify(response.data)}`);
+        dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -223,10 +225,10 @@ export function fetchChats() {
   };
 }
 
-export function createChat(id, chat) {
-  return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/messaging/${id}`, chat, { headers: { authorization: localStorage.getItem('token') } })
+export function createChat(chat) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } }) // authorization: localStorage.getItem('token') } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
