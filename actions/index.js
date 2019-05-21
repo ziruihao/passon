@@ -226,8 +226,9 @@ export function fetchChats() {
   };
 }
 
-export function createChat(id, chat) {
+export function createChat(chat) {
   return (dispatch) => {
+    console.log(`in actions: chat is${chat}`);
     // TODO ******** localStorage token commented out for now
     axios.post(`${ROOT_URL}/messaging`, chat, { headers: { } }) // authorization: localStorage.getItem('token') } })
       .then((response) => {

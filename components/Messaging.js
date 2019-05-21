@@ -35,7 +35,7 @@ class Messaging extends Component {
           onPress={() => {
             const chat = {
               userId: this.state.otherUser,
-              messages: {},
+              messages: [],
               user: 'temp user id', // this will be deleted in the future
             };
             this.props.create_chat(chat);
