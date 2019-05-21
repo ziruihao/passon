@@ -38,17 +38,21 @@ class Profile extends React.Component {
 
   render() {
     console.log(`User in render: ${this.props.User}`);
-    return (
-      <View>
-        <Text>{this.props.User}</Text>
-        {/* <Text>{this.props.User.lastname}</Text>
-        <Text>{this.props.User.email}</Text>
-        <Text>{this.props.User.teach}</Text>
-        <Text>{this.props.User.learn}</Text>
-        <Text>{this.props.User.rating}</Text>
-        <Text>{this.props.User.univerity}</Text> */}
-      </View>
-    );
+    if (this.props.User === null) {
+      return (<Text>Loading</Text>);
+    } else {
+      return (
+        <View>
+          <Text>{this.props.User}</Text>
+          {/* <Text>{this.props.User.lastname}</Text>
+          <Text>{this.props.User.email}</Text>
+          <Text>{this.props.User.teach}</Text>
+          <Text>{this.props.User.learn}</Text>
+          <Text>{this.props.User.rating}</Text>
+          <Text>{this.props.User.univerity}</Text> */}
+        </View>
+      );
+    }
   }
 }
 

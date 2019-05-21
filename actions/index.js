@@ -9,6 +9,7 @@ export const ActionTypes = {
   DEAUTH_USER: 'DEAUTH_USER',
   UPDATE_SKILL: 'UPDATE_SKILL',
   FETCH_USER: 'FETCH_USER',
+  FETCH_SELF: 'FETCH_SELF',
 
   // Old actions
   AUTH_ERROR: 'AUTH_ERROR',
@@ -103,11 +104,12 @@ export function fetchUser(id) {
 }
 
 export function fetchSelf() {
-  return (dispatch) => {
+  return async (dispatch) => {
     console.log('fetch self');
-    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(response.data.message);
+        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {

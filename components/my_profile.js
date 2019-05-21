@@ -21,7 +21,6 @@ class My_Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log('hi');
     this.props.fetchSelf();
     console.log(this.props.Self);
   }
@@ -30,7 +29,6 @@ class My_Profile extends React.Component {
     if (this.props.Self === null) {
       return (<Text>Loading</Text>);
     } else {
-      console.log(`User in myprofile render: ${this.props.Self}`);
       return (
         <View>
           <Text>{this.props.Self.email}</Text>
