@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button,
+  StyleSheet, View, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/index';
+import Learns from './learns';
+import Teaches from './teaches';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -34,21 +37,23 @@ class Profile extends Component {
         <Text>
           Teach:
         </Text>
-        <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
+        {/* <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
           title="Add Skill"
         />
         <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
           title="Edit Skill"
-        />
+        /> */}
+        <View>{Teaches}</View>
         <Text>
           Learn:
         </Text>
-        <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
+        <View>{Learns}</View>
+        {/* <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
           title="Add Skill"
         />
         <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
           title="Edit Skill"
-        />
+        /> */}
       </View>
     );
   }
