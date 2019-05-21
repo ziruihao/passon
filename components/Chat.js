@@ -54,10 +54,10 @@ class Chat extends React.Component {
       console.log(`messages sent: ${JSON.stringify(messages)}`);
       const message = {
         body: {
-          text: messages.text,
-          createdAt: messages.createdAt,
-          userId: messages.user,
-          chatId: 445566,
+          text: messages[0].text,
+          createdAt: messages[0].createdAt,
+          userId: messages[0].user,
+          chatId: messages[0]._id,
         },
       };
       this.setState(previousState => ({

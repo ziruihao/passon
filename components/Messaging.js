@@ -3,7 +3,7 @@
 /* eslint-disable no-use-before-define */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Image, Button, TextInput,
+  StyleSheet, View, Button, // FlatList,
 } from 'react-native';
 
 class Messaging extends Component {
@@ -12,36 +12,31 @@ class Messaging extends Component {
 
     this.state = {
       // chats: 'various chats',
+      //    data: [],
     };
   }
-
-  onChangeText = message => this.setState({ message });
 
   render() {
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={{ uri: 'https://facebook.github.io/react/logo-og.png' }}
-        />
+
+
         <Button title="Go to Chat"
           onPress={() => this.props.navigation.navigate('Chat')}
         >
           Go to Chat
         </Button>
-        <TextInput
-          editable
-          // style={styles.nameInput}
-          placeHolder="text field"
-          value={this.state.message}
-          onChangeText={this.onChangeText}
-        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'rgb(240,240,240)',
+  },
   nameInput: { // 3. <- Add a style for the input
     height: 24 * 2,
     margin: 24,
