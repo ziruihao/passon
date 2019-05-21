@@ -1,5 +1,6 @@
 import Message from '../models/message_model';
 import Chat from '../models/chat_model';
+import User from '../models/user_model';
 // import User from '../models/user_model';
 
 export const saveMessage = (req, res) => {
@@ -23,14 +24,16 @@ export const saveMessage = (req, res) => {
 
 export const createChat = (req, res) => {
   const chat = new Chat();
-
-  chat.userId = [req.body.userId, req.body.user];
+  const user1 = new User(); // fetching from req.body.userId
+  const user2 = new User(); // fetching from req.user
+  chat.userId = [user1, user2];
   // first is the other user, second is self
   // second should really be req.user since it's in token in the header
   // right now the react-version local storage is not figured out so
   // we're arbitrarily passing in a user id for self
   chat.messages = req.body.messages;
-  console.log(`chat: ${JSON.stringify(chat)}`);
+  console.log(`req: ${JSON.stringify(req.body)}`);
+  console.log(`chat: ${chat}`);
 
   chat.save()
     .then(() => {
