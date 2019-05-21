@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
-// import Skill from '../models/skill_model';
+import Skill from '../models/skill_model';
 
 dotenv.config({ silent: true });
 
@@ -76,7 +76,7 @@ export const getUsers = (req, res) => { // TODO: return based on searched skill
     .then((results) => {
       const out = [];
       results.forEach((result) => {
- const removePersonalInfo = Object.assign({}, result);
+        const removePersonalInfo = Object.assign({}, result);
         removePersonalInfo.password = null;
         removePersonalInfo.email = null;
         out.push(removePersonalInfo);
@@ -101,6 +101,18 @@ export const getUser = (req, res) => {
       res.status(404).json({ error });
     });
 };
+
+export const getSelf = (req, res) => {
+  console.log(`in get self: req.user is ${req.user}`);
+  User.find({ email: req.user })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      console.log(`get self failed: ${error}`);
+    });
+};
+
 
 // Deletes an entire user
 export const deleteUser = (req, res) => {

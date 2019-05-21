@@ -1,5 +1,5 @@
 // lets import some stuff
-import  passport from 'passport/lib';
+import passport from 'passport/lib';
 import LocalStrategy from 'passport-local/lib';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt/lib';
 

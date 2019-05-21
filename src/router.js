@@ -16,44 +16,47 @@ router.post('/signup', User.signup);
 
 // USER ROUTERS
 
-router.route('/users/:id')
-  .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-  .get(requireAuth, User.getUser)
-  .delete(requireAuth, User.deleteUser);
+// router.route('/users/:id')
+//   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
+//   .get(requireAuth, User.getUser)
+//   .delete(requireAuth, User.deleteUser);
 
-router.route('users/:id/skills')
-  .post(requireAuth, User.addSkill)
-  .get(User.getSkills);
+router.route('/users/self')
+  .get(User.getSelf);
 
-router.route('/users')
-  .post(User.createUser)
-  .get(User.getUsers);
+// router.route('users/:id/skills')
+//   .post(requireAuth, User.addSkill)
+//   .get(User.getSkills);
 
-// SKILL (TO LEARN) ROUTERS
+// router.route('/users')
+//   .post(User.createUser)
+//   .get(User.getUsers);
 
-router.route('/skills/:id/delete')
-  .post(requireAuth, User.delSkill);
+// // SKILL (TO LEARN) ROUTERS
 
-router.route('/skills/:id')
-  .post(requireAuth, User.updateSkill)
-  .get(User.getSkill);
+// router.route('/skills/:id/delete')
+//   .post(requireAuth, User.delSkill);
 
-router.route('/skills')
-  .get(User.getSkills);
+// router.route('/skills/:id')
+//   .post(requireAuth, User.updateSkill)
+//   .get(User.getSkill);
 
-router.route('/addSkill')
-  .post(requireAuth, User.addSkill);
+// router.route('/skills')
+//   .get(User.getSkills);
 
-// SKILL (TO TEACH) ROUTERS
+// router.route('/addSkill')
+//   .post(requireAuth, User.addSkill);
 
-router.route('/teach/:id/delete')
-  .post(requireAuth, User.delTeach);
+// // SKILL (TO TEACH) ROUTERS
 
-router.route('/teach/:id')
-  .post(requireAuth, User.updateTeach);
+// router.route('/teach/:id/delete')
+//   .post(requireAuth, User.delTeach);
 
-router.route('/addTeach')
-  .post(requireAuth, User.addTeach);
+// router.route('/teach/:id')
+//   .post(requireAuth, User.updateTeach);
+
+// router.route('/addTeach')
+//   .post(requireAuth, User.addTeach);
 
 router.route('/messaging') // id is userID
   .post(Messaging.createChat)
