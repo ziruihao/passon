@@ -88,10 +88,14 @@ export const getUsers = (req, res) => { // TODO: return based on searched skill;
 export const getUser = (req, res) => {
   User.findById(req.params.id).populate('learn').populate('teach')
     .then((result) => {
-      // const removePersonalInfo = Object.assign({}, result);
-      // removePersonalInfo.password = null;
-      // removePersonalInfo.email = null;
-      res.json(result);
+      const removePersonalInfo = Object.assign({}, result);
+
+      console.log(removePersonalInfo._doc);
+
+      delete removePersonalInfo._doc.password;
+      delete removePersonalInfo._doc.email;
+
+      res.json(removePersonalInfo._doc);
     })
     .catch((error) => {
       res.status(404).json({ error });

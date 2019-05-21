@@ -22,13 +22,13 @@ router.route('/users/:id')
   .get(User.getUser)
   .delete(requireAuth, User.deleteUser);
 
-router.route('users/:id/learn')
+router.route('/users/:id/learn')
   .post(requireAuth, User.addLearn)
   .post(requireAuth, User.updateLearn)
   .delete(requireAuth, User.deleteLearn)
   // .get(User.getLearns);
 
-router.route('users/:id/teach')
+router.route('/users/:id/teach')
   .post(requireAuth, User.addTeach)
   .post(requireAuth, User.updateTeach)
   .delete(requireAuth, User.deleteTeach)
@@ -42,7 +42,7 @@ router.route('/users')
  * SKILL ROUTES
  */
 
-router.route('skills')
+router.route('/skills')
   .get(User.getSkills);
 
 router.route('/skills/:title')
