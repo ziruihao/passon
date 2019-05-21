@@ -22,13 +22,13 @@ router.route('/users/:id')
   .get(requireAuth, User.getUser)
   .delete(requireAuth, User.deleteUser);
 
-router.route('users/:id/learn')
+router.route('/learn')
   .post(requireAuth, User.addLearn)
   .post(requireAuth, User.updateLearn)
   .delete(requireAuth, User.deleteLearn)
   .get(User.getLearns);
 
-router.route('users/:id/teach')
+router.route('/teach')
   .post(requireAuth, User.addTeach)
   .post(requireAuth, User.updateTeach)
   .delete(requireAuth, User.deleteTeach)

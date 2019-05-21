@@ -135,7 +135,7 @@ export const updateUser = (req, res) => {
  * @param {*} res
  */
 export const addLearn = (req, res) => {
-  User.findById(req.body.id).populate('teach').populate('learn')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const skill = new Skill();
       skill.title = req.body.skill.title;
@@ -162,7 +162,7 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
-  User.findById(req.body.id).populate('teach').populate('learn')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const skill = new Skill();
       skill.title = req.body.skill.title;
@@ -244,11 +244,21 @@ export const updateTeach = (req, res) => {
     });
 };
 
+export const getLearns = () => {
+
+};
+
+export const getTeaches = () => {
+
+};
+
 // Get information on a specific skill (the users associated with it)
 export const getSkill = (req, res) => {
   User.find({}).populate('teach')
     .then((results) => {
-      results.filter((result) => { return (result.teach.filter((skill) => { return (skill.title === req.body.title); }).length === 0); });
+      console.log(results);
+      console.log(req.params.title);
+      // results.filter((result) => { return (result.teach.filter((skill) => { return (skill.title === req.body.title); }).length === 0); });
       res.send(results);
     })
     .catch((error) => {
