@@ -62,7 +62,7 @@ class AddSkill extends Component {
         <View>
           {this.renderResponse()}
           <Button onPress={() => { this.add(); }} title="Save" />
-          <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel." />
+          <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel" />
         </View>
       </View>
     );

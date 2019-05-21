@@ -5,10 +5,11 @@ import {
 } from 'react-navigation';
 // import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-import Profile from '../containers/Profile';
+// import Profile from '../containers/Profile';
 import MessagingScreen from '../components/Messaging';
 import Home from '../components/Home';
 import ChatScreen from '../components/Chat';
+import ProfileNav from './profile_nav';
 
 const Messaging = createStackNavigator({
   Overview: { screen: MessagingScreen },
@@ -44,7 +45,7 @@ const MainTabBar = createBottomTabNavigator(
       }),
     },
     Profile: {
-      screen: Profile,
+      screen: ProfileNav,
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: 'Profile',
         tabBarIcon: ({ focused }) => (

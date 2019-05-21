@@ -16,20 +16,20 @@ class AddSkill extends Component {
     };
   }
 
-    edit = () => { // Check that there are no bad or empty values that the user is attempting to post
-      if (this.state.skill === ''
-      || this.state.years === ''
-      || this.state.description === '') {
-        this.setState({ valid_entry: false });
-      } else {
-        this.props.updateSkill({
-          skill: this.state.skill,
-          years: this.state.years,
-          description: this.state.description,
-        });
-        this.props.navigation.navigate('Profile');
-      }
-    };
+  edit = () => { // Check that there are no bad or empty values that the user is attempting to post
+    if (this.state.skill === ''
+    || this.state.years === ''
+    || this.state.description === '') {
+      this.setState({ valid_entry: false });
+    } else {
+      this.props.updateSkill({
+        skill: this.state.skill,
+        years: this.state.years,
+        description: this.state.description,
+      });
+      this.props.navigation.navigate('Profile');
+    }
+  };
 
   delete = () => {
     this.props.deleteSkill();

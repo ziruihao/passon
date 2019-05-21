@@ -34,14 +34,12 @@ class Profile extends Component {
         <Text>
           Click the button below to update the text.
         </Text>
-        <Button
-          style={{ fontSize: 20, color: 'green' }}
-          styleDisabled={{ color: 'red' }}
-          onPress={() => this.props.fetchUser()}
-          title="Press Me"
-        >
-          Press Me
-        </Button>
+        <Button onPress={() => this.props.navigation.navigate('AddSkill')}
+          title="Add Skill"
+        />
+        <Button onPress={() => this.props.navigation.navigate('EditSkill')}
+          title="Edit Skill"
+        />
       </View>
     );
   }
