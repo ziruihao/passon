@@ -139,6 +139,8 @@ export const updateUser = (req, res) => {
 export const addSkill = (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
+      console.log(result.learn);
+
       result.learn.push({
         title: req.body.title,
         years: req.body.years,
