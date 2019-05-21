@@ -19,6 +19,17 @@ class Messaging extends Component {
     };
   }
 
+  /**
+   * NOTE_FOR_SELF
+   * TODOs:
+   * 1. react-native version localStorage in the createChat process (req.user is email)
+   * 2. edit createChat in message_controller in backend (find users based on email,
+   * as opposed to creating new users to be stored into the chat)
+   * 3. make sure DB has some proper users with proper emails to be found
+   * 4. fetch Chats based on this user's id in all chats (Chat.foreach...)
+   * 5. create tabs based on the fetched chats
+   */
+
   render() {
     return (
       <View style={styles.container}>
@@ -34,7 +45,7 @@ class Messaging extends Component {
         <Button title="create Chat"
           onPress={() => {
             const chat = {
-              userId: this.state.otherUser,
+              email: this.state.otherUser, // email of the target message user
               messages: [],
               user: 'temp user id', // this will be deleted in the future
             };
