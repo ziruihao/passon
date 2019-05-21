@@ -39,7 +39,7 @@ router.route('/users')
   .get(User.getUsers);
 
 router.route('/users/self')
-  .get(User.getSelf);
+  .get(requireAuth, User.getSelf);
 
 
 /**
@@ -47,8 +47,8 @@ router.route('/users/self')
  */
 
 router.route('/messaging') // id is userID
-  .post(Messaging.createChat)
-  .get(Messaging.getChats);
+  .post(requireAuth, Messaging.createChat)
+  .get(requireAuth, Messaging.getChats);
 
 
 /**

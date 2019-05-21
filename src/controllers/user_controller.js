@@ -100,13 +100,14 @@ export const getUser = (req, res) => {
 
 export const getSelf = (req, res) => {
   console.log(`in get self: req.user is ${req.user}`);
-  User.find({ email: req.user })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      console.log(`get self failed: ${error}`);
-    });
+  res.send(req.user);
+  // User.find({ email: req.user })
+  //   .then((result) => {
+  //     res.send(result);
+  //   })
+  //   .catch((error) => {
+  //     console.log(`get self failed: ${error}`);
+  //   });
 };
 
 

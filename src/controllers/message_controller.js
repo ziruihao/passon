@@ -23,26 +23,17 @@ export const saveMessage = (req, res) => {
 //
 
 export const createChat = (req, res) => {
-  const chat = new Chat(); let user1; let user2;
-  User.find({ email: req.body.email }).then((result) => {
+  const chat = new Chat(); let user1 = 'default';
+  User.find({ email: req.body.email.toLowerCase() }).then((result) => {
     user1 = result;
     console.log(`user1: ${JSON.stringify(result)}`);
   });
-  User.find({ email: req.user }).then((result) => {
-    user2 = result;
-    console.log(`user2 req.user: ${req.user}`);
-    console.log(`user2: ${JSON.stringify(result)}`);
-  });
-  // const user1 = new User(); // fetching from req.body.email (of the other user)
-  // const user2 = new User(); // fetching from req.user (which is email)
-  chat.userId = [user1, user2];
+  chat.userId = [user1, req.user];
   // first is the other user, second is self
   // second should really be req.user since it's in token in the header
   // right now the react-version local storage is not figured out so
   // we're arbitrarily passing in a user id for self
   chat.messages = req.body.messages;
-  console.log(`req: ${JSON.stringify(req.body)}`);
-  console.log(`chat: ${chat}`);
 
   chat.save()
     .then(() => {
@@ -57,7 +48,7 @@ export const createChat = (req, res) => {
 
 export const getChats = (req, res) => {
   // // res.send('posts should be returned');
-  // console.log('in getPosts function');
+  console.log('in getChats function');
   Chat.find({})
     .then((result) => {
       res.send(result);
