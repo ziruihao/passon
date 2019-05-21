@@ -228,8 +228,8 @@ export function fetchChats() {
 
 export function createChat(id, chat) {
   return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/messaging/${id}`, chat, { headers: { authorization: localStorage.getItem('token') } })
+    // TODO ******** localStorage token commented out for now
+    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { } }) // authorization: localStorage.getItem('token') } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
