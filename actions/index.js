@@ -214,11 +214,10 @@ export function signoutUser(history) {
 export function fetchChats() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
-    console.log(`token: ${value}`);
-    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        dispatch({ type: ActionTypes.GET_SELF, payload: response.data });
+        console.log(`getChats response: ${JSON.stringify(response.data)}`);
+        dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -228,7 +227,6 @@ export function fetchChats() {
 
 export function createChat(chat) {
   return async (dispatch) => {
-    console.log(`in actions: chat is${chat}`);
     const value = await AsyncStorage.getItem('token');
     axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } }) // authorization: localStorage.getItem('token') } })
       .then((response) => {
