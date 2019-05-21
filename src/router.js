@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as User from './controllers/user_controller';
 import { requireAuth, requireSignin } from './services/passport';
+import * as Messaging from './controllers/message_controller';
 
 const router = Router();
 
@@ -50,5 +51,9 @@ router.route('/teach/:id')
 
 router.route('/addTeach')
   .post(requireAuth, User.addTeach);
+
+router.route('/messaging') // id is userID
+  .post(Messaging.createChat)
+  .get(Messaging.getChats);
 
 export default router;

@@ -1,5 +1,6 @@
 import Message from '../models/message_model';
-// import Chat from '../models/chat_model';
+import Chat from '../models/chat_model';
+// import User from '../models/user_model';
 
 export const saveMessage = (req, res) => {
   const msg = new Message();
@@ -20,17 +21,38 @@ export const saveMessage = (req, res) => {
 
 //
 
-export const getPosts = (req, res) => {
+export const createChat = (req, res) => {
+  const chat = new Chat();
+
+  chat.userId = [req.body.userId, req.body.user];
+  // first is the other user, second is self
+  // second should really be req.user since it's in token in the header
+  // right now the react-version local storage is not figured out so
+  // we're arbitrarily passing in a user id for self
+  chat.messages = req.body.messages;
+  console.log(`chat: ${JSON.stringify(chat)}`);
+
+  chat.save()
+    .then(() => {
+      res.json({ message: 'Chat created!' });
+      console.log('chat created! ');
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+      console.log('chat create failed!');
+    });
+};
+
+export const getChats = (req, res) => {
   // // res.send('posts should be returned');
   // console.log('in getPosts function');
-  // Post.find({})
-  //   .then((result) => {
-  //     // console.log('result is ', result)
-  //     res.send(result);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  Chat.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 //
