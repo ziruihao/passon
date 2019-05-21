@@ -1,5 +1,5 @@
 import axios from 'axios/index';
-// import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
@@ -164,10 +164,9 @@ export function signinUser({ email, password }) {
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
-        // AsyncStorage.setItem('token', response.data.token);
-        // history.push('/');
+        await AsyncStorage.setItem('token', response.data.token);
       })
       .catch((error) => {
         dispatch(authError(`Sign In Failed: ${error.data}`));
@@ -191,8 +190,9 @@ export function signupUser({
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
     })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        await AsyncStorage.setItem('token', response.data.token);
         // history.push('/');
       })
       .catch((error) => {
@@ -204,9 +204,9 @@ export function signupUser({
 // deletes token from localstorage
 // and deauths
 export function signoutUser(history) {
-  return (dispatch) => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+  return async (dispatch) => {
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
     history.push('/');
   };
@@ -227,10 +227,10 @@ export function fetchChats() {
 }
 
 export function createChat(chat) {
-  return (dispatch) => {
+  return async (dispatch) => {
     console.log(`in actions: chat is${chat}`);
-    // TODO ******** localStorage token commented out for now
-    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { } }) // authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } }) // authorization: localStorage.getItem('token') } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
