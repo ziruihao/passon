@@ -1,5 +1,5 @@
 import axios from 'axios/index';
-// import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
@@ -24,7 +24,7 @@ const ROOT_URL = 'http://localhost:9090/api';
 
 export function fetchLearn() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/learn`).then((response) => {
+    axios.get(`${ROOT_URL}/users/learn`).then((response) => {
       dispatch({ type: ActionTypes.FETCH_LEARN, payload: response.data });
     }).catch((error) => {
       console.log(error);
@@ -34,7 +34,7 @@ export function fetchLearn() {
 
 export function fetchTeach() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/teach`).then((response) => {
+    axios.get(`${ROOT_URL}/users/teach`).then((response) => {
       dispatch({ type: ActionTypes.FETCH_TEACH, payload: response.data });
     }).catch((error) => {
       console.log(error);
@@ -44,7 +44,7 @@ export function fetchTeach() {
 
 export function fetchLearns() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/learn`).then((response) => {
+    axios.get(`${ROOT_URL}/users/learn`).then((response) => {
       dispatch({ type: ActionTypes.FETCH_LEARNS, payload: response.data });
     }).catch((error) => {
       console.log(error);
@@ -54,7 +54,7 @@ export function fetchLearns() {
 
 export function fetchTeaches() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/teach`).then((response) => {
+    axios.get(`${ROOT_URL}/users/teach`).then((response) => {
       dispatch({ type: ActionTypes.FETCH_TEACHES, payload: response.data });
     }).catch((error) => {
       console.log(error);
@@ -63,8 +63,9 @@ export function fetchTeaches() {
 }
 
 export function addLearn(skill) {
-  return (dispatch) => {
-    axios.post(`${ROOT_URL}/learn`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/users/learn`, skill, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {
@@ -74,8 +75,9 @@ export function addLearn(skill) {
 }
 
 export function addTeach(skill) {
-  return (dispatch) => {
-    axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/users/teach`, skill, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {
@@ -85,8 +87,9 @@ export function addTeach(skill) {
 }
 
 export function updateLearn(id, skill) {
-  return (dispatch) => {
-    axios.put(`${ROOT_URL}/${id}/learn`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/users/${id}/learn`, skill, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {
@@ -96,8 +99,9 @@ export function updateLearn(id, skill) {
 }
 
 export function updateTeach(id, skill) {
-  return (dispatch) => {
-    axios.put(`${ROOT_URL}/${id}/teach`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/users/${id}/teach`, skill, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {
@@ -107,8 +111,9 @@ export function updateTeach(id, skill) {
 }
 
 export function deleteLearn(id) {
-  return (dispatch) => {
-    axios.delete(`${ROOT_URL}/${id}/learn`, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/users/${id}/learn`, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {
@@ -118,8 +123,9 @@ export function deleteLearn(id) {
 }
 
 export function deleteTeach(id) {
-  return (dispatch) => {
-    axios.delete(`${ROOT_URL}/${id}/teach`, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/users/${id}/teach`, { headers: { authorization: value } }).then((response) => {
       console.log(response);
     })
       .catch((error) => {

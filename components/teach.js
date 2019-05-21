@@ -12,7 +12,6 @@ import {
   Left,
   Body,
   Right,
-  Button,
 } from 'native-base';
 
 const styles = StyleSheet.create({
@@ -46,19 +45,6 @@ const Teach = (props) => {
           </CardItem>
         </Card>
       </Content>
-
-      <CardItem style={{ paddingVertical: 0 }}>
-        <Left>
-          <Button onPress={() => props.navigation.navigate('AddSkillTeach')}
-            title="Add Skill"
-          />
-        </Left>
-        <Body>
-          <Button onPress={() => props.navigation.navigate('EditSkillTeach')}
-            title="Edit Skill"
-          />
-        </Body>
-      </CardItem>
     </Container>
   );
 };

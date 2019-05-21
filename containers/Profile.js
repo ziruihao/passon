@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text,
+  StyleSheet, View, Text, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/index';
@@ -37,23 +37,23 @@ class Profile extends Component {
         <Text>
           Teach:
         </Text>
-        {/* <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
+        <View><Teaches /></View>
+        <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
           title="Add Skill"
         />
         <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
           title="Edit Skill"
-        /> */}
-        <View>{Teaches}</View>
+        />
         <Text>
           Learn:
         </Text>
-        <View>{Learns}</View>
-        {/* <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
+        <View><Learns /></View>
+        <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
           title="Add Skill"
         />
         <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
           title="Edit Skill"
-        /> */}
+        />
       </View>
     );
   }
