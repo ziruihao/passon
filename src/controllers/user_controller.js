@@ -193,12 +193,11 @@ export const deleteLearn = (req, res) => {
   User.findById(req.user.id).populate('learn')
     .then((result) => {
       result.learn.forEach((element, index, object) => {
-        if (element.title === req.body.title) {
+        if (element.title === req.body.skill.title) {
           object.splice(index, 1);
         }
       });
       result.save().then((response) => {
-        console.log(response);
         res.json(response);
       }).catch((error) => {
         res.status(500).json({ msg: error.message });
@@ -233,19 +232,16 @@ export const deleteTeach = (req, res) => {
 export const updateLearn = (req, res) => {
   User.findById(req.user.id).populate('learn')
     .then((result) => {
-      result.learn.forEach((element, index, object) => {
-        if (element.title === req.body.skill.title) {
-          object.splice(index, 1);
+      console.log(result);
+
+      result.learn.forEach((element) => {
+        if (element.title === req.params.title) {
+          element.description = req.params.description;
         }
-      });
-      result.save().then((response) => {
-        res.json(response);
-      }).catch((error) => {
-        res.status(500).json({ msg: error.message });
       });
     })
     .catch((error) => {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ error });
     });
 };
 
