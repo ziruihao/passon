@@ -19,20 +19,20 @@ router.post('/signup', User.signup);
 
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-  .get(requireAuth, User.getUser)
+  .get(User.getUser)
   .delete(requireAuth, User.deleteUser);
 
 router.route('users/:id/learn')
   .post(requireAuth, User.addLearn)
   .post(requireAuth, User.updateLearn)
   .delete(requireAuth, User.deleteLearn)
-  .get(User.getLearns);
+  // .get(User.getLearns);
 
 router.route('users/:id/teach')
   .post(requireAuth, User.addTeach)
   .post(requireAuth, User.updateTeach)
   .delete(requireAuth, User.deleteTeach)
-  .get(User.getTeaches);
+  // .get(User.getTeaches);
 
 router.route('/users')
   .get(User.getUsers);
