@@ -2,7 +2,14 @@ import { ActionTypes } from '../actions';
 
 // From assignment page
 const initialState = {
-  all: [],
+  all: [
+    {
+      username: 'Hello',
+      skillname: 'CS52',
+      description: 'hell',
+      rating: '5',
+    },
+  ],
   current: '',
 };
 
@@ -12,18 +19,14 @@ const initialState = {
 // This updates the store; handles manipulating the state
 const SkillReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.FETCH_SKILL:
-      return Object.assign({}, state, {
-        current: action.payload.message,
-      });
     case ActionTypes.FETCH_SKILLS:
       return Object.assign({}, state, {
         all: action.payload,
       });
-    case ActionTypes.UPDATE_SKILL:
-      return Object.assign({}, state, {
-        current: action.payload,
-      });
+    // case ActionTypes.UPDATE_POST:
+    //   return Object.assign({}, state, {
+    //     current: action.payload,
+    //   });
     default: // Delete post uses fetch post to update central store
       return state;
   }
