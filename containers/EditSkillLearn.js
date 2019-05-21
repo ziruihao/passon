@@ -5,27 +5,21 @@ import {
 } from 'react-native';
 import { updateSkill, deleteSkill } from '../actions';
 
-class AddSkill extends Component {
+class EditSkillLearn extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      skill: '',
-      years: '',
-      description: '',
+      title: '',
     };
   }
 
   edit = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.skill === ''
-    || this.state.years === ''
-    || this.state.description === '') {
+    if (this.state.title === '') {
       this.setState({ valid_entry: false });
     } else {
       this.props.updateSkill({
-        skill: this.state.skill,
-        years: this.state.years,
-        description: this.state.description,
+        title: this.state.title,
       });
       this.props.navigation.navigate('Profile');
     }
@@ -54,15 +48,7 @@ class AddSkill extends Component {
         <Text>Edit Skill</Text>
         <TextInput
           placeholder="Skill"
-          onChangeText={(text) => { this.setState({ skill: text }); }}
-        />
-        <TextInput
-          placeholder="Years of experience"
-          onChangeText={(text) => { this.setState({ years: text }); }}
-        />
-        <TextInput
-          placeholder="Description of experience"
-          onChangeText={(text) => { this.setState({ description: text }); }}
+          onChangeText={(text) => { this.setState({ title: text }); }}
         />
         <View>
           {this.renderResponse()}
@@ -74,4 +60,4 @@ class AddSkill extends Component {
   }
 }
 
-export default connect(null, { updateSkill, deleteSkill })(AddSkill);
+export default connect(null, { updateSkill, deleteSkill })(EditSkillLearn);

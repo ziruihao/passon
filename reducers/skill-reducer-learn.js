@@ -10,17 +10,13 @@ const initialState = {
 // Central redux store; get the posts from here
 // When change posts, also need to update the store (not just the content)
 // This updates the store; handles manipulating the state
-const SkillReducer = (state = initialState, action) => {
+const TeachSkillReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.FETCH_SKILL:
-      return Object.assign({}, state, {
-        current: action.payload.message,
-      });
-    case ActionTypes.FETCH_SKILLS:
+    case ActionTypes.FETCH_TEACHES:
       return Object.assign({}, state, {
         all: action.payload,
       });
-    case ActionTypes.UPDATE_SKILL:
+    case ActionTypes.FETCH_TEACH:
       return Object.assign({}, state, {
         current: action.payload,
       });
@@ -29,4 +25,4 @@ const SkillReducer = (state = initialState, action) => {
   }
 };
 
-export default SkillReducer;
+export default TeachSkillReducer;

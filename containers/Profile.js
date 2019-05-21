@@ -32,12 +32,21 @@ class Profile extends Component {
     return ( // Button source: https://stackoverflow.com/questions/43895772/the-title-prop-of-a-button-must-be-a-string-react-native
       <View style={styles.container}>
         <Text>
-          Click the button below to update the text.
+          Teach:
         </Text>
-        <Button onPress={() => this.props.navigation.navigate('AddSkill')}
+        <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
           title="Add Skill"
         />
-        <Button onPress={() => this.props.navigation.navigate('EditSkill')}
+        <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
+          title="Edit Skill"
+        />
+        <Text>
+          Learn:
+        </Text>
+        <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
+          title="Add Skill"
+        />
+        <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
           title="Edit Skill"
         />
       </View>

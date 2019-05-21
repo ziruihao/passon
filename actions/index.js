@@ -11,9 +11,10 @@ export const ActionTypes = {
   AUTH_USER: 'AUTH_USER',
   DEAUTH_USER: 'DEAUTH_USER',
   AUTH_ERROR: 'AUTH_ERROR',
-  FETCH_SKILLS: 'FETCH_SKILLS',
-  FETCH_SKILL: 'FETCH_SKILL',
-  UPDATE_SKILL: 'UPDATE_SKILL',
+  FETCH_LEARNS: 'FETCH_LEARNS',
+  FETCH_TEACHES: 'FETCH_TEACHES',
+  FETCH_LEARN: 'FETCH_LEARN',
+  FETCH_TEACH: 'FETCH_TEACH',
 };
 
 // From assignment page
@@ -21,64 +22,106 @@ const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://sulljohn-cs52-blog.herokuapp.com/api';
 // const API_KEY = '?key=j_sullivan';
 
-// // From assignment page
-export function fetchSkills() {
+export function fetchLearn() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/skills`)
-      .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_SKILLS, payload: response.data });
-      })
+    axios.get(`${ROOT_URL}/learn`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_LEARN, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchTeach() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/teach`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_TEACH, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchLearns() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/learn`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_LEARNS, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchTeaches() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/teach`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_TEACHES, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function addLearn(skill) {
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/learn`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function fetchSkill(id) {
+export function addTeach(skill) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/skills/${id}`)
-      .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_SKILL, payload: response.data });
-      })
+    axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function createSkill(skill) {
+export function updateLearn(id, skill) {
   return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/skills`, skill)
-      .then((response) => {
-        // dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
-      })
+    axios.put(`${ROOT_URL}/${id}/learn`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function updateSkill(id, skill) {
+export function updateTeach(id, skill) {
   return (dispatch) => {
-    // axios.put(`${ROOT_URL}/posts/${id}`, post)
-    axios.put(`${ROOT_URL}/skills/${id}`, skill)
-      .then((response) => {
-        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: response.data });
-      })
+    axios.put(`${ROOT_URL}/${id}/teach`, skill, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function deleteSkill(id) {
+export function deleteLearn(id) {
   return (dispatch) => {
-    // axios.delete(`${ROOT_URL}/posts/${id}`)
-    axios.delete(`${ROOT_URL}/skills/${id}`)
-      .then(() => {
-        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: null });
-      })
+    axios.delete(`${ROOT_URL}/${id}/learn`, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function deleteTeach(id) {
+  return (dispatch) => {
+    axios.delete(`${ROOT_URL}/${id}/teach`, { headers: { authorization: localStorage.getItem('token') } }).then((response) => {
+      console.log(response);
+    })
       .catch((error) => {
         console.log(error);
       });
