@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as User from './controllers/user_controller';
 import { requireAuth, requireSignin } from './services/passport';
+import * as Messaging from './controllers/message_controller';
 
 const router = Router();
 
@@ -17,25 +18,37 @@ router.post('/signup', User.signup);
  * USER ROUTES
  */
 
-router.route('/users/:id')
-  .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-  .get(requireAuth, User.getUser)
-  .delete(requireAuth, User.deleteUser);
+// router.route('/users/:id')
+//   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
+//   .get(requireAuth, User.getUser)
+//   .delete(requireAuth, User.deleteUser);
 
 router.route('/learn')
   .post(requireAuth, User.addLearn)
   .post(requireAuth, User.updateLearn)
-  .delete(requireAuth, User.deleteLearn)
-  .get(User.getLearns);
+  .delete(requireAuth, User.deleteLearn);
+// .get(User.getLearns);
 
 router.route('/teach')
   .post(requireAuth, User.addTeach)
   .post(requireAuth, User.updateTeach)
-  .delete(requireAuth, User.deleteTeach)
-  .get(User.getTeaches);
+  .delete(requireAuth, User.deleteTeach);
+// .get(User.getTeaches);
 
 router.route('/users')
   .get(User.getUsers);
+
+router.route('/users/self')
+  .get(requireAuth, User.getSelf);
+
+
+/**
+ * MESSAGING ROUTES
+ */
+
+router.route('/messaging') // id is userID
+  .post(requireAuth, Messaging.createChat)
+  .get(requireAuth, Messaging.getChats);
 
 
 /**

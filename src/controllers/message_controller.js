@@ -1,37 +1,61 @@
-// import Message from '../models/message_model';
-// import Chat from '../models/chat_model';
+import Message from '../models/message_model';
+import Chat from '../models/chat_model';
+import User from '../models/user_model';
+// import User from '../models/user_model';
 
-export const createPost = (req, res) => {
-  // const post = new Post();
+export const saveMessage = (req, res) => {
+  const msg = new Message();
 
-  // post.title = req.body.title;
-  // post.content = req.body.content;
-  // post.tags = req.body.tags;
-  // post.cover_url = req.body.cover_url;
-  // post.author = req.body.author;
+  msg.text = req.body.text;
+  msg.createdAt = new Date();
+  msg.userId = req.body.userId;
+  msg.chatId = req.body.chatId;
 
-  // post.save()
-  //   .then(() => {
-  //     res.json({ message: 'Post created!' });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  msg.save()
+    .then(() => {
+      res.json({ message: 'Message saved!' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 //
 
-export const getPosts = (req, res) => {
+export const createChat = (req, res) => {
+  const chat = new Chat(); let user1 = 'default';
+  User.find({ email: req.body.email.toLowerCase() }).then((result) => {
+    user1 = result;
+    console.log(`user1: ${JSON.stringify(result)}`);
+  });
+  chat.userId = [user1, req.user];
+  // first is the other user, second is self
+  // second should really be req.user since it's in token in the header
+  // right now the react-version local storage is not figured out so
+  // we're arbitrarily passing in a user id for self
+  chat.messages = req.body.messages;
+
+  chat.save()
+    .then(() => {
+      res.json({ message: 'Chat created!' });
+      console.log('chat created! ');
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+      console.log('chat create failed!');
+    });
+};
+
+export const getChats = (req, res) => {
   // // res.send('posts should be returned');
-  // console.log('in getPosts function');
-  // Post.find({})
-  //   .then((result) => {
-  //     // console.log('result is ', result)
-  //     res.send(result);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  console.log('in getChats function');
+  Chat.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 //
