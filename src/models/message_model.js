@@ -5,6 +5,10 @@ const MessageSchema = new Schema({
   createdAt: Date,
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   chatId: { type: Schema.Types.ObjectId, ref: 'Chat' },
+}, {
+  toJSON: {
+    virtuals: true,
+  },
 });
 
 const MessageModel = mongoose.model('Message', MessageSchema);

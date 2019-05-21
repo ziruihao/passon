@@ -18,12 +18,15 @@ router.post('/signup', User.signup);
 
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-  .get(User.getUser);
+  .get(requireAuth, User.getUser)
+  .delete(requireAuth, User.deleteUser);
 
-router.route('/users/:id/delete')
-  .post(requireAuth, User.deleteUser);
+router.route('users/:id/skills')
+  .post(requireAuth, User.addSkill)
+  .get(User.getSkills);
 
 router.route('/users')
+  .post(User.createUser)
   .get(User.getUsers);
 
 // SKILL (TO LEARN) ROUTERS
