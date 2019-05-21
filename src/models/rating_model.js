@@ -1,10 +1,12 @@
-// MODIFIED FROM SA7
-// NOT NEEDED FOR OUR PROJECT
 import mongoose, { Schema } from 'mongoose';
 
 const RatingSchema = new Schema({
   score: Number,
   user: { type: Schema.Types.ObjectId, ref: 'User' },
+}, {
+  toJSON: {
+    virtuals: true,
+  },
 });
 
 const RatingModel = mongoose.model('Rating', RatingSchema);
