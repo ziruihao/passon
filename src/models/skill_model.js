@@ -25,5 +25,4 @@ SkillSchema.virtual('avg_rating').get(function calc() {
 });
 
 const SkillModel = mongoose.model('Skill', SkillSchema);
-
 export default SkillModel;

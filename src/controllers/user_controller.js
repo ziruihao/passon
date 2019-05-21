@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
-// import Skill from '../models/skill_model';
+import Skill from '../models/skill_model';
 
 dotenv.config({ silent: true });
 
@@ -52,7 +52,7 @@ export const signup = (req, res, next) => {
         user.password = req.body.password;
         user.university = req.body.university;
 
-        user.save().populate('learn').populate('teach').then((result2) => {
+        user.save().then((result2) => {
           res.json({
             user: result2,
             token: tokenForUser(result2),
@@ -64,7 +64,7 @@ export const signup = (req, res, next) => {
       }
     })
     .catch((error) => {
-      res.status(404).json({ error });
+      res.status(404).json({ msg: error.message });
     });
 
   return next;
@@ -74,14 +74,14 @@ export const signup = (req, res, next) => {
 export const getUsers = (req, res) => { // TODO: return based on searched skill
   User.find().populate('learn').populate('teach')
     .then((results) => {
-      const out = [];
-      results.forEach((result) => {
- const removePersonalInfo = Object.assign({}, result);
-        removePersonalInfo.password = null;
-        removePersonalInfo.email = null;
-        out.push(removePersonalInfo);
-      });
-      res.json(out);
+      // const out = [];
+      // results.forEach((result) => {
+      //   const removePersonalInfo = Object.assign({}, result);
+      //   removePersonalInfo.password = null;
+      //   removePersonalInfo.email = null;
+      //   out.push(removePersonalInfo);
+      // });
+      res.json(results);
     })
     .catch((error) => {
       res.status(404).json({ error });
@@ -135,56 +135,32 @@ export const updateUser = (req, res) => {
 
 // Add a skill for a user to learn
 export const addSkill = (req, res) => {
-  User.findById(req.params.id)
+  console.log(req.body.id);
+  User.findById(req.body.id)
     .then((result) => {
       result.learn.push({
         title: req.body.title,
         years: req.body.years,
         description: req.body.description,
       });
+      res.send(result);
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(500).json({ msg: error.message });
     });
 };
 
 // Add a skill that a user can teach
 export const addTeach = (req, res) => {
   // Only push to that user's teach library
-  User.findById(req.params.id)
+  User.findById(req.body.id)
     .then((result) => {
       result.teach.push({
         title: req.body.title,
         years: req.body.years,
         description: req.body.description,
       });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-
-
-  Skill.findOne({ title: req.body.title })
-    .then((result) => {
-      if (result !== null) {
-        res.json('Skill exists'); // If the email is null
-
-        result.users.insert(req.body.email);
-      } else {
-        const skill = new Skill();
-
-        skill.title = req.body.title;
-        skill.users = [req.body._id];
-
-        skill.save()
-          .then(() => {
-            // res.json({ message: 'good' }); // send the token for the new user
-            res.json({ message: 'Skill saved' }); // send the token for the new user
-          })
-          .catch((error) => {
-            res.status(500).json({ error });
-          });
-      }
+      res.send(result);
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -265,7 +241,7 @@ export const updateTeach = (req, res) => {
 
 // Get information on a specific skill (the users associated with it)
 export const getSkill = (req, res) => {
-  Skill.findById(req.params.id)
+  User.find(req.params.id)
     .then((result) => {
       res.send(result);
     })

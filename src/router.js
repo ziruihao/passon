@@ -25,7 +25,6 @@ router.route('users/:id/skills')
   .get(User.getSkills);
 
 router.route('/users')
-  .post(User.createUser)
   .get(User.getUsers);
 
 // SKILL (TO LEARN) ROUTERS
