@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
-  FETCH_POSTS: 'FETCH_POSTS',
+  FETCH_SKILLS: 'FETCH_SKILLS',
   FETCH_POST: 'FETCH_POST',
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
@@ -11,7 +11,6 @@ export const ActionTypes = {
   AUTH_USER: 'AUTH_USER',
   DEAUTH_USER: 'DEAUTH_USER',
   AUTH_ERROR: 'AUTH_ERROR',
-  FETCH_SKILLS: 'FETCH_SKILLS',
   FETCH_SKILL: 'FETCH_SKILL',
   UPDATE_SKILL: 'UPDATE_SKILL',
 };
@@ -86,8 +85,6 @@ export function deleteSkill(id) {
 }
 
 export function fetchUser() {
-  // console.log('here');
-
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {
