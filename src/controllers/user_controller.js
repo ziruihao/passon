@@ -74,7 +74,7 @@ export const signup = (req, res, next) => {
 };
 
 // Gets all users (modified so that it does not return any password information; add other fields to return as needed
-export const getUsers = (req, res) => { // TODO: return based on searched skill
+export const getUsers = (req, res) => { // TODO: return based on searched skill; make it so this does not return all ifno
   User.find({}).populate('teach').populate('learn').then((results) => {
     console.log(results);
     res.send(results);
@@ -88,10 +88,10 @@ export const getUsers = (req, res) => { // TODO: return based on searched skill
 export const getUser = (req, res) => {
   User.findById(req.params.id).populate('learn').populate('teach')
     .then((result) => {
-      const removePersonalInfo = Object.assign({}, result);
-      removePersonalInfo.password = null;
-      removePersonalInfo.email = null;
-      res.json(removePersonalInfo);
+      // const removePersonalInfo = Object.assign({}, result);
+      // removePersonalInfo.password = null;
+      // removePersonalInfo.email = null;
+      res.json(result);
     })
     .catch((error) => {
       res.status(404).json({ error });

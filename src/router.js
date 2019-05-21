@@ -26,14 +26,14 @@ router.post('/signup', User.signup);
 router.route('/learn')
   .post(requireAuth, User.addLearn)
   .post(requireAuth, User.updateLearn)
-  .delete(requireAuth, User.deleteLearn)
-  .get(User.getLearns);
+  .delete(requireAuth, User.deleteLearn);
+// .get(User.getLearns);
 
 router.route('/teach')
   .post(requireAuth, User.addTeach)
   .post(requireAuth, User.updateTeach)
-  .delete(requireAuth, User.deleteTeach)
-  .get(User.getTeaches);
+  .delete(requireAuth, User.deleteTeach);
+// .get(User.getTeaches);
 
 router.route('/users')
   .get(User.getUsers);
