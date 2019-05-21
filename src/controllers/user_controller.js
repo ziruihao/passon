@@ -269,10 +269,17 @@ export const getTeaches = () => {
 export const getSkill = (req, res) => {
   User.find({}).populate('teach')
     .then((results) => {
-      console.log(results);
-      console.log(req.params.title);
-      // results.filter((result) => { return (result.teach.filter((skill) => { return (skill.title === req.body.title); }).length === 0); });
-      res.send(results);
+      const out = [];
+      results.forEach((user) => {
+        // console.log('-------------------');
+        // console.log(user.teach.filter(skill => skill.title === req.params.title));
+        user.teach.forEach((skill) => {
+          if (skill.title.toUpperCase() === req.params.title.toUpperCase()) {
+            out.push(user);
+          }
+        });
+      });
+      res.send(out);
     })
     .catch((error) => {
       res.status(500).json({ error });
