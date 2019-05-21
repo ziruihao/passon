@@ -86,7 +86,7 @@ export const getUsers = (req, res) => { // TODO: return based on searched skill;
 
 // Gets a user (also modified not to return too much information)
 export const getUser = (req, res) => {
-  User.findById(req.params.id).populate('learn').populate('teach')
+  User.findById(req.params.id).populate('teach').populate('learn')
     .then((result) => {
       const removePersonalInfo = Object.assign({}, result);
 
@@ -135,14 +135,15 @@ export const updateUser = (req, res) => {
 
 /**
  * Adds a skill to the [User]'s list of things they want to learn, a.k.a [User.learn].
- * @param {*} req
- * @param {*} res
+ *
+ * Need to supply title and desc
  */
 export const addLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const skill = new Skill();
       skill.title = req.body.skill.title;
+      skill.bio = req.body.skill.bio;
       skill.save().then((result2) => {
         console.log(result2);
         result.learn.push(result2);
@@ -166,7 +167,7 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
-  User.findById(req.user.id).populate('teach')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const skill = new Skill();
       skill.title = req.body.skill.title;
@@ -190,7 +191,7 @@ export const addTeach = (req, res) => {
 
 // Delete a skill a user wants to learn
 export const deleteLearn = (req, res) => {
-  User.findById(req.user.id).populate('learn')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.learn.forEach((element, index, object) => {
         if (element.title === req.body.skill.title) {
@@ -210,7 +211,7 @@ export const deleteLearn = (req, res) => {
 
 // Delete a skill a user wants to teach
 export const deleteTeach = (req, res) => {
-  User.findById(req.user.id).populate('teach')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.teach.forEach((element, index, object) => {
         if (element.title === req.body.skill.title) {
@@ -228,15 +229,23 @@ export const deleteTeach = (req, res) => {
     });
 };
 
-// Update a skill for a user
+/**
+ * Update a skill that a user wants to teach
+ * - Supply title and bio for the skill
+ */
 export const updateLearn = (req, res) => {
-  User.findById(req.user.id).populate('learn')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      console.log(result);
-
       result.learn.forEach((element) => {
-        if (element.title === req.params.title) {
-          element.description = req.params.description;
+        if (element.title === req.body.skill.title) {
+          element.bio = req.body.skill.bio;
+          element.save().then(() => {
+            result.save().then((response) => {
+              res.json(response);
+            }).catch((error) => {
+              res.status(500).json({ msg: error.message });
+            });
+          });
         }
       });
     })
@@ -245,13 +254,23 @@ export const updateLearn = (req, res) => {
     });
 };
 
-// Update a skill that a user wants to teach
+/**
+ * Update a skill that a user wants to teach
+ * - Supply title, bio, and years of updated skill
+ */
 export const updateTeach = (req, res) => {
-  User.findById(req.user.id).populate('teach')
+  User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.teach.forEach((element) => {
-        if (element.title === req.params.title) {
-          element.description = req.params.description;
+        if (element.title === req.body.skill.title) {
+          element.bio = req.body.skill.bio;
+          element.save().then(() => {
+            result.save().then((response) => {
+              res.json(response);
+            }).catch((error) => {
+              res.status(500).json({ msg: error.message });
+            });
+          });
         }
       });
     })
@@ -270,7 +289,7 @@ export const getTeaches = () => {
 
 // Get information on a specific skill (the users associated with it)
 export const getSkill = (req, res) => {
-  User.find({}).populate('teach')
+  User.find({}).populate('teach').populate('learn')
     .then((results) => {
       console.log(results);
       console.log(req.params.title);
