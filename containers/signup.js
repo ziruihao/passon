@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
+import {
+  Text, View, Button, TextInput,
+} from 'react-native';
 import { signupUser } from '../actions';
 
 class SignUp extends Component {
@@ -10,85 +10,85 @@ class SignUp extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
+      university: '',
     };
   }
 
-  onInputChange = (e) => {
-    switch (e.target.id) {
-      case 'username':
-        this.setState({ username: e.target.value });
-        break;
-      case 'email':
-        this.setState({ email: e.target.value });
-        break;
-      case 'password':
-        this.setState({ password: e.target.value });
-        break;
-      default:
-        break;
-    }
-  };
-
-  post = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.username === ''
+  signUp = () => { // Check that there are no bad or empty values that the user is attempting to signup
+    if (this.state.firstName === ''
+      || this.state.lastName === ''
       || this.state.email === ''
-      || this.state.password === '') {
+      || this.state.password === ''
+      || this.state.university === '') {
       this.setState({ valid_entry: false });
     } else {
       this.props.signupUser({
-        username: this.state.username,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
         email: this.state.email,
         password: this.state.password,
-      }, this.props.history);
+        university: this.state.university,
+      });
+      if (this.props.authenticated) {
+        this.props.navigation.navigate('Main');
+      }
     }
   };
 
   renderResponse = () => {
     if (!this.state.valid_entry) {
       return (
-        <div className="bad_input">Field missing</div>
+        <Text>Field missing</Text>
       );
     } else {
       return (
-        <div>Please fill in missing fields</div>
+        <Text>Please fill in missing fields</Text>
       );
     }
   };
 
   render() {
-    return ( // Button source: https://material-ui.com/demos/buttons/
-      <Card className="post post_body">
-        <h1 className="post_content post_title">Sign up to create posts</h1>
-        <input
-          placeholder="Username"
-          onChange={this.onInputChange}
-          className="post_content"
-          id="username"
+    return (
+      <View>
+        <Text>Create an Account</Text>
+        <TextInput
+          placeholder="First Name"
+          onChangeText={(text) => { this.setState({ firstName: text }); }}
         />
-        <input
+        <TextInput
+          placeholder="Last Name"
+          onChangeText={(text) => { this.setState({ lastName: text }); }}
+        />
+        <TextInput
           placeholder="Email"
-          onChange={this.onInputChange}
-          className="post_content"
-          id="email"
+          onChangeText={(text) => { this.setState({ email: text }); }}
         />
-        <input
+        <TextInput
           placeholder="Password"
-          onChange={this.onInputChange}
-          className="post_content"
-          id="password"
-          type="password"
+          onChangeText={(text) => { this.setState({ password: text }); }}
         />
-        <div className="post_footer">
+        <TextInput
+          placeholder="University"
+          onChangeText={(text) => { this.setState({ university: text }); }}
+        />
+        <View>
           {this.renderResponse()}
-          <Button variant="contained" color="primary" onClick={this.post}>Submit</Button>
-          <Button variant="contained"><NavLink to="/signin" className="link">Existing User?</NavLink></Button>
-        </div>
-      </Card>
+          <Button onPress={() => { this.signUp(); }} title="Sign Up" />
+          <Button onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." />
+        </View>
+      </View>
     );
   }
 }
 
-export default withRouter(connect(null, { signupUser })(SignUp));
+function mapStateToProps(reduxState) {
+  return {
+    authenticated: reduxState.auth.authenticated,
+  };
+}
+
+export default connect(mapStateToProps, { signupUser })(SignUp);

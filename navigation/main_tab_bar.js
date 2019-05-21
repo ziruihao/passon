@@ -15,7 +15,6 @@ const Messaging = createStackNavigator({
   Chat: { screen: ChatScreen },
 });
 
-
 const MainTabBar = createBottomTabNavigator(
   {
     Home: {

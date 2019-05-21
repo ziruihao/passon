@@ -2,34 +2,31 @@ import { ActionTypes } from '../actions';
 
 // From assignment page
 const initialState = {
-  token: '',
-  authenticated: false,
+  all: [],
+  current: '',
 };
 
 // This is between the Firebase DB and the actual display
 // Central redux store; get the posts from here
 // When change posts, also need to update the store (not just the content)
 // This updates the store; handles manipulating the state
-const AuthReducer = (state = initialState, action) => {
+const SkillReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.AUTH_USER:
+    case ActionTypes.FETCH_SKILL:
       return Object.assign({}, state, {
-        token: action.payload,
-        authenticated: true,
+        current: action.payload.message,
       });
-    case ActionTypes.DEAUTH_USER:
+    case ActionTypes.FETCH_SKILLS:
       return Object.assign({}, state, {
-        token: '',
-        authenticated: false,
+        all: action.payload,
       });
-    case ActionTypes.AUTH_ERROR:
+    case ActionTypes.UPDATE_SKILL:
       return Object.assign({}, state, {
-        token: '',
-        authenticated: false,
+        current: action.payload,
       });
     default: // Delete post uses fetch post to update central store
       return state;
   }
 };
 
-export default AuthReducer;
+export default SkillReducer;

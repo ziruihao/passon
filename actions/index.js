@@ -1,4 +1,5 @@
 import axios from 'axios/index';
+// import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
@@ -10,6 +11,9 @@ export const ActionTypes = {
   AUTH_USER: 'AUTH_USER',
   DEAUTH_USER: 'DEAUTH_USER',
   AUTH_ERROR: 'AUTH_ERROR',
+  FETCH_SKILLS: 'FETCH_SKILLS',
+  FETCH_SKILL: 'FETCH_SKILL',
+  UPDATE_SKILL: 'UPDATE_SKILL',
 };
 
 // From assignment page
@@ -17,15 +21,66 @@ const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://sulljohn-cs52-blog.herokuapp.com/api';
 // const API_KEY = '?key=j_sullivan';
 
-// From assignment page
+// // From assignment page
 export function fetchSkills() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts`)
+    axios.get(`${ROOT_URL}/skills`)
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_POSTS, payload: response });
+        dispatch({ type: ActionTypes.FETCH_SKILLS, payload: response.data });
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
+      });
+  };
+}
+
+export function fetchSkill(id) {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/skills/${id}`)
+      .then((response) => {
+        dispatch({ type: ActionTypes.FETCH_SKILL, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function createSkill(skill) {
+  return (dispatch) => {
+    // axios.post(`${ROOT_URL}/posts`, post)
+    axios.post(`${ROOT_URL}/skills`, skill)
+      .then((response) => {
+        // dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function updateSkill(id, skill) {
+  return (dispatch) => {
+    // axios.put(`${ROOT_URL}/posts/${id}`, post)
+    axios.put(`${ROOT_URL}/skills/${id}`, skill)
+      .then((response) => {
+        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function deleteSkill(id) {
+  return (dispatch) => {
+    // axios.delete(`${ROOT_URL}/posts/${id}`)
+    axios.delete(`${ROOT_URL}/skills/${id}`)
+      .then(() => {
+        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: null });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 }
@@ -95,7 +150,7 @@ export function authError(error) {
   };
 }
 
-export function signinUser({ email, password }, history) {
+export function signinUser({ email, password }) {
   // takes in an object with email and password (minimal user object)
   // returns a thunk method that takes dispatch as an argument (just like our create post method really)
   // does an axios.post on the /signin endpoint
@@ -104,22 +159,25 @@ export function signinUser({ email, password }, history) {
   //  localStorage.setItem('token', response.data.token);
   // on error should dispatch(authError(`Sign In Failed: ${error.response.data}`));
 
+  // const token = await AsyncStorage.getItem('token');
+
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then((response) => {
-        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.username });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', response.data.username);
-        history.push('/');
+        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // AsyncStorage.setItem('token', response.data.token);
+        // history.push('/');
       })
       .catch((error) => {
-        dispatch(authError(`Sign In Failed: ${error.response.data}`));
+        dispatch(authError(`Sign In Failed: ${error.data}`));
       });
   };
 }
 
-export function signupUser({ username, email, password }, history) {
+export function signupUser({
+  firstName, lastName, email, password, university,
+}) {
   // takes in an object with email and password (minimal user object)
   // returns a thunk method that takes dispatch as an argument (just like our create post method really)
   // does an axios.post on the /signup endpoint (only difference from above)
@@ -130,15 +188,15 @@ export function signupUser({ username, email, password }, history) {
 
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/signup`, { username, email, password })
+    axios.post(`${ROOT_URL}/signup`, {
+      firstName, lastName, email, password, university,
+    })
       .then((response) => {
-        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.username });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', response.data.username);
-        history.push('/');
+        dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // history.push('/');
       })
       .catch((error) => {
-        dispatch(authError(`Sign Up Failed: ${error.response.data}`));
+        dispatch(authError(`Sign Up Failed: ${error}`));
       });
   };
 }
