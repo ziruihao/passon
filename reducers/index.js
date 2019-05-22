@@ -3,10 +3,12 @@
 import { combineReducers } from 'redux';
 import SkillReducer from './skill-reducer';
 import AuthReducer from './auth-reducer';
+import UserReducer from './user-reducer';
 
 const rootReducer = combineReducers({
   skills: SkillReducer,
   auth: AuthReducer,
+  user: UserReducer,
 });
 
 export default rootReducer;
