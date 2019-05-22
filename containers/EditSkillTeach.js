@@ -34,7 +34,12 @@ class EditSkillTeach extends Component {
   };
 
   delete = () => {
-    this.props.deleteTeach();
+    this.props.deleteTeach({
+      title: this.state.title,
+      years: this.state.years,
+      bio: this.state.bio,
+      ratings: this.state.ratings,
+    });
     this.props.navigation.navigate('Profile');
   };
 

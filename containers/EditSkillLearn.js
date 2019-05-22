@@ -28,7 +28,7 @@ class EditSkillLearn extends Component {
   };
 
   delete = () => {
-    this.props.deleteLearn();
+    this.props.deleteLearn({ title: this.state.title });
     this.props.navigation.navigate('Profile');
   };
 
