@@ -4,11 +4,13 @@ import { combineReducers } from 'redux';
 import AuthReducer from './auth-reducer';
 import TeachSkillReducer from './skill-reducer-teach';
 import LearnSkillReducer from './skill-reducer-learn';
+import UserReducer from './user-reducer';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
   teaches: TeachSkillReducer,
   learns: LearnSkillReducer,
+  user: UserReducer,
 });
 
 export default rootReducer;

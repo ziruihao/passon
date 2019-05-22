@@ -2,7 +2,14 @@ import { ActionTypes } from '../actions';
 
 // From assignment page
 const initialState = {
-  all: [],
+  all: [
+    {
+      username: 'Hello',
+      skillname: 'CS52',
+      description: 'hell',
+      rating: '5',
+    },
+  ],
   current: '',
 };
 

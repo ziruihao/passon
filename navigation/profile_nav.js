@@ -1,5 +1,6 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import Profile from '../containers/Profile';
+// import My_Profile from '../components/my_profile';
 import AddSkillTeach from '../containers/AddSkillTeach';
 import EditSkillTeach from '../containers/EditSkillTeach';
 import AddSkillLearn from '../containers/AddSkillLearn';

@@ -4,7 +4,7 @@ import {
   StyleSheet, View, Text, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchUser } from '../actions/index';
+import { fetchUser } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
 

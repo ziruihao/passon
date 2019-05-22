@@ -44,7 +44,7 @@ class SignIn extends Component {
   render() {
     return (
       <View>
-        <Text>Sign In</Text>
+        <Text style={{ margin: 50 }}>Sign In</Text>
         <TextInput
           placeholder="Email"
           onChangeText={(text) => { this.setState({ email: text }); }}

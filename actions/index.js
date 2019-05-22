@@ -3,14 +3,22 @@ import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
-  FETCH_POSTS: 'FETCH_POSTS',
+  FETCH_SKILLS: 'FETCH_SKILLS',
+  FETCH_SKILL: 'FETCH_SKILL',
+  AUTH_USER: 'AUTH_USER',
+  DEAUTH_USER: 'DEAUTH_USER',
+  UPDATE_SKILL: 'UPDATE_SKILL',
+  FETCH_USER: 'FETCH_USER',
+  FETCH_USERS: 'FETCH_USERS',
+  FETCH_SELF: 'FETCH_SELF',
+
+  // Old actions
+  AUTH_ERROR: 'AUTH_ERROR',
   FETCH_POST: 'FETCH_POST',
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
   DELETE_POST: 'DELETE_POST',
-  AUTH_USER: 'AUTH_USER',
-  DEAUTH_USER: 'DEAUTH_USER',
-  AUTH_ERROR: 'AUTH_ERROR',
+
   FETCH_LEARNS: 'FETCH_LEARNS',
   FETCH_TEACHES: 'FETCH_TEACHES',
   FETCH_LEARN: 'FETCH_LEARN',
@@ -134,14 +142,46 @@ export function deleteTeach(skill) {
   };
 }
 
-export function fetchUser() {
-  // console.log('here');
-
+export function fetchUser(id) {
   return (dispatch) => {
+    axios.get(`${ROOT_URL}/users/${id}`)
+      .then((response) => {
+        console.log('fetch user');
+        console.log(response.data.message);
+        dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function fetchUsers(id) {
+  return (dispatch) => {
+    console.log('================================================================================================================================================================');
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {
-        console.log(response.data.message);
-        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        // eslint-disable-next-line max-len
+        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
+        console.log(response.data);
+        dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
+      })
+      .catch((error) => {
+        // eslint-disable-next-line max-len
+        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
+        console.log(error);
+      });
+  };
+}
+
+export function fetchSelf() {
+  return async (dispatch) => {
+    console.log('fetch self');
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: value } })
+      .then((response) => {
+        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
+        dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -150,9 +190,10 @@ export function fetchUser() {
 }
 
 export function createUser(post, history) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/posts`, post, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/posts`, post, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
         history.push('/');
@@ -164,9 +205,10 @@ export function createUser(post, history) {
 }
 
 export function updateUser(id, post) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.put(`${ROOT_URL}/posts/${id}`, post)
-    axios.put(`${ROOT_URL}/posts/${id}`, post, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/posts/${id}`, post, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: response.data });
       })
@@ -177,9 +219,10 @@ export function updateUser(id, post) {
 }
 
 export function deleteUser(id, history) {
-  return (dispatch) => {
+  return async (dispatch) => {
     // axios.delete(`${ROOT_URL}/posts/${id}`)
-    axios.delete(`${ROOT_URL}/posts/${id}`, { headers: { authorization: localStorage.getItem('token') } })
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/posts/${id}`, { headers: { authorization: value } })
       .then(() => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: null });
         history.push('/');
@@ -254,21 +297,22 @@ export function signupUser({
 // deletes token from localstorage
 // and deauths
 export function signoutUser(history) {
-  return (dispatch) => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+  return async (dispatch) => {
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
     history.push('/');
   };
 }
 
-
+// TODO
 export function fetchChats() {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/users`)
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(response.data.message);
-        // dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
+        console.log(`getChats response: ${JSON.stringify(response.data)}`);
+        dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -276,10 +320,10 @@ export function fetchChats() {
   };
 }
 
-export function createChat(id, chat) {
-  return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/messaging/${id}`, chat, { headers: { authorization: localStorage.getItem('token') } })
+export function createChat(chat) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
