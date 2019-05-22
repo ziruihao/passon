@@ -5,7 +5,6 @@ import User from '../models/user_model';
 import Skill from '../models/skill_model';
 import Rating from '../models/rating_model';
 
-
 dotenv.config({ silent: true });
 
 // THE FOLLOWING FUNCTIONS DEAL WITH HANDLING USERS
@@ -74,7 +73,7 @@ export const signup = (req, res, next) => {
 };
 
 // Gets all users (modified so that it does not return any password information; add other fields to return as needed
-export const getUsers = (req, res) => { // TODO: return based on searched skill; make it so this does not return all ifno
+export const getUsers = (req, res) => { // TODO: return based on searched skill; make it so this does not return all info
   User.find({}).populate('teach').populate('learn').then((results) => {
     console.log(results);
     res.send(results);
@@ -103,7 +102,8 @@ export const getUser = (req, res) => {
 };
 
 export const getSelf = (req, res) => {
-  console.log(`in get self: req.user is ${req.user}`);
+  console.log('HERE');
+  // console.log(`in get self: req.user is ${req.user}`);
   res.send(req.user);
   // User.find({ email: req.user })
   //   .then((result) => {

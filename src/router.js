@@ -38,7 +38,7 @@ router.route('/teach')
 router.route('/users')
   .get(User.getUsers);
 
-router.route('/users/self')
+router.route('/self')
   .get(requireAuth, User.getSelf);
 
 
