@@ -3,13 +3,9 @@ import {
   createAppContainer, createBottomTabNavigator,
   createStackNavigator,
 } from 'react-navigation';
-// import { View, Text } from 'react-native';
-
-// import Profile from '../containers/profile';
 import HomeTab from './home_tab';
 import My_Profile from '../components/my_profile';
 import MessagingScreen from '../components/Messaging';
-// import Home from '../components/Home';
 import ChatScreen from '../components/Chat';
 
 const Messaging = createStackNavigator({
