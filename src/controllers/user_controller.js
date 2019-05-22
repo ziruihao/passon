@@ -17,7 +17,7 @@ function tokenForUser(user) {
 }
 
 export const signin = (req, res) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.body.email }).populate('learn').populate('teach')
     .then((result) => {
       res.send({
         user: result,
@@ -25,7 +25,7 @@ export const signin = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(404).json({ error });
+      res.status(404).json({ message: error.message });
     });
 };
 
@@ -154,20 +154,26 @@ export const updateUser = (req, res) => {
 export const addLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      const skill = new Skill();
-      skill.title = req.body.skill.title;
-      skill.bio = req.body.skill.bio;
-      skill.save().then((result2) => {
-        console.log(result2);
-        result.learn.push(result2);
-        console.log(result);
-        result.save().then((response) => {
-          console.log(response);
-          res.json(response);
-        }).catch((error) => {
-          res.status(500).json({ msg: error.message });
-        });
+      let alreadyHas = false;
+      result.learn.forEach((skill) => {
+        if (skill.title.toUpperCase() === req.body.skill.title.toUpperCase()) alreadyHas = true;
       });
+      if (!alreadyHas) {
+        const skill = new Skill();
+        skill.title = req.body.skill.title;
+        skill.bio = req.body.skill.bio;
+        skill.save().then((result2) => {
+          console.log(result2);
+          result.learn.push(result2);
+          console.log(result);
+          result.save().then((response) => {
+            console.log(response);
+            res.json(response);
+          }).catch((error) => {
+            res.status(500).json({ msg: error.message });
+          });
+        });
+      } else res.send('Skill already exists');
     })
     .catch((error) => {
       res.status(500).json({ msg: error.message });
@@ -182,20 +188,26 @@ export const addLearn = (req, res) => {
 export const addTeach = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      const skill = new Skill();
-      skill.title = req.body.skill.title;
-      skill.years = req.body.skill.years;
-      skill.bio = req.body.skill.bio;
-      skill.ratings = req.body.skill.ratings;
-
-      skill.save().then((result2) => {
-        result.teach.push(result2);
-        result.save().then((response) => {
-          res.json(response);
-        }).catch((error) => {
-          res.status(500).json({ error });
-        });
+      let alreadyHas = false;
+      result.teach.forEach((skill) => {
+        if (skill.title.toUpperCase() === req.body.skill.title.toUpperCase()) alreadyHas = true;
       });
+      if (!alreadyHas) {
+        const skill = new Skill();
+        skill.title = req.body.skill.title;
+        skill.years = req.body.skill.years;
+        skill.bio = req.body.skill.bio;
+        skill.ratings = req.body.skill.ratings;
+
+        skill.save().then((result2) => {
+          result.teach.push(result2);
+          result.save().then((response) => {
+            res.json(response);
+          }).catch((error) => {
+            res.status(500).json({ error });
+          });
+        });
+      } else res.send('Skill already exists');
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -292,16 +304,33 @@ export const updateTeach = (req, res) => {
     });
 };
 
-export const getLearns = () => {
+// export const getLearns = (req, res) => {
+//   User.findById(req.body.id).populate('learn').populate('teach')
+//     .then((user) => {
+//       res.send(user.learn);
+//     })
+//     .catch((error) => {
+//       res.status(404).json({ message: error.message });
+//     });
+// };
 
-};
+// export const getTeaches = (req, res) => {
+//   User.findById(req.body.id).populate('teach').populate('learn')
+//     .then((user) => {
+//       res.send(user.teach);
+//     })
+//     .catch((error) => {
+//       res.status(404).json({ message: error.message });
+//     });
+// };
 
-export const getTeaches = () => {
-
-};
-
-// Get information on a specific skill (the users associated with it)
-export const getSkill = (req, res) => {
+/**
+ * Returns the set of [User]s that [teach] a certain [Skill].
+ * @param {*} req
+ * @param {*} res
+ */
+export const getTeachers = (req, res) => {
+  const upperCased = req.body.skills.map(skill => skill.toUpperCase());
   User.find({}).populate('teach').populate('learn')
     .then((results) => {
       const out = [];
@@ -309,7 +338,7 @@ export const getSkill = (req, res) => {
         // console.log('-------------------');
         // console.log(user.teach.filter(skill => skill.title === req.params.title));
         user.teach.forEach((skill) => {
-          if (skill.title.toUpperCase() === req.params.title.toUpperCase()) {
+          if (upperCased.includes(skill.title.toUpperCase()) && !out.includes(user)) {
             out.push(user);
           }
         });
@@ -321,14 +350,14 @@ export const getSkill = (req, res) => {
     });
 };
 
-// Get information on all skills (and all users associated with them)
-export const getSkills = (req, res) => {
-  Skill.find({}).then((result) => {
-    res.send(result);
-  }).catch((error) => {
-    res.status(500).json({ error });
-  });
-};
+// // Get information on all skills (and all users associated with them)
+// export const getSkills = (req, res) => {
+//   Skill.find({}).then((result) => {
+//     res.send(result);
+//   }).catch((error) => {
+//     res.status(500).json({ error });
+//   });
+// };
 
 
 // testing
