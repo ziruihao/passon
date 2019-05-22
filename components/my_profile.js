@@ -22,7 +22,6 @@ class My_Profile extends React.Component {
 
   componentDidMount() {
     this.props.fetchSelf();
-    console.log(this.props.Self);
   }
 
   render() {

@@ -32,6 +32,13 @@ class Profile extends React.Component {
     headerTintColor: 'black',
   }
 
+  componentDidMount() {
+    console.log('==================-=======-=-=-=Profil: ');
+    console.log(this.props.navigation.state.params.id);
+    this.props.fetchUser(this.props.navigation.state.params._id);
+  }
+
+
   // componentDidMount() {
   //   this.props.fetchUser(this.props.User.id);
   // }
@@ -43,7 +50,7 @@ class Profile extends React.Component {
     } else {
       return (
         <View>
-          <Text>{this.props.User}</Text>
+          <Text>{this.props.User.firstName}</Text>
           {/* <Text>{this.props.User.lastname}</Text>
           <Text>{this.props.User.email}</Text>
           <Text>{this.props.User.teach}</Text>
