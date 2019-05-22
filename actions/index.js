@@ -9,6 +9,7 @@ export const ActionTypes = {
   DEAUTH_USER: 'DEAUTH_USER',
   UPDATE_SKILL: 'UPDATE_SKILL',
   FETCH_USER: 'FETCH_USER',
+  FETCH_USERS: 'FETCH_USERS',
   FETCH_SELF: 'FETCH_SELF',
 
   // Old actions
@@ -98,6 +99,24 @@ export function fetchUser(id) {
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
       })
       .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function fetchUsers(id) {
+  return (dispatch) => {
+    console.log('================================================================================================================================================================');
+    axios.get(`${ROOT_URL}/users`)
+      .then((response) => {
+        // eslint-disable-next-line max-len
+        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
+        console.log(response.data);
+        dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
+      })
+      .catch((error) => {
+        // eslint-disable-next-line max-len
+        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
         console.log(error);
       });
   };

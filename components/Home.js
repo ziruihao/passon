@@ -26,6 +26,11 @@ import {
   Body,
   Right,
 } from 'native-base';
+import { ActionViewColumn } from 'material-ui/svg-icons';
+import {
+  colors, fonts, padding, dimensions,
+} from '../styles/base';
+import { fetchUsers } from '../actions';
 
 const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
@@ -33,12 +38,22 @@ const cardImage = require('../assets/sunset.jpg');
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#4000F4',
+    flex: 1,
+    flexDirection: 'column',
   },
   mb: {
     marginBottom: 17,
-    width: 297,
+    width: dimensions.fullWidth - (2 * dimensions.lg),
     height: 170,
+    padding: dimensions.sm,
+    flex: 1,
   },
+  title: {
+    flex: 1,
+    fontSize: fonts.h2,
+    color: '#620BC9',
+  },
+
 });
 
 class Home extends Component {
@@ -60,7 +75,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchSkills();
+    this.props.fetchUsers();
   }
 
   intoProfile(profile) {
@@ -74,58 +89,75 @@ class Home extends Component {
   }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header searchBar rounded barStyle="light-content">
-          {/* <Item> */}
-          {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-            </Button> */}
-          {/* </Item> */}
-          <Item>
-            <Icon name="ios-search" />
-            <Input placeholder="Search" onChangeText={text => this.search(text)} />
-          </Item>
-        </Header>
-        <Content padder>
+    const users = this.props.Users.map((element) => {
+      return (
+        <Container key={element._id}>
           <TouchableHighlight onPress={() => this.intoProfile(this.state.profile)} underlayColor="orange">
-            <Card style={styles.mb}>
-              <CardItem header>
-                <Text>Skillname</Text>
-              </CardItem>
-              <CardItem footer>
-                <CardItem>
-                  <Left>
-                    <Icon active name="star" />
-                    <Text>5 stars</Text>
-                    <Text>X yrs</Text>
-                  </Left>
-                </CardItem>
-
-                <CardItem>
-                  <Image
-                    style={{
-                      resizeMode: 'cover',
-                      width: null,
-                      height: 200,
-                      flex: 1,
-                    }}
-                    source={cardImage}
-                  />
-                </CardItem>
-              </CardItem>
-            </Card>
+            <CardItem>
+              <Text> {element.firstName}</Text>
+              <Text> {element.lastName}</Text>
+              <Text> {element.email}</Text>
+            </CardItem>
           </TouchableHighlight>
-        </Content>
-      </Container>
-    );
+        </Container>
+
+      );
+    });
+    return users;
+
+
+    // return (
+    //   <Container>
+    //     <Header searchBar rounded barStyle="light-content">
+    //       {/* <Item> */}
+    //       {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
+    //           <Icon name="arrow-back" />
+    //         </Button> */}
+    //       {/* </Item> */}
+    //       <Item>
+    //         <Icon name="ios-search" />
+    //         <Input placeholder="Search" onChangeText={text => this.search(text)} />
+    //       </Item>
+    //     </Header>
+    //     <Content style={styles.container}>
+    //       <TouchableHighlight onPress={() => this.intoProfile(this.state.profile)} underlayColor="orange">
+    //         <Card style={styles.mb}>
+    //           <CardItem style={styles.title}>
+    //             <Text>Skillname</Text>
+    //           </CardItem>
+    //           <CardItem>
+    //             <CardItem>
+    //               <Left>
+    //                 <Icon active name="star" />
+    //                 <Text>5 stars</Text>
+    //                 <Text>X yrs</Text>
+    //               </Left>
+    //             </CardItem>
+
+    //             <CardItem>
+    //               <Image
+    //                 style={{
+    //                   resizeMode: 'cover',
+    //                   width: null,
+    //                   height: 200,
+    //                   flex: 1,
+    //                 }}
+    //                 source={cardImage}
+    //               />
+    //             </CardItem>
+    //           </CardItem>
+    //         </Card>
+    //       </TouchableHighlight>
+    //     </Content>
+    //   </Container>
+    // );
   }
 }
 
 function mapReduxStateToProps(reduxState) {
   return {
-    AllSkills: reduxState.skills.all,
+    Users: reduxState.user.all,
   };
 }
 
-export default connect(mapReduxStateToProps, null)(Home);
+export default connect(mapReduxStateToProps, { fetchUsers })(Home);
