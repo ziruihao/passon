@@ -18,9 +18,9 @@ function tokenForUser(user) {
 
 export const signin = (req, res) => {
   User.findOne({ email: req.body.email }).populate('learn').populate('teach')
-    .then((result) => {
+    .then((user) => {
       res.send({
-        user: result,
+        user,
         token: tokenForUser(req.user),
       });
     })
@@ -31,7 +31,6 @@ export const signin = (req, res) => {
 
 // Signs up a user and generates a token for them
 export const signup = (req, res, next) => {
-  // console.log(`REQ BODY: ${req.body.firstName}`);
   const { firstName } = req.body;
   const { lastName } = req.body;
   const { email } = req.body;
@@ -43,8 +42,8 @@ export const signup = (req, res, next) => {
   } // also this error-checking can be done in the frontend so we're not sending this to the server
 
   User.findOne({ email: req.body.email })
-    .then((result) => {
-      if (result !== null) {
+    .then((existingUser) => {
+      if (existingUser !== null) {
         res.json('User already exists');
       } else {
         const user = new User();
@@ -55,11 +54,11 @@ export const signup = (req, res, next) => {
         user.password = req.body.password;
         user.university = req.body.university;
 
-        user.save().then((result2) => {
+        user.save().then((savedUser) => {
           res.json({
-            user: result2,
-            token: tokenForUser(result2),
-          }); // send the token for the new user
+            user: savedUser,
+            token: tokenForUser(savedUser),
+          });
         })
           .catch((error) => {
             res.status(500).json({ error });
@@ -73,10 +72,20 @@ export const signup = (req, res, next) => {
   return next;
 };
 
-// Gets all users (modified so that it does not return any password information; add other fields to return as needed
-export const getUsers = (req, res) => { // TODO: return based on searched skill; make it so this does not return all ifno
+/**
+ * Returns all protected users data.
+ * @param {*} req
+ * @param {*} res
+ */
+export const getUsers = (req, res) => { // why do we need both req and res? why is the async working?
   User.find({}).populate('teach').populate('learn').then((results) => {
-    console.log(results);
+    const removePersonalInfoArray = [];
+    results.forEach((result) => {
+      const removePersonalInfo = Object.assign({}, result);
+      delete removePersonalInfo._doc.password;
+      // delete removePersonalInfo._doc.email;
+      removePersonalInfoArray.push(removePersonalInfo._doc);
+    });
     res.send(results);
   })
     .catch((error) => {
@@ -84,7 +93,11 @@ export const getUsers = (req, res) => { // TODO: return based on searched skill;
     });
 };
 
-// Gets a user (also modified not to return too much information)
+/**
+ * Returns a specific user's protected data.
+ * @param {*} req
+ * @param {*} res
+ */
 export const getUser = (req, res) => {
   User.findById(req.params.id).populate('teach').populate('learn')
     .then((result) => {
@@ -102,16 +115,13 @@ export const getUser = (req, res) => {
     });
 };
 
+/**
+ * Returns private information about a user, this route is protected.
+ * @param {*} req
+ * @param {*} res
+ */
 export const getSelf = (req, res) => {
-  console.log(`in get self: req.user is ${req.user}`);
   res.send(req.user);
-  // User.find({ email: req.user })
-  //   .then((result) => {
-  //     res.send(result);
-  //   })
-  //   .catch((error) => {
-  //     console.log(`get self failed: ${error}`);
-  //   });
 };
 
 
@@ -126,7 +136,6 @@ export const deleteUser = (req, res) => {
     });
 };
 
-// TO-DO: we need to either make [updateUser] able to add skills or add a separate skills thing
 // Update user parameters (just use this for username, email, simple fields (NOT skills)
 export const updateUser = (req, res) => {
   User.findByIdAndUpdate(req.params.id, req.body)
@@ -176,7 +185,7 @@ export const addLearn = (req, res) => {
       } else res.send('Skill already exists');
     })
     .catch((error) => {
-      res.status(500).json({ msg: error.message });
+      res.status(404).json({ msg: error.message });
     });
 };
 
@@ -210,7 +219,7 @@ export const addTeach = (req, res) => {
       } else res.send('Skill already exists');
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(404).json({ error });
     });
 };
 
@@ -219,7 +228,7 @@ export const deleteLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.learn.forEach((element, index, object) => {
-        if (element.title === req.body.skill.title) {
+        if (element.id === req.body.skill.id) {
           object.splice(index, 1);
         }
       });
@@ -230,7 +239,7 @@ export const deleteLearn = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     });
 };
 
@@ -239,7 +248,7 @@ export const deleteTeach = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.teach.forEach((element, index, object) => {
-        if (element.title === req.body.skill.title) {
+        if (element.id === req.body.skill.id) {
           object.splice(index, 1);
         }
       });
@@ -250,19 +259,19 @@ export const deleteTeach = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     });
 };
 
 /**
- * Update a skill that a user wants to teach
- * - Supply title and bio for the skill
+ * Update a skill that a user wants to learn, only updates the [bio] property.
+ * - Supply the skill with its [id]
  */
 export const updateLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.learn.forEach((element) => {
-        if (element.title === req.body.skill.title) {
+        if (element.id === req.body.skill.id) {
           element.bio = req.body.skill.bio;
           element.save().then(() => {
             result.save().then((response) => {
@@ -275,20 +284,21 @@ export const updateLearn = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(404).json({ error });
     });
 };
 
 /**
- * Update a skill that a user wants to teach
- * - Supply title, bio, and years of updated skill
+ * Update a skill that a user wants to teach, only updates the [bio] and [years] properties.
+ * - Supply the skill with its [id]
  */
 export const updateTeach = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       result.teach.forEach((element) => {
-        if (element.title === req.body.skill.title) {
+        if (element.id === req.body.skill.id) {
           element.bio = req.body.skill.bio;
+          element.years = req.body.skill.years;
           element.save().then(() => {
             result.save().then((response) => {
               res.json(response);
@@ -300,29 +310,9 @@ export const updateTeach = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(404).json({ error });
     });
 };
-
-// export const getLearns = (req, res) => {
-//   User.findById(req.body.id).populate('learn').populate('teach')
-//     .then((user) => {
-//       res.send(user.learn);
-//     })
-//     .catch((error) => {
-//       res.status(404).json({ message: error.message });
-//     });
-// };
-
-// export const getTeaches = (req, res) => {
-//   User.findById(req.body.id).populate('teach').populate('learn')
-//     .then((user) => {
-//       res.send(user.teach);
-//     })
-//     .catch((error) => {
-//       res.status(404).json({ message: error.message });
-//     });
-// };
 
 /**
  * Returns the set of [User]s that [teach] a certain [Skill].
@@ -346,21 +336,12 @@ export const getTeachers = (req, res) => {
       res.send(out);
     })
     .catch((error) => {
-      res.status(500).json({ error });
+      res.status(404).json({ error });
     });
 };
 
-// // Get information on all skills (and all users associated with them)
-// export const getSkills = (req, res) => {
-//   Skill.find({}).then((result) => {
-//     res.send(result);
-//   }).catch((error) => {
-//     res.status(500).json({ error });
-//   });
-// };
 
-
-// testing
+// testing: do not remove yet
 export const addSkillRating = (req, res) => {
   Skill.findById(req.params.id).then((result) => {
     const rating = new Rating();
