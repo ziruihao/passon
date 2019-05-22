@@ -147,7 +147,7 @@ export function fetchUser(id) {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
         console.log('fetch user');
-        console.log(response.data.message);
+        console.log(response.data);
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
       })
       .catch((error) => {
@@ -158,17 +158,15 @@ export function fetchUser(id) {
 
 export function fetchUsers(id) {
   return (dispatch) => {
-    console.log('================================================================================================================================================================');
+    // console.log('================================================================================================================================================================');
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {
         // eslint-disable-next-line max-len
-        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
-        console.log(response.data);
         dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
       })
       .catch((error) => {
         // eslint-disable-next-line max-len
-        console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
+        // console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
         console.log(error);
       });
   };
@@ -176,11 +174,11 @@ export function fetchUsers(id) {
 
 export function fetchSelf() {
   return async (dispatch) => {
-    console.log('fetch self');
     const value = await AsyncStorage.getItem('token');
-    axios.get(`${ROOT_URL}/users/self`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
+        console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
+        console.log(`Response self data: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
