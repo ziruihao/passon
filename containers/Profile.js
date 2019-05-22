@@ -31,6 +31,9 @@ class Profile extends Component {
   //     <div>{this.props.currentUser.}</div>
   //   );
   // };
+  componentDidMount() {
+    this.props.fetchUser();
+  }
 
   render() {
     return ( // Button source: https://stackoverflow.com/questions/43895772/the-title-prop-of-a-button-must-be-a-string-react-native
