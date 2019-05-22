@@ -18,22 +18,22 @@ router.post('/signup', User.signup);
  * USER ROUTES
  */
 
-// router.route('/users/:id')
-//   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
-//   .get(requireAuth, User.getUser)
-//   .delete(requireAuth, User.deleteUser);
+router.route('/users/:id')
+  .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
+  .get(User.getUser)
+  .delete(requireAuth, User.deleteUser);
 
 router.route('/learn')
   .post(requireAuth, User.addLearn)
-  .post(requireAuth, User.updateLearn)
-  .delete(requireAuth, User.deleteLearn);
-// .get(User.getLearns);
+  .put(requireAuth, User.updateLearn)
+  .delete(requireAuth, User.deleteLearn)
+  .get(User.getLearns);
 
 router.route('/teach')
   .post(requireAuth, User.addTeach)
-  .post(requireAuth, User.updateTeach)
-  .delete(requireAuth, User.deleteTeach);
-// .get(User.getTeaches);
+  .put(requireAuth, User.updateTeach)
+  .delete(requireAuth, User.deleteTeach)
+  .get(User.getTeaches);
 
 router.route('/users')
   .get(User.getUsers);
@@ -55,7 +55,7 @@ router.route('/messaging') // id is userID
  * SKILL ROUTES
  */
 
-router.route('skills')
+router.route('/skills')
   .get(User.getSkills);
 
 router.route('/skills/:title')
