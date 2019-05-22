@@ -32,6 +32,9 @@ class My_Profile extends React.Component {
         <View>
           <Text>{this.props.Self.email}</Text>
           <Text>{this.props.Self.firstName}</Text>
+          <Text>{this.props.Self.teach}</Text>
+          <Text>{this.props.Self.learn}</Text>
+          <Text>{this.props.Self.profile_pic_url}</Text>
         </View>
       );
     }
