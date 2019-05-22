@@ -14,6 +14,7 @@ export const ActionTypes = {
   FETCH_SKILL: 'FETCH_SKILL',
   UPDATE_SKILL: 'UPDATE_SKILL',
   GET_SELF: 'GET_SELF',
+  GET_CHATS: 'GET_CHATS',
 };
 
 // From assignment page
@@ -219,8 +220,8 @@ export function fetchChats() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(`getChats response: ${JSON.stringify(response.data)}`);
-        dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
+        // console.log(`getChats response: ${JSON.stringify(response.data)}`);
+        dispatch({ type: ActionTypes.GET_CHATS, payload: (JSON.stringify(response.data)) });
       })
       .catch((error) => {
         console.log(error);

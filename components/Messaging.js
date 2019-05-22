@@ -3,7 +3,7 @@
 /* eslint-disable no-use-before-define */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Button, TextInput,
+  StyleSheet, View, Button, TextInput, FlatList, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchChats, createChat } from '../actions';
@@ -35,8 +35,18 @@ class Messaging extends Component {
    */
 
   render() {
+    console.log(`this.props.chat: ${this.props.chats}`);
     return (
       <View style={styles.container}>
+        <FlatList
+          data={this.props.chats}
+          renderItem={({ item }) => (
+            <div><Text style={styles.item}>{item.userId}</Text>
+              <Text style={styles.item}>{(item.messages == null) ? '' : item.messages[0]}</Text>
+            </div>
+          )}
+        />
+        <Text>{`chats: ${this.props.chats}`}</Text>
         <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
           onChangeText={text => this.setState({ otherUser: text })}
           value={this.state.otherUser}
@@ -65,7 +75,7 @@ class Messaging extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: 'rgb(240,240,240)',
     margin: 50,
   },
@@ -80,6 +90,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   // auth: state.auth.authenticated,
+  chats: state.chat.chats,
 }
 );
 
