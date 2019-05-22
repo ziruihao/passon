@@ -26,14 +26,12 @@ router.route('/users/:id')
 router.route('/learn')
   .post(requireAuth, User.addLearn)
   .put(requireAuth, User.updateLearn)
-  .delete(requireAuth, User.deleteLearn)
-  .get(User.getLearns);
+  .delete(requireAuth, User.deleteLearn);
 
 router.route('/teach')
   .post(requireAuth, User.addTeach)
   .put(requireAuth, User.updateTeach)
-  .delete(requireAuth, User.deleteTeach)
-  .get(User.getTeaches);
+  .delete(requireAuth, User.deleteTeach);
 
 router.route('/users')
   .get(User.getUsers);
@@ -55,11 +53,8 @@ router.route('/messaging') // id is userID
  * SKILL ROUTES
  */
 
-router.route('/skills')
-  .get(User.getSkills);
-
-router.route('/skills/:title')
-  .get(User.getSkill);
+router.route('/teachers')
+  .get(User.getTeachers);
 
 router.route('/test/:id')
   .post(User.addSkillRating);
