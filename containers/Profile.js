@@ -1,11 +1,12 @@
+/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
   StyleSheet, View, Text, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/index';
-import Learns from './learns';
-import Teaches from './teaches';
+import Learns from '../components/learns';
+import Teaches from '../components/teaches';
 
 
 const styles = StyleSheet.create({
@@ -25,11 +26,11 @@ class Profile extends Component {
   //   super(props);
   // }
 
-  renderText = () => {
-    return (
-      <div>{this.props.current}</div>
-    );
-  };
+  // renderText = () => {
+  //   return (
+  //     <div>{this.props.currentUser.}</div>
+  //   );
+  // };
 
   render() {
     return ( // Button source: https://stackoverflow.com/questions/43895772/the-title-prop-of-a-button-must-be-a-string-react-native
@@ -37,7 +38,7 @@ class Profile extends Component {
         <Text>
           Teach:
         </Text>
-        <View><Teaches /></View>
+        <View><Teaches teaches={this.props.currentUser.teach} /></View>
         <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
           title="Add Skill"
         />
@@ -47,7 +48,7 @@ class Profile extends Component {
         <Text>
           Learn:
         </Text>
-        <View><Learns /></View>
+        <View><Learns learns={this.props.currentUser.learn} /></View>
         <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
           title="Add Skill"
         />
@@ -62,7 +63,7 @@ class Profile extends Component {
 // From Redux SA
 const mapStateToProps = state => (
   {
-    post: state.posts.current,
+    currentUser: state.user.current,
   }
 );
 

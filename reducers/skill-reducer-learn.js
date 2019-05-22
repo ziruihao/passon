@@ -12,11 +12,11 @@ const initialState = {
 // This updates the store; handles manipulating the state
 const TeachSkillReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.FETCH_TEACHES:
+    case ActionTypes.FETCH_LEARNS:
       return Object.assign({}, state, {
         all: action.payload,
       });
-    case ActionTypes.FETCH_TEACH:
+    case ActionTypes.FETCH_LEARN:
       return Object.assign({}, state, {
         current: action.payload,
       });
