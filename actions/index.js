@@ -213,10 +213,9 @@ export function signinUser({ email, password }) {
   return (dispatch) => {
     // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
-        // AsyncStorage.setItem('token', response.data.token);
-        // history.push('/');
+        await AsyncStorage.setItem('token', response.data.token);
       })
       .catch((error) => {
         dispatch(authError(`Sign In Failed: ${error.data}`));
@@ -240,8 +239,9 @@ export function signupUser({
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
     })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        await AsyncStorage.setItem('token', response.data.token);
         // history.push('/');
       })
       .catch((error) => {
@@ -249,6 +249,7 @@ export function signupUser({
       });
   };
 }
+
 
 // deletes token from localstorage
 // and deauths
