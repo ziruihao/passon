@@ -49,9 +49,9 @@ export const createChat = (req, res) => {
 export const getChats = (req, res) => {
   // // res.send('posts should be returned');
   console.log('in getChats function');
-  Chat.find({})
+  Chat.find({}).populate('userId')
     .then((result) => {
-      res.send(result);
+      res.json(result);
     })
     .catch((error) => {
       res.status(500).json({ error });

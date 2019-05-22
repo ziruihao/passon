@@ -66,7 +66,7 @@ const app2 = express();
 // eslint-disable-next-line new-cap
 const server = http.Server(app2);
 const io = socketio(server);
-server.listen(3000, () => { return console.log('listening on *:3000'); });
+server.listen(3030, () => console.log('listening on *:3000'));
 
 // The event will be called when a client is connected.
 io.on('connection', (socket) => {
