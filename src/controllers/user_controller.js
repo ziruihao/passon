@@ -154,20 +154,26 @@ export const updateUser = (req, res) => {
 export const addLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      const skill = new Skill();
-      skill.title = req.body.skill.title;
-      skill.bio = req.body.skill.bio;
-      skill.save().then((result2) => {
-        console.log(result2);
-        result.learn.push(result2);
-        console.log(result);
-        result.save().then((response) => {
-          console.log(response);
-          res.json(response);
-        }).catch((error) => {
-          res.status(500).json({ msg: error.message });
-        });
+      let alreadyHas = false;
+      result.learn.forEach((skill) => {
+        if (skill.title.toUpperCase() === req.body.skill.title.toUpperCase()) alreadyHas = true;
       });
+      if (!alreadyHas) {
+        const skill = new Skill();
+        skill.title = req.body.skill.title;
+        skill.bio = req.body.skill.bio;
+        skill.save().then((result2) => {
+          console.log(result2);
+          result.learn.push(result2);
+          console.log(result);
+          result.save().then((response) => {
+            console.log(response);
+            res.json(response);
+          }).catch((error) => {
+            res.status(500).json({ msg: error.message });
+          });
+        });
+      } else res.send('Skill already exists');
     })
     .catch((error) => {
       res.status(500).json({ msg: error.message });
