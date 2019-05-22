@@ -218,10 +218,11 @@ export function signoutUser(history) {
 export function fetchChats() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
-    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value, 'Cache-Control': 'no-cache' } })
       .then((response) => {
-        // console.log(`getChats response: ${JSON.stringify(response.data)}`);
-        dispatch({ type: ActionTypes.GET_CHATS, payload: (JSON.stringify(response.data)) });
+        const send = JSON.stringify(response.data);
+        console.log(`getChats response: ${send}`);
+        dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
         console.log(error);

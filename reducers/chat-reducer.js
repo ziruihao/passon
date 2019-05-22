@@ -2,7 +2,20 @@ import { ActionTypes } from '../actions';
 
 // From assignment page
 const initialState = {
-  chats: [],
+  chats: [
+    // {
+    //   userId: [{
+    //     // teach: [],
+    //     // learn: [],
+    //     _id: '',
+    //     firstName: '',
+    //     lastName: '',
+    //     email: '',
+    //   }],
+    //   messages: [],
+    //   _id: '',
+    // },
+  ],
   curr: '',
 };
 
@@ -14,9 +27,10 @@ const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.GET_CHATS:
       console.log(`in reducer, payload: ${action.payload}`);
-      return Object.assign({}, state, {
+      return {
         chats: action.payload,
-      });
+        curr: '',
+      };
     default: // Delete post uses fetch post to update central store
       return state;
   }

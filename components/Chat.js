@@ -15,7 +15,7 @@ class Chat extends React.Component {
       const socket = io('http://localhost:3000');
       socket.on('connect', () => {
       // Connected, let's sign-up for to receive messages for this room
-        socket.emit('room', room);
+        socket.emit('room', room); // chatID passed in from props
       });
 
       // socket.on('message', (data) => {

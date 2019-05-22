@@ -14,7 +14,7 @@ class Messaging extends Component {
 
     this.state = {
       // chats: 'various chats',
-      //    data: [],
+
       otherUser: 'Other User ID?',
     };
   }
@@ -32,21 +32,59 @@ class Messaging extends Component {
    * 3. make sure DB has some proper users with proper emails to be found
    * 4. fetch Chats based on this user's id in all chats (Chat.foreach...)
    * 5. create tabs based on the fetched chats
+   *
+   *         <Text style={styles.item}>{item.userId}</Text>
+        <Text>{this.props.chats}</Text>
    */
 
   render() {
-    console.log(`this.props.chat: ${this.props.chats}`);
+    console.log(`CHATTTTT: ${JSON.stringify(this.props.chats[0])}+`);
+
     return (
+
       <View style={styles.container}>
-        <FlatList
-          data={this.props.chats}
-          renderItem={({ item }) => (
-            <div><Text style={styles.item}>{item.userId}</Text>
-              <Text style={styles.item}>{(item.messages == null) ? '' : item.messages[0]}</Text>
-            </div>
-          )}
-        />
-        <Text>{`chats: ${this.props.chats}`}</Text>
+        <Text>Chats</Text>
+        { // (this.props.chats[0] === undefined) ? <Text> nothing </Text> : (
+          this.props.chats.map((chat) => {
+            console.log(`first NAME: ${chat.userId[0].firstName}`);
+            return (
+              <View>
+                <Text>{chat.userId[0].firstName}</Text>
+                <Text>{chat.userId[0].lastName}</Text>
+                <Text>{chat.userId[1].firstName}</Text>
+                <Text>{chat.userId[1].lastName}</Text>
+                <Button title="Go to Chat"
+                  onPress={() => {
+                    const pass = { messages: chat.messages, id: chat._id };
+                    this.props.navigation.navigate('Chat', pass);
+                  }}
+                />
+              </View>
+            );
+          })
+          // <FlatList
+          //   data={this.props.chats}
+          //   extraData={this.props}
+          //   renderItem={({ item }) => (
+          //     <View>
+          //       <Text>
+          //         thing
+          //         {// JSON.stringify(item.userId[0].firstName)
+          //         }
+          //         {// JSON.stringify(item.userId[0]).lastName
+          //         }
+          //         {// item.userId[1].firstName
+          //       }
+          //         {// item.userId[1].lastName
+          //       }
+          //       </Text>
+          //       {/* */}
+          //     </View>
+          //   )}
+          // />
+        // )
+        }
+
         <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
           onChangeText={text => this.setState({ otherUser: text })}
           value={this.state.otherUser}
@@ -58,6 +96,7 @@ class Messaging extends Component {
         </Button>
         <Button title="create Chat"
           onPress={() => {
+            console.log('create chat pressed');
             const chat = {
               email: this.state.otherUser, // email of the target message user
               messages: [],
@@ -78,6 +117,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'rgb(240,240,240)',
     margin: 50,
+  },
+  item: {
+    backgroundColor: 'rgb(255, 0,0)',
   },
   nameInput: { // 3. <- Add a style for the input
     height: 24 * 2,
