@@ -36,7 +36,7 @@ export const createChat = (req, res) => {
 
     chat.save()
       .then(() => {
-        res.json({ message: 'Chat created!' });
+        res.json({ message: 'Chat created!!' });
         console.log('chat created! ');
       })
       .catch((error) => {
