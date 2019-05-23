@@ -18,11 +18,16 @@ export const ActionTypes = {
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
   DELETE_POST: 'DELETE_POST',
+<<<<<<< HEAD
+  GET_SELF: 'GET_SELF',
+  GET_CHATS: 'GET_CHATS',
+=======
 
   FETCH_LEARNS: 'FETCH_LEARNS',
   FETCH_TEACHES: 'FETCH_TEACHES',
   FETCH_LEARN: 'FETCH_LEARN',
   FETCH_TEACH: 'FETCH_TEACH',
+>>>>>>> 3603c8d1ff4854601144c68802ad0bc66c7fb8a6
 };
 
 // From assignment page
@@ -147,8 +152,6 @@ export function fetchUser(id) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
-        console.log('fetch user');
-        console.log(response.data);
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
       })
       .catch((error) => {
@@ -178,8 +181,11 @@ export function fetchSelf() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
+<<<<<<< HEAD
+=======
         // console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
         // console.log(`Response self data: ${JSON.stringify(response.data)}`);
+>>>>>>> 3603c8d1ff4854601144c68802ad0bc66c7fb8a6
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
@@ -311,11 +317,10 @@ export function fetchChats() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(`getChats response: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
-        console.log(error);
+      //  console.log(error);
       });
   };
 }
@@ -332,3 +337,16 @@ export function createChat(chat) {
       });
   };
 }
+
+// export function saveMessage(message) {
+//   return async (dispatch) => {
+//     const value = await AsyncStorage.getItem('token');
+//     axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
+//       .then((response) => {
+//         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
+// }

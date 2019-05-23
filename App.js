@@ -41,7 +41,7 @@ export default App;
 // import FirstScreen from './components/FirstScreen';
 
 // // disable really annoying in app warnings
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 // const App = (props) => {
 //   return <FirstScreen />;
