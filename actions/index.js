@@ -96,8 +96,6 @@ export function fetchUser(id) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
-        console.log('fetch user');
-        console.log(response.data);
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
       })
       .catch((error) => {
@@ -127,8 +125,6 @@ export function fetchSelf() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-        console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
-        console.log(`Response self data: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
@@ -258,7 +254,6 @@ export function fetchChats() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        console.log(`response from fetchChats: ${JSON.stringify(response)}`);
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
