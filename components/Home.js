@@ -95,7 +95,7 @@ class Home extends Component {
       // console.log('element: ');
 
       return (
-        <Container>
+        <Container key={element.id}>
           <Content style={styles.container}>
             <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
               <Card style={styles.mb}>

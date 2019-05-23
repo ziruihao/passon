@@ -176,6 +176,8 @@ export function fetchUsers(id) {
 export function fetchSelf() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
+    console.log('FETCH SELF TOKEN');
+    console.log(value);
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });

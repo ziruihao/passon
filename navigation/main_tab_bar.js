@@ -4,7 +4,7 @@ import {
   createStackNavigator,
 } from 'react-navigation';
 import HomeTab from './home_tab';
-import Home from '../components/Home';
+// import Home from '../components/Home';
 import MessagingScreen from '../components/Messaging';
 import ChatScreen from '../components/Chat';
 import ProfileNav from './profile_nav';
@@ -27,7 +27,7 @@ const MainTabBar = createBottomTabNavigator(
 
       }),
     },
-    Profile: {
+    ProfileTab: {
       screen: ProfileNav,
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: 'My Profile',
@@ -35,7 +35,7 @@ const MainTabBar = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Profile',
+    initialRouteName: 'ProfileTab',
   },
 );
 
