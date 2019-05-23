@@ -29,7 +29,7 @@ class EditSkillTeach extends Component {
         bio: this.state.bio,
         ratings: this.state.ratings,
       });
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ProfileSelf');
     }
   };
 
@@ -40,7 +40,7 @@ class EditSkillTeach extends Component {
       bio: this.state.bio,
       ratings: this.state.ratings,
     });
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate('ProfileSelf');
   };
 
   renderResponse = () => {

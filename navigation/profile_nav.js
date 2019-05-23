@@ -1,5 +1,5 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
-import Profile from '../containers/Profile';
+import ProfileSelf from '../containers/ProfileSelf';
 // import My_Profile from '../components/my_profile';
 import AddSkillTeach from '../containers/AddSkillTeach';
 import EditSkillTeach from '../containers/EditSkillTeach';
@@ -9,14 +9,14 @@ import EditSkillLearn from '../containers/EditSkillLearn';
 // nest stack navigator to handle two internal views
 const ProfileNav = createStackNavigator({
   // keys are the names of the "routes"
-  Profile: { screen: Profile },
+  ProfileSelf: { screen: ProfileSelf },
   AddSkillTeach: { screen: AddSkillTeach },
   EditSkillTeach: { screen: EditSkillTeach },
   AddSkillLearn: { screen: AddSkillLearn },
   EditSkillLearn: { screen: EditSkillLearn },
 },
 {
-  initialRouteName: 'Profile',
+  initialRouteName: 'ProfileSelf',
   headerMode: 'none',
 });
 

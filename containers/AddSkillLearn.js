@@ -23,7 +23,7 @@ class AddSkillLearn extends Component {
       this.props.addLearn({
         title: this.state.title,
       });
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ProfileSelf');
     }
   };
 
@@ -42,7 +42,7 @@ class AddSkillLearn extends Component {
         ) : null }
         <View>
           <Button onPress={() => { this.add(); }} title="Save" />
-          <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel" />
+          <Button onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" />
         </View>
       </View>
     );

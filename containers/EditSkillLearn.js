@@ -23,13 +23,13 @@ class EditSkillLearn extends Component {
       this.props.updateLearn({
         title: this.state.title,
       });
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ProfileSelf');
     }
   };
 
   delete = () => {
     this.props.deleteLearn({ title: this.state.title });
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate('ProfileSelf');
   };
 
   render() {

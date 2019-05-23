@@ -3,7 +3,8 @@ import {
   createAppContainer, createBottomTabNavigator,
   createStackNavigator,
 } from 'react-navigation';
-import HomeTab from './home_tab';
+// import HomeTab from './home_tab';
+import Home from '../components/Home';
 import MessagingScreen from '../components/Messaging';
 import ChatScreen from '../components/Chat';
 import ProfileNav from './profile_nav';
@@ -16,8 +17,8 @@ const Messaging = createStackNavigator({
 
 const MainTabBar = createBottomTabNavigator(
   {
-    HomeTab: {
-      screen: HomeTab,
+    Home: {
+      screen: Home,
     },
     MessagingTab: {
       screen: Messaging,
@@ -34,7 +35,7 @@ const MainTabBar = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'HomeTab',
+    initialRouteName: 'Profile',
   },
 );
 

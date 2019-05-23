@@ -35,7 +35,7 @@ class Profile extends React.Component {
   componentDidMount() {
     console.log('==================-=======-=-=-=Profil: ');
     console.log(this.props.navigation.state.params.id);
-    this.props.fetchUser(this.props.navigation.state.params._id);
+    this.props.fetchUser(this.props.navigation.state.params.id);
   }
 
 

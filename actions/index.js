@@ -86,6 +86,7 @@ export function addTeach(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log('ADD TEACH================');
       console.log(response);
     })
       .catch((error) => {

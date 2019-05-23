@@ -39,13 +39,16 @@ class AddSkillTeach extends Component {
     if (this.state.title !== ''
     && this.state.years !== ''
     && this.state.bio !== '') {
+      console.log('add skill teach.js file ============');
       this.props.addTeach({
-        title: this.state.skill,
-        years: this.state.years,
-        bio: this.state.description,
-        ratings: this.state.ratings,
+        skill: {
+          title: this.state.skill,
+          years: this.state.years,
+          bio: this.state.bio,
+          ratings: this.state.ratings,
+        },
       });
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ProfileSelf');
     }
   };
 
@@ -82,7 +85,7 @@ class AddSkillTeach extends Component {
         ) : null }
         <View>
           <Button onPress={() => { this.add(); }} title="Save" />
-          <Button onPress={() => { this.props.navigation.navigate('Profile'); }} title="Cancel" />
+          <Button onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" />
         </View>
       </View>
     );
