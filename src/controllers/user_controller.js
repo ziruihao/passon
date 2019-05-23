@@ -195,18 +195,21 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
+  console.log('SERVER ADD TEACH ================ ');
+  console.log(req);
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
+      console.log(result);
       let alreadyHas = false;
       result.teach.forEach((skill) => {
-        if (skill.title.toUpperCase() === req.body.skill.title.toUpperCase()) alreadyHas = true;
+        if (skill.title.toUpperCase() === req.body.title.toUpperCase()) alreadyHas = true;
       });
       if (!alreadyHas) {
         const skill = new Skill();
-        skill.title = req.body.skill.title;
-        skill.years = req.body.skill.years;
-        skill.bio = req.body.skill.bio;
-        skill.ratings = req.body.skill.ratings;
+        skill.title = req.body.title;
+        skill.years = req.body.years;
+        skill.bio = req.body.bio;
+        skill.ratings = req.body.ratings;
 
         skill.save().then((result2) => {
           result.teach.push(result2);
