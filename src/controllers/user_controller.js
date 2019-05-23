@@ -121,7 +121,13 @@ export const getUser = (req, res) => {
  * @param {*} res
  */
 export const getSelf = (req, res) => {
-  res.send(req.user);
+  User.findById(req.user.id).populate('learn').populate('teach')
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((error) => {
+      res.status(404).json({ message: error.message });
+    });
 };
 
 
@@ -195,21 +201,22 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
+  console.log('REQ BODY ====');
+  console.log(req.body);
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      let alreadyHas = false;
-      result.teach.forEach((skill) => {
-        if (skill.title.toUpperCase() === req.body.skill.title.toUpperCase()) alreadyHas = true;
-      });
+      const alreadyHas = false;
+      // result.teach.forEach((skill) => {
+      //   if (skill.title.toUpperCase() === req.body.title.toUpperCase()) alreadyHas = true;
+      // });
       if (!alreadyHas) {
         const skill = new Skill();
         skill.title = req.body.skill.title;
         skill.years = req.body.skill.years;
         skill.bio = req.body.skill.bio;
         skill.ratings = req.body.skill.ratings;
-
-        skill.save().then((result2) => {
-          result.teach.push(result2);
+        skill.save().then((saved) => {
+          result.teach.push(saved);
           result.save().then((response) => {
             res.json(response);
           }).catch((error) => {
