@@ -18,16 +18,13 @@ export const ActionTypes = {
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
   DELETE_POST: 'DELETE_POST',
-<<<<<<< HEAD
   GET_SELF: 'GET_SELF',
   GET_CHATS: 'GET_CHATS',
-=======
 
   FETCH_LEARNS: 'FETCH_LEARNS',
   FETCH_TEACHES: 'FETCH_TEACHES',
   FETCH_LEARN: 'FETCH_LEARN',
   FETCH_TEACH: 'FETCH_TEACH',
->>>>>>> 3603c8d1ff4854601144c68802ad0bc66c7fb8a6
 };
 
 // From assignment page
@@ -181,11 +178,6 @@ export function fetchSelf() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-<<<<<<< HEAD
-=======
-        // console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
-        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
->>>>>>> 3603c8d1ff4854601144c68802ad0bc66c7fb8a6
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
