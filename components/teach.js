@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, Text, View, Button,
 } from 'react-native';
 import {
   Container,
@@ -29,6 +29,7 @@ const Teach = (props) => {
       <Text>{props.title}</Text>
       <Text>{props.years}</Text>
       <Text>{props.bio}</Text>
+      <Button onPress={() => props.navigation.navigate('EditSkillTeach')} title="Edit Skill" />
     </View>
   );
 };

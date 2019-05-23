@@ -36,20 +36,10 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    // // if (this.props.User === null) {
-    // //   this.props.fetchSelf();
-    // // }
-    // console.log('RENDER TEACHES=================');
-    // console.log(this.props.Self.teach);
     return <View><Teaches teaches={this.props.Self.teach} /></View>;
   }
 
   renderLearns() {
-    // // if (this.props.User === null) {
-    // //   this.props.fetchSelf();
-    // // }
-    // console.log('RENDER learns=================');
-    // console.log(this.props.Self);
     return <View><Learns learns={this.props.Self.learn} /></View>;
   }
 
@@ -67,9 +57,9 @@ class ProfileSelf extends Component {
           <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
             title="Add Skill"
           />
-          <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
+          {/* <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
             title="Edit Skill"
-          />
+          /> */}
           <Text>
             Learn:
           </Text>
@@ -78,9 +68,9 @@ class ProfileSelf extends Component {
           <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
             title="Add Skill"
           />
-          <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
+          {/* <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
             title="Edit Skill"
-          />
+          /> */}
         </View>
       );
     }

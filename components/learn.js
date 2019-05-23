@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet,
+  StyleSheet, Text, View, Button,
 } from 'react-native';
 import {
   Container,
@@ -21,14 +21,18 @@ const styles = StyleSheet.create({
 
 const Learn = (props) => {
   return (
-    <Container style={styles.container}>
-      <Header>
-        <Body>
-          <Title>{props.title}</Title>
-        </Body>
-        <Right />
-      </Header>
-    </Container>
+    // <Container style={styles.container}>
+    //   <Header>
+    //     <Body>
+    //       <Title>{props.title}</Title>
+    //     </Body>
+    //     <Right />
+    //   </Header>
+    // </Container>
+    <View>
+      <Text>{props.title}</Text>
+      <Button onPress={() => props.navigation.navigate('EditSkillLearn')} title="Edit Skill" />
+    </View>
   );
 };
 
