@@ -26,7 +26,6 @@ const initialState = {
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.GET_CHATS:
-      console.log(`in reducer, payload: ${action.payload}`);
       return {
         chats: action.payload,
         curr: '',

@@ -6,7 +6,7 @@ import {
   StyleSheet, View, Button, TextInput, FlatList, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchChats, createChat } from '../actions';
+import { fetchChats, createChat, fetchSelf } from '../actions';
 
 class Messaging extends Component {
   constructor(props) {
@@ -17,10 +17,15 @@ class Messaging extends Component {
 
       otherUser: 'Other User ID?',
     };
+    this.props.fetch_chats();
   }
 
   componentDidMount() {
-    this.props.fetch_chats();
+    setInterval(() => {
+      this.props.fetch_chats();
+    }, 3000);
+
+    this.props.fetch_self();
   }
 
   /**
@@ -39,50 +44,52 @@ class Messaging extends Component {
 
   render() {
     console.log(`CHATTTTT: ${JSON.stringify(this.props.chats[0])}+`);
-
+    let first, last;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
     return (
 
       <View style={styles.container}>
         <Text>Chats</Text>
         { // (this.props.chats[0] === undefined) ? <Text> nothing </Text> : (
           this.props.chats.map((chat) => {
-            console.log(`first NAME: ${chat.userId[0].firstName}`);
+            let displayName;
+            if (chat.userId[0].firstName === first
+              && chat.userId[0].lastName === last) {
+              displayName = (
+                <View>
+                  <Text style={styles.text}>{chat.userId[1].firstName}
+                    {' '}
+                    {chat.userId[1].lastName}
+                  </Text>
+                </View>
+              );
+            } else if (chat.userId[1].firstName === first
+              && chat.userId[1].lastName === last) {
+              displayName = (
+                <View>
+                  <Text style={styles.text}>{chat.userId[0].firstName}
+                    {' '} {chat.userId[0].lastName}
+                  </Text>
+                </View>
+              );
+            } else {
+              return null;
+            }
             return (
               <View>
-                <Text>{chat.userId[0].firstName}</Text>
-                <Text>{chat.userId[0].lastName}</Text>
-                <Text>{chat.userId[1].firstName}</Text>
-                <Text>{chat.userId[1].lastName}</Text>
+                {displayName}
                 <Button title="Go to Chat"
                   onPress={() => {
-                    const pass = { messages: chat.messages, id: chat._id };
+                    const pass = { messages: chat.messages, id: chat.id };
                     this.props.navigation.navigate('Chat', pass);
                   }}
                 />
               </View>
             );
           })
-          // <FlatList
-          //   data={this.props.chats}
-          //   extraData={this.props}
-          //   renderItem={({ item }) => (
-          //     <View>
-          //       <Text>
-          //         thing
-          //         {// JSON.stringify(item.userId[0].firstName)
-          //         }
-          //         {// JSON.stringify(item.userId[0]).lastName
-          //         }
-          //         {// item.userId[1].firstName
-          //       }
-          //         {// item.userId[1].lastName
-          //       }
-          //       </Text>
-          //       {/* */}
-          //     </View>
-          //   )}
-          // />
-        // )
         }
 
         <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
@@ -115,11 +122,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'rgb(240,240,240)',
+    backgroundColor: 'rgb(220,220,220)',
     margin: 50,
   },
-  item: {
-    backgroundColor: 'rgb(255, 0,0)',
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   nameInput: { // 3. <- Add a style for the input
     height: 24 * 2,
@@ -133,6 +141,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   // auth: state.auth.authenticated,
   chats: state.chat.chats,
+  self: state.user.current,
 }
 );
 
@@ -140,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetch_chats: () => { dispatch(fetchChats()); },
     create_chat: (chat) => { dispatch(createChat(chat)); },
+    fetch_self: () => { dispatch(fetchSelf()); },
   };
 };
 

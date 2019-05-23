@@ -256,14 +256,13 @@ export function signoutUser(history) {
 export function fetchChats() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
-    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value, 'Cache-Control': 'no-cache' } })
+    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
-        const send = JSON.stringify(response.data);
-        console.log(`getChats response: ${send}`);
+        console.log(`response from fetchChats: ${JSON.stringify(response)}`);
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
-        console.log(error);
+      //  console.log(error);
       });
   };
 }
@@ -280,3 +279,16 @@ export function createChat(chat) {
       });
   };
 }
+
+// export function saveMessage(message) {
+//   return async (dispatch) => {
+//     const value = await AsyncStorage.getItem('token');
+//     axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
+//       .then((response) => {
+//         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
+// }

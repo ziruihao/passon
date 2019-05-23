@@ -1,6 +1,9 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
+import { connect } from 'react-redux';
+// import { fetchChats, createChat, fetchSelf } from '../actions';
 
 class Chat extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -9,7 +12,7 @@ class Chat extends React.Component {
 
     constructor(props) {
       super(props);
-      const room = 'abc123'; // would be other user's id from this.props
+      const room = this.props.id; // would be chat's objectID
 
       // Creating the socket-client instance will automatically connect to the server.
       const socket = io('http://localhost:3000');
@@ -48,34 +51,58 @@ class Chat extends React.Component {
           },
         ],
       });
+
+      const pastMsg = this.props.navigation.getParam('messages', null);
+      if (pastMsg !== undefined && pastMsg !== null && pastMsg.length > 0) {
+        pastMsg.forEach((msg) => {
+          msg.user = {
+            _id: 1,
+            name: 'first plus last',
+          };
+        });
+        this.setState(previousState => ({
+          messages: previousState.messages.push(pastMsg),
+        }));
+      }
+      console.log(`messages state: ${this.state.messages}`);
     }
 
     sendMessage(messages = []) {
-      console.log(`messages sent: ${JSON.stringify(messages)}`);
       const message = {
         body: {
           text: messages[0].text,
           createdAt: messages[0].createdAt,
-          userId: messages[0].user,
-          chatId: messages[0]._id,
+          userId: this.props.self.id,
+          chatId: this.props.navigation.getParam('id', {}),
         },
       };
+
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, messages),
       }));
+      console.log(`in sendMessage, chatID: ${message.body.chatId}`);
       this.state.socket.emit('message', message);
     }
 
     render() {
       return (
         <GiftedChat
-          messages={this.state.messages}
+          messages={this.state.messages
+          }
           onSend={messages => this.sendMessage(messages)}
-          user={{
-            _id: 1,
-          }}
         />
       );
     }
 }
-export default Chat;
+const mapStateToProps = state => ({
+  self: state.user.current,
+}
+);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // save_message: () => { dispatch(fetchChats()); },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
