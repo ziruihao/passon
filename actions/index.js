@@ -18,6 +18,11 @@ export const ActionTypes = {
   UPDATE_POST: 'UPDATE_POST', // There are more steps than just using fetch_post (and possibly another command) to do this
   CREATE_POST: 'CREATE_POST',
   DELETE_POST: 'DELETE_POST',
+
+  FETCH_LEARNS: 'FETCH_LEARNS',
+  FETCH_TEACHES: 'FETCH_TEACHES',
+  FETCH_LEARN: 'FETCH_LEARN',
+  FETCH_TEACH: 'FETCH_TEACH',
 };
 
 // From assignment page
@@ -25,65 +30,113 @@ const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://sulljohn-cs52-blog.herokuapp.com/api';
 // const API_KEY = '?key=j_sullivan';
 
-// // From assignment page
-export function fetchSkills() {
+export function fetchLearn() {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/skills`)
-      .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_SKILLS, payload: response.data });
-      })
+    axios.get(`${ROOT_URL}/learn`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_LEARN, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchTeach() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/teach`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_TEACH, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchLearns() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/learn`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_LEARNS, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function fetchTeaches() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/teach`).then((response) => {
+      dispatch({ type: ActionTypes.FETCH_TEACHES, payload: response.data });
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+}
+
+export function addLearn(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function fetchSkill(id) {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/skills/${id}`)
-      .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_SKILL, payload: response.data });
-      })
+export function addTeach(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log('ADD TEACH================');
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-
-export function createSkill(skill) {
-  return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
-    axios.post(`${ROOT_URL}/skills`, skill)
-      .then((response) => {
-        // dispatch({ type: ActionTypes.CREATE_POST, payload: response.data });
-      })
+export function updateLearn(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function updateSkill(id, skill) {
-  return (dispatch) => {
-    // axios.put(`${ROOT_URL}/posts/${id}`, post)
-    axios.put(`${ROOT_URL}/skills/${id}`, skill)
-      .then((response) => {
-        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: response.data });
-      })
+export function updateTeach(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.put(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });
   };
 }
 
-export function deleteSkill(id) {
-  return (dispatch) => {
-    // axios.delete(`${ROOT_URL}/posts/${id}`)
-    axios.delete(`${ROOT_URL}/skills/${id}`)
-      .then(() => {
-        // dispatch({ type: ActionTypes.UPDATE_SKILL, payload: null });
-      })
+export function deleteLearn(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log(response.data);
+    })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function deleteTeach(skill) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.delete(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });
@@ -125,8 +178,8 @@ export function fetchSelf() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-        console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
-        console.log(`Response self data: ${JSON.stringify(response.data)}`);
+        // console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
+        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
@@ -230,6 +283,7 @@ export function signupUser({
     })
       .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // console.log(response.data.token);
         await AsyncStorage.setItem('token', response.data.token);
         // history.push('/');
       })
@@ -238,6 +292,7 @@ export function signupUser({
       });
   };
 }
+
 
 // deletes token from localstorage
 // and deauths
