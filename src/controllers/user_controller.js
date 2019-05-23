@@ -208,8 +208,6 @@ export const addTeach = (req, res) => {
       //   if (skill.title.toUpperCase() === req.body.title.toUpperCase()) alreadyHas = true;
       // });
       if (!alreadyHas) {
-        console.log('REQ BODY');
-        console.log(req.body);
         const skill = new Skill();
         skill.title = req.body.title;
         skill.years = req.body.years;
