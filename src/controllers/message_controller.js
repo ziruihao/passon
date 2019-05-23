@@ -1,24 +1,33 @@
-import Message from '../models/message_model';
+// import Message from '../models/message_model';
 import Chat from '../models/chat_model';
 import User from '../models/user_model';
-// import User from '../models/user_model';
 
-export const saveMessage = (req, res) => {
-  const msg = new Message();
+// export const saveMessage = (req, res) => {
+//   const msg = new Message();
 
-  msg.text = req.body.text;
-  msg.createdAt = new Date();
-  msg.userId = req.body.userId;
-  msg.chatId = req.body.chatId;
+//   msg.text = req.body.text;
+//   msg.createdAt = new Date();
+//   msg.userId = req.body.userId;
+//   msg.chatId = req.body.chatId;
 
-  msg.save()
-    .then(() => {
-      res.json({ message: 'Message saved!' });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-};
+//   Chat.findById(req.body.chatId).then((chat) => {
+//     const newArray = chat.messages.slice();
+//     newArray.push(msg);
+//     chat.messages = newArray;
+//     console.log('chat found for message');
+//   })
+//     .catch((error) => {
+//       res.status(500).json({ error });
+//     });
+
+//   // msg.save()
+//   //   .then(() => {
+//   //     res.json({ message: 'Message saved!' });
+//   //   })
+//   //   .catch((error) => {
+//   //     res.status(500).json({ error });
+//   //   });
+// };
 
 //
 
@@ -36,7 +45,7 @@ export const createChat = (req, res) => {
 
     chat.save()
       .then(() => {
-        res.json({ message: 'Chat created!!' });
+        // res.json({ message: 'Chat created!!' });
         console.log('chat created! ');
       })
       .catch((error) => {
@@ -49,9 +58,9 @@ export const createChat = (req, res) => {
 export const getChats = (req, res) => {
   // // res.send('posts should be returned');
   console.log('in getChats function');
-  Chat.find({}).populate('userId')
+  Chat.find({}).populate('userId')// .populate('messages')
     .then((result) => {
-      res.json(result);
+      res.send(result);
     })
     .catch((error) => {
       res.status(500).json({ error });
