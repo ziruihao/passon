@@ -201,6 +201,8 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
+  console.log('REQ BODY ====');
+  console.log(req.body);
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const alreadyHas = false;
@@ -209,10 +211,10 @@ export const addTeach = (req, res) => {
       // });
       if (!alreadyHas) {
         const skill = new Skill();
-        skill.title = req.body.title;
-        skill.years = req.body.years;
-        skill.bio = req.body.bio;
-        skill.ratings = req.body.ratings;
+        skill.title = req.body.skill.title;
+        skill.years = req.body.skill.years;
+        skill.bio = req.body.skill.bio;
+        skill.ratings = req.body.skill.ratings;
         skill.save().then((saved) => {
           result.teach.push(saved);
           result.save().then((response) => {
