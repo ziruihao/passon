@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import apiRouter from './router';
 // import * as Message from './controllers/message_controller';
 import Message from './models/message_model';
-// import Chat from './models/chat_model';
+import Chat from './models/chat_model';
 
 dotenv.config({ silent: true });
 
@@ -86,6 +86,18 @@ io.on('connection', (socket) => {
     });
     chatMessage.save().then((result) => {
       console.log('chat message saved');
+
+      Chat.findById(message.body.chatId).then((chat) => {
+        const newArray = chat.messages.slice();
+        newArray.push(chat);
+        chat.messages = newArray;
+        chat.save().then(() => {
+          console.log(`msg stored in chat${newArray}`);
+        });
+      })
+        .catch((error) => {
+          console.log(error);
+        });
     })
       .catch((error) => {
         console.log('chat message save failed');
