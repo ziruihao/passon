@@ -74,7 +74,7 @@ export function addLearn(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.post(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -87,7 +87,7 @@ export function addTeach(skill) {
     const value = await AsyncStorage.getItem('token');
     axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
       console.log('ADD TEACH================');
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -99,7 +99,7 @@ export function updateLearn(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.put(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -111,7 +111,7 @@ export function updateTeach(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.put(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -123,7 +123,7 @@ export function deleteLearn(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.delete(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -135,7 +135,7 @@ export function deleteTeach(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.delete(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
@@ -178,8 +178,8 @@ export function fetchSelf() {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-        console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
-        console.log(`Response self data: ${JSON.stringify(response.data)}`);
+        // console.log('FETCHING SELF++++++++++++++++++++++++++++++++++++++++++++++++++=');
+        // console.log(`Response self data: ${JSON.stringify(response.data)}`);
         dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
       })
       .catch((error) => {
@@ -283,6 +283,7 @@ export function signupUser({
     })
       .then(async (response) => {
         dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+        // console.log(response.data.token);
         await AsyncStorage.setItem('token', response.data.token);
         // history.push('/');
       })

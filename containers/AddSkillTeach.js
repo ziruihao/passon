@@ -39,10 +39,9 @@ class AddSkillTeach extends Component {
     if (this.state.title !== ''
     && this.state.years !== ''
     && this.state.bio !== '') {
-      console.log('add skill teach.js file ============');
       this.props.addTeach({
         skill: {
-          title: this.state.skill,
+          title: this.state.title,
           years: this.state.years,
           bio: this.state.bio,
           ratings: this.state.ratings,

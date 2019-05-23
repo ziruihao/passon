@@ -36,20 +36,20 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    // if (this.props.User === null) {
-    //   this.props.fetchSelf();
-    // }
-    console.log('RENDER TEACHES=================');
-    console.log(this.props.Self);
+    // // if (this.props.User === null) {
+    // //   this.props.fetchSelf();
+    // // }
+    // console.log('RENDER TEACHES=================');
+    // console.log(this.props.Self.teach);
     return <View><Teaches teaches={this.props.Self.teach} /></View>;
   }
 
   renderLearns() {
-    // if (this.props.User === null) {
-    //   this.props.fetchSelf();
-    // }
-    console.log('RENDER learns=================');
-    console.log(this.props.Self);
+    // // if (this.props.User === null) {
+    // //   this.props.fetchSelf();
+    // // }
+    // console.log('RENDER learns=================');
+    // console.log(this.props.Self);
     return <View><Learns learns={this.props.Self.learn} /></View>;
   }
 
