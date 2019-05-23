@@ -3,37 +3,44 @@ import { connect } from 'react-redux';
 import {
   Text, View, Button, TextInput,
 } from 'react-native';
-import { updateSkill, deleteSkill } from '../actions';
+import { updateTeach, deleteTeach } from '../actions';
 
-class AddSkill extends Component {
+class EditSkillTeach extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      skill: '',
+      title: '',
       years: '',
-      description: '',
+      bio: '',
+      ratings: [],
     };
   }
 
-    edit = () => { // Check that there are no bad or empty values that the user is attempting to post
-      if (this.state.skill === ''
-      || this.state.years === ''
-      || this.state.description === '') {
-        this.setState({ valid_entry: false });
-      } else {
-        this.props.updateSkill({
-          skill: this.state.skill,
-          years: this.state.years,
-          description: this.state.description,
-        });
-        this.props.navigation.navigate('Profile');
-      }
-    };
+  edit = () => { // Check that there are no bad or empty values that the user is attempting to post
+    if (this.state.title === ''
+    || this.state.years === ''
+    || this.state.bio === '') {
+      this.setState({ valid_entry: false });
+    } else {
+      this.props.updateTeach({
+        title: this.state.title,
+        years: this.state.years,
+        bio: this.state.bio,
+        ratings: this.state.ratings,
+      });
+      this.props.navigation.navigate('ProfileSelf');
+    }
+  };
 
   delete = () => {
-    this.props.deleteSkill();
-    this.props.navigation.navigate('Profile');
+    this.props.deleteTeach({
+      title: this.state.title,
+      years: this.state.years,
+      bio: this.state.bio,
+      ratings: this.state.ratings,
+    });
+    this.props.navigation.navigate('ProfileSelf');
   };
 
   renderResponse = () => {
@@ -54,7 +61,7 @@ class AddSkill extends Component {
         <Text>Edit Skill</Text>
         <TextInput
           placeholder="Skill"
-          onChangeText={(text) => { this.setState({ skill: text }); }}
+          onChangeText={(text) => { this.setState({ title: text }); }}
         />
         <TextInput
           placeholder="Years of experience"
@@ -62,7 +69,7 @@ class AddSkill extends Component {
         />
         <TextInput
           placeholder="Description of experience"
-          onChangeText={(text) => { this.setState({ description: text }); }}
+          onChangeText={(text) => { this.setState({ bio: text }); }}
         />
         <View>
           {this.renderResponse()}
@@ -74,4 +81,4 @@ class AddSkill extends Component {
   }
 }
 
-export default connect(null, { updateSkill, deleteSkill })(AddSkill);
+export default connect(null, { updateTeach, deleteTeach })(EditSkillTeach);
