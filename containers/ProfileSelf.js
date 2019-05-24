@@ -22,25 +22,16 @@ const styles = StyleSheet.create({
 });
 
 class ProfileSelf extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
-  // renderText = () => {
-  //   return (
-  //     <div>{this.props.currentUser.}</div>
-  //   );
-  // };
   componentWillMount() {
     this.props.fetchSelf();
   }
 
   renderTeaches() {
-    return <View><Teaches teaches={this.props.Self.teach} /></View>;
+    return <View><Teaches teaches={this.props.self.teach} /></View>;
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.Self.learn} /></View>;
+    return <View><Learns learns={this.props.self.learn} /></View>;
   }
 
   render() {
@@ -79,7 +70,7 @@ class ProfileSelf extends Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
-    Self: reduxState.user.current,
+    self: reduxState.user.self,
   };
 }
 
