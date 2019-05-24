@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
 
       Chat.findById(message.body.chatId).then((chat) => {
         const newArray = chat.messages.slice();
-        newArray.push(chat);
+        newArray.push(chatMessage);
         chat.messages = newArray;
         chat.save().then(() => {
           console.log(`msg stored in chat${newArray}`);
