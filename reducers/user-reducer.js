@@ -35,11 +35,6 @@ const UserReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         all: action.payload,
       });
-    case ActionTypes.FETCH_SELF:
-      console.log('CHANGING THE STATE RIGHT NOW');
-      return Object.assign({}, state, {
-        current: action.payload,
-      });
     case ActionTypes.SAVE_USER:
       return Object.assign({}, state, {
         self: action.payload,

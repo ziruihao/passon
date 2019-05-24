@@ -3,16 +3,18 @@ import { AsyncStorage } from 'react-native';
 
 // From assignment page
 export const ActionTypes = {
+  // signin or signup
   AUTH_USER: 'AUTH_USER',
   DEAUTH_USER: 'DEAUTH_USER',
   AUTH_ERROR: 'AUTH_ERROR',
   SAVE_USER: 'SAVE_USER',
 
+  // getting users
   FETCH_USER: 'FETCH_USER',
   FETCH_USERS: 'FETCH_USERS',
   FETCH_SELF: 'FETCH_SELF',
 
-  // Old actions
+  // chats
   GET_CHATS: 'GET_CHATS',
 
 };
@@ -130,7 +132,7 @@ export function fetchSelf() {
     console.log(value);
     axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
       .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_SELF, payload: response.data });
+        dispatch({ type: ActionTypes.SAVE_USER, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
