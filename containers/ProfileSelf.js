@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 class ProfileSelf extends Component {
   componentWillMount() {
-    this.props.fetchSelf();
+    // this.props.fetchSelf();
   }
 
   renderTeaches() {
@@ -35,7 +35,7 @@ class ProfileSelf extends Component {
   }
 
   render() {
-    if (this.props.Self === null) {
+    if (this.props.self === null) {
       return (<Text>Loading</Text>);
     } else {
       return ( // Button source: https://stackoverflow.com/questions/43895772/the-title-prop-of-a-button-must-be-a-string-react-native
