@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
 });
 
 class ProfileSelf extends Component {
-  componentWillMount() {
-    // this.props.fetchSelf();
+  componentDidMount() {
+    this.props.fetchSelf();
   }
 
   renderTeaches() {
