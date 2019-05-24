@@ -4,10 +4,10 @@ import {
   StyleSheet, View, Text, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigationFocus } from 'react-navigation';
 import { fetchUser, fetchSelf } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -22,8 +22,13 @@ const styles = StyleSheet.create({
 });
 
 class ProfileSelf extends Component {
-  componentDidMount() {
-    this.props.fetchSelf();
+  // componentDidMount() {
+  //   this.props.fetchSelf();
+  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.props.fetchSelf();
+    }
   }
 
   renderTeaches() {
@@ -76,4 +81,4 @@ function mapReduxStateToProps(reduxState) {
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUser, fetchSelf })(ProfileSelf);
+export default withNavigationFocus(connect(mapReduxStateToProps, { fetchUser, fetchSelf })(ProfileSelf));
