@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 class Chat extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-      title: (navigation.state.params || {}).name || 'Chat!',
+      title: (navigation.state.params || {}).otherUserName || 'Chat!',
     });
 
     constructor(props) {
@@ -24,47 +24,50 @@ class Chat extends React.Component {
       // socket.on('message', (data) => {
       //   console.log('Incoming message:', data);
       // });
-      socket.on('received', (message) => {
-        console.log('Incoming message:', message);
-        const oldMessages = () => this.state.messages;
-        this.setState({ messages: oldMessages.concat(message) });
-      });
+      // socket.on('received', (message) => {
+      //   console.log('Incoming message:', message);
+      //   const oldMessages = () => this.state.messages;
+      //   this.setState({ messages: oldMessages.concat(message) });
+      // });
       this.state = {
         socket,
         messages: [],
+        counter: 1,
       };
       this.sendMessage = this.sendMessage.bind(this);
     }
 
     componentWillMount() {
       this.setState({
-        messages: [
-          {
-            _id: 1,
-            text: 'Hello developer',
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: 'React Native',
-              avatar: 'https://placeimg.com/140/140/any',
-            },
-          },
-        ],
+        messages: [],
       });
 
-      const pastMsg = this.props.navigation.getParam('messages', null);
-      if (pastMsg !== undefined && pastMsg !== null && pastMsg.length > 0) {
-        pastMsg.forEach((msg) => {
+      const pastMsgs = this.props.navigation.getParam('messages', null); // is an array
+      if (pastMsgs !== undefined && pastMsgs !== null && pastMsgs.length > 0) {
+        pastMsgs.forEach((msg) => {
+          const who = (msg.userId === this.props.self.id)
+            ? this.props.navigation.getParam('userName', 'myName')
+            : this.props.navigation.getParam('otherUserName', 'theirName');
+
           msg.user = {
-            _id: 1,
-            name: 'first plus last',
+            _id: msg.userId,
+            name: who,
+          };
+          delete msg.userId;
+          delete msg.__v;
+          delete msg.chatId;
+          delete msg.id;
+        });
+        this.setState((previousState) => {
+          const temp = previousState.messages;
+          pastMsgs.slice().reverse().forEach((msg) => {
+            temp.push(msg);
+          });
+          return {
+            messages: temp,
           };
         });
-        this.setState(previousState => ({
-          messages: previousState.messages.push(pastMsg),
-        }));
       }
-      console.log(`messages state: ${this.state.messages}`);
     }
 
     sendMessage(messages = []) {
@@ -76,12 +79,27 @@ class Chat extends React.Component {
           chatId: this.props.navigation.getParam('id', {}),
         },
       };
-
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, messages),
-      }));
-      console.log(`in sendMessage, chatID: ${message.body.chatId}`);
       this.state.socket.emit('message', message);
+
+      const msg = {
+        _id: this.state.counter,
+        text: messages[0].text,
+        createdAt: messages[0].createdAt,
+        user: {
+          _id: this.props.self.id,
+          name: `${this.props.self.firstName} ${this.props.self.lastName}`,
+          // avatar: 'https://placeimg.com/140/140/any',
+        },
+      };
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append(previousState.messages, msg),
+        };
+      }, () => {
+        this.setState(prevState => ({
+          counter: prevState.counter + 1,
+        }));
+      });
     }
 
     render() {
@@ -90,6 +108,9 @@ class Chat extends React.Component {
           messages={this.state.messages
           }
           onSend={messages => this.sendMessage(messages)}
+          user={{
+            _id: this.props.self.id,
+          }}
         />
       );
     }
@@ -101,7 +122,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // save_message: () => { dispatch(fetchChats()); },
   };
 };
 
