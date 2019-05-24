@@ -18,6 +18,7 @@ const initialState = {
     },
   ],
   current: null,
+  self: null,
 };
 
 // This is between the Firebase DB and the actual display
@@ -38,6 +39,10 @@ const UserReducer = (state = initialState, action) => {
       console.log('CHANGING THE STATE RIGHT NOW');
       return Object.assign({}, state, {
         current: action.payload,
+      });
+    case ActionTypes.SAVE_USER:
+      return Object.assign({}, state, {
+        self: action.payload,
       });
     default: // Delete post uses fetch post to update central store
       return state;

@@ -62,6 +62,7 @@ class SignUp extends Component {
         university: this.state.university,
       });
       if (this.props.authenticated) {
+        console.log('we are authenticated.');
         this.props.navigation.navigate('Main');
       }
     }
