@@ -11,7 +11,7 @@ class Teaches extends Component {
     console.log(this.props.teaches);
 
     const teachSkills = this.props.teaches.map((item) => {
-      return <Teach key={item.id} teachId={item.id} title={item.title} years={item.years} bio={item.bio} ratings={item.ratings} />;
+      return <Teach key={item.id} teachId={item.id} nav={this.props.nav} title={item.title} years={item.years} bio={item.bio} ratings={item.ratings} />;
     });
 
     return (

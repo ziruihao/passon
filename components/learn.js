@@ -31,7 +31,7 @@ const Learn = (props) => {
     // </Container>
     <View>
       <Text>{props.title}</Text>
-      <Button onPress={() => props.navigation.navigate('EditSkillLearn')} title="Edit Skill" />
+      <Button onPress={() => props.nav.navigate('EditSkillLearn')} title="Edit Skill" />
     </View>
   );
 };

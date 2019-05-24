@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet, Text, View, Button,
 } from 'react-native';
@@ -29,10 +29,28 @@ const Teach = (props) => {
       <Text>{props.title}</Text>
       <Text>{props.years}</Text>
       <Text>{props.bio}</Text>
-      <Button onPress={() => props.navigation.navigate('EditSkillTeach')} title="Edit Skill" />
+      <Button onPress={() => props.nav.navigate('EditSkillTeach')} skillTitle={props.title} skillYear={props.years} skillBio={props.bio} title="Edit Skill" />
     </View>
   );
 };
+
+// class Teach extends Component {
+//   edit = () => {
+//     this.props.nav.navigate('EditSkillTeach');
+//   }
+
+//   render() {
+//     return (
+//       <View>
+//         <Text>{this.props.title}</Text>
+//         <Text>{this.props.years}</Text>
+//         <Text>{this.props.bio}</Text>
+//         <Button onPress={() => this.edit()} title="Edit Skill" />
+//       </View>
+//     );
+//   }
+// }
+
 
 export default Teach;
 

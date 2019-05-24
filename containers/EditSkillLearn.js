@@ -21,14 +21,20 @@ class EditSkillLearn extends Component {
     } else {
       this.setState({ errorTitle: false });
       this.props.updateLearn({
-        title: this.state.title,
+        skill: {
+          title: this.state.title,
+        },
       });
       this.props.navigation.navigate('ProfileSelf');
     }
   };
 
   delete = () => {
-    this.props.deleteLearn({ title: this.state.title });
+    this.props.deleteLearn({
+      skill: {
+        title: this.state.title,
+      },
+    });
     this.props.navigation.navigate('ProfileSelf');
   };
 

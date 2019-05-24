@@ -27,11 +27,13 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    return <View><Teaches teaches={this.props.self.teach} /></View>;
+    // this.props.fetchSelf();
+    return <View><Teaches teaches={this.props.self.teach} nav={this.props.navigation} /></View>;
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.self.learn} /></View>;
+    // this.props.fetchSelf();
+    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} /></View>;
   }
 
   render() {
