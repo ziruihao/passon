@@ -30,6 +30,8 @@ class EditSkillLearn extends Component {
   };
 
   delete = () => {
+    console.log('EDIT SKILL LEARN DELETE====');
+    console.log(this.state.title);
     this.props.deleteLearn({
       skill: {
         title: this.state.title,

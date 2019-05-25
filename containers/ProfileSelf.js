@@ -22,9 +22,8 @@ const styles = StyleSheet.create({
 });
 
 class ProfileSelf extends Component {
-  // componentDidMount() {
-  //   this.props.fetchSelf();
-  // }
+  // adapted from https://reactnavigation.org/docs/en/navigation-prop.html#addlistener-subscribe-to-updates-to-navigation-lifecycle
+  // Michelle (our TA) suggested using focus since our screen wasn't updating every time
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       this.props.fetchSelf();
