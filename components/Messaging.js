@@ -13,9 +13,7 @@ class Messaging extends Component {
     super(props);
 
     this.state = {
-      // chats: 'various chats',
-
-      otherUser: 'Other User ID?',
+      otherUser: 'Other User email?',
     };
     this.props.fetch_chats();
   }
@@ -28,22 +26,8 @@ class Messaging extends Component {
     this.props.fetch_self();
   }
 
-  /**
-   * NOTE_FOR_SELF
-   * TODOs:
-   * 1. react-native version localStorage in the createChat process (req.user is email)
-   * 2. edit createChat in message_controller in backend (find users based on email,
-   * as opposed to creating new users to be stored into the chat)
-   * 3. make sure DB has some proper users with proper emails to be found
-   * 4. fetch Chats based on this user's id in all chats (Chat.foreach...)
-   * 5. create tabs based on the fetched chats
-   *
-   *         <Text style={styles.item}>{item.userId}</Text>
-        <Text>{this.props.chats}</Text>
-   */
-
   render() {
-    console.log(`CHATTTTT: ${JSON.stringify(this.props.chats[0])}+`);
+    // console.log(`CHATTTTT: ${JSON.stringify(this.props.chats)}+`);
     let first, last;
     if (this.props.self != null) {
       first = this.props.self.firstName;
@@ -55,9 +39,11 @@ class Messaging extends Component {
         <Text>Chats</Text>
         { // (this.props.chats[0] === undefined) ? <Text> nothing </Text> : (
           this.props.chats.map((chat) => {
-            let displayName;
+            let displayName, userName, otherUserName;
             if (chat.userId[0].firstName === first
               && chat.userId[0].lastName === last) {
+              userName = `${first} ${last}`;
+              otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
               displayName = (
                 <View>
                   <Text style={styles.text}>{chat.userId[1].firstName}
@@ -68,6 +54,8 @@ class Messaging extends Component {
               );
             } else if (chat.userId[1].firstName === first
               && chat.userId[1].lastName === last) {
+              userName = `${first} ${last}`;
+              otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
               displayName = (
                 <View>
                   <Text style={styles.text}>{chat.userId[0].firstName}
@@ -83,7 +71,9 @@ class Messaging extends Component {
                 {displayName}
                 <Button title="Go to Chat"
                   onPress={() => {
-                    const pass = { messages: chat.messages, id: chat.id };
+                    const pass = {
+                      messages: chat.messages, id: chat.id, userName, otherUserName,
+                    };
                     this.props.navigation.navigate('Chat', pass);
                   }}
                 />
@@ -96,11 +86,6 @@ class Messaging extends Component {
           onChangeText={text => this.setState({ otherUser: text })}
           value={this.state.otherUser}
         />
-        <Button title="Go to Chat"
-          onPress={() => this.props.navigation.navigate('Chat')}
-        >
-          Go to Chat
-        </Button>
         <Button title="create Chat"
           onPress={() => {
             console.log('create chat pressed');
