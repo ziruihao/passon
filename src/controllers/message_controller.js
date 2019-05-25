@@ -58,7 +58,7 @@ export const createChat = (req, res) => {
 export const getChats = (req, res) => {
   // // res.send('posts should be returned');
   console.log('in getChats function');
-  Chat.find({}).populate('userId')// .populate('messages')
+  Chat.find({}).populate('userId').populate('messages')
     .then((result) => {
       res.send(result);
     })
