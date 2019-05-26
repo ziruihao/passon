@@ -38,7 +38,7 @@ router.route('/users')
   .get(User.getUsers);
 
 router.route('/self')
-  .get(requireAuth, User.getSelf);
+  .post(requireAuth, User.getSelf);
 
 
 /**
@@ -58,10 +58,10 @@ router.route('/messaging/:id') // id is userID
  */
 
 router.route('/teachers')
-  .get(User.getTeachers);
+  .post(User.getTeachers);
 
 router.route('/learners')
-  .get(User.getLearners);
+  .post(User.getLearners);
 
 router.route('/test/:id')
   .post(User.addSkillRating);

@@ -121,6 +121,7 @@ export const getUser = (req, res) => {
  * @param {*} res
  */
 export const getSelf = (req, res) => {
+  console.log(req.headers);
   User.findById(req.user.id).populate('learn').populate('teach')
     .then((user) => {
       res.send(user);
