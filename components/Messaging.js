@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   // auth: state.auth.authenticated,
   chats: state.chat.chats,
-  self: state.user.current,
+  self: state.user.self,
 }
 );
 

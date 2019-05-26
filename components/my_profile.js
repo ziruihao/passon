@@ -43,7 +43,7 @@ class My_Profile extends React.Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
-    Self: reduxState.user.current,
+    Self: reduxState.user.self,
   };
 }
 

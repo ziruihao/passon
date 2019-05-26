@@ -87,7 +87,7 @@ class ProfileSelf extends Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
-    Self: reduxState.user.current,
+    Self: reduxState.user.self,
   };
 }
 

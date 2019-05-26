@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -8,11 +9,12 @@ import {
   Text,
   ListView,
   TouchableHighlight,
+  Button,
 } from 'react-native';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUser } from '../actions';
+import { fetchUser, fetchChat, fetchSelf } from '../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,18 +35,14 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log('==================-=======-=-=-=Profil: ');
-    console.log(this.props.navigation.state.params.id);
-    this.props.fetchUser(this.props.navigation.state.params._id);
+    console.log(`looking at profile of ${this.props.navigation.getParam('firstName', null)}`);
+    this.props.fetch_user(this.props.navigation.getParam('_id', null));
+    this.props.fetch_self();
+    this.props.fetch_chat(this.props.navigation.getParam('_id', null));
   }
 
 
-  // componentDidMount() {
-  //   this.props.fetchUser(this.props.User.id);
-  // }
-
   render() {
-    console.log(`User in render: ${this.props.User}`);
     if (this.props.User === null) {
       return (<Text>Loading</Text>);
     } else {
@@ -57,6 +55,40 @@ class Profile extends React.Component {
           <Text>{this.props.User.learn}</Text>
           <Text>{this.props.User.rating}</Text>
           <Text>{this.props.User.univerity}</Text> */}
+          <Button title="Go to Chat"
+            onPress={() => {
+              let first, last, userName, otherUserName;
+              if (this.props.User != null) {
+                first = this.props.self.firstName;
+                last = this.props.self.lastName;
+              }
+
+
+              if (this.props.chat !== null) {
+                const chat = this.props.chat[0]; // not sure why it's an array here
+                console.log(`chat in profile: ${JSON.stringify(chat)}`);
+                if (chat.userId[0].firstName === first
+                && chat.userId[0].lastName === last) {
+                  userName = `${first} ${last}`;
+                  otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
+                } else if (chat.userId[1].firstName === first
+                && chat.userId[1].lastName === last) {
+                  userName = `${first} ${last}`;
+                  otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
+                } else {
+                  return null;
+                }
+
+                const pass = {
+                  messages: chat.messages,
+                  id: chat.id,
+                  userName,
+                  otherUserName,
+                };
+                this.props.navigation.navigate('Chat', pass);
+              }
+            }}
+          />
         </View>
       );
     }
@@ -66,7 +98,17 @@ class Profile extends React.Component {
 function mapReduxStateToProps(reduxState) {
   return {
     User: reduxState.user.current,
+    chat: reduxState.chat.curr,
+    self: reduxState.user.self,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUser })(Profile);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
+    fetch_self: () => { dispatch(fetchSelf()); },
+    fetch_user: (id) => { dispatch(fetchUser(id)); },
+  };
+};
+
+export default connect(mapReduxStateToProps, mapDispatchToProps)(Profile);
