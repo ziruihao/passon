@@ -40,7 +40,6 @@ export function addTeach(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log('ADD TEACH================');
       console.log(response.data);
     })
       .catch((error) => {
@@ -52,6 +51,8 @@ export function addTeach(skill) {
 export function updateLearn(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
+    console.log('TOKEN IN UPDATE LEARN========');
+    console.log(value);
     axios.put(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
       console.log(response.data);
     })
