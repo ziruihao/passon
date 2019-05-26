@@ -18,6 +18,8 @@ class SignIn extends Component {
   }
 
   signIn = () => { // Check that there are no bad or empty values that the user is attempting to signin
+    console.log('SIGN IN========');
+    console.log(this.props);
     if (this.state.email === '') {
       this.setState({ errorEmail: true });
     }
@@ -75,6 +77,7 @@ class SignIn extends Component {
 function mapStateToProps(reduxState) {
   return {
     authenticated: reduxState.auth.authenticated,
+    User: reduxState.user.current,
   };
 }
 

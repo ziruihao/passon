@@ -26,7 +26,7 @@ const MainTabBar = createBottomTabNavigator(
 
       }),
     },
-    Profile: {
+    ProfileTab: {
       screen: ProfileNav,
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: 'My Profile',
@@ -34,7 +34,7 @@ const MainTabBar = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Profile',
+    initialRouteName: 'ProfileTab',
   },
 );
 

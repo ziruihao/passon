@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
 import React, { Component } from 'react';
@@ -34,7 +35,6 @@ import {
 } from '../styles/base';
 import { fetchUsers, fetchSelf } from '../actions';
 
-const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
@@ -100,13 +100,20 @@ class Home extends Component {
       last = this.props.self.lastName;
     }
     const users = this.props.Users.map((element) => {
-      if (element.firstName !== first
-        && element.lastName !== last) {
-        return (
-          <Container>
-            <Content style={styles.container}>
-              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-                <Card style={styles.mb}>
+      // if (element.firstName !== first
+      //   && element.lastName !== last) {
+      return (
+        <Container>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+          <Content style={styles.container}>
+            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+              <Card style={styles.mb}>
+                <CardItem>
+                  <Text> {element.firstName}</Text>
+                  <Text> {element.lastName}</Text>
+                  <Text> {element.email}</Text>
+                </CardItem>
+                <CardItem>
                   <CardItem>
                     <Text> {element.firstName}</Text>
                     <Text> {element.lastName}</Text>
@@ -133,21 +140,17 @@ class Home extends Component {
                       />
                     </CardItem>
                   </CardItem>
-                </Card>
-              </TouchableHighlight>
-            </Content>
-          </Container>
-        );
-      }
+                </CardItem>
+              </Card>
+            </TouchableHighlight>
+          </Content>
+          {/* <Image /> */}
+        </Container>
+      );
     });
     return (
       <Container>
         <Header searchBar rounded barStyle="light-content">
-          {/* <Item> */}
-          {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button> */}
-          {/* </Item> */}
           <Item>
             <Icon name="ios-search" />
             <Input placeholder="Search" onChangeText={text => this.search(text)} />

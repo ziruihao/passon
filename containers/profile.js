@@ -14,9 +14,16 @@ import {
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
+<<<<<<< HEAD:components/profile.js
 import {
   fetchUser, fetchChat, fetchSelf, createChat,
 } from '../actions';
+=======
+import { fetchUser } from '../actions';
+import Learns from '../components/learns';
+import Teaches from '../components/teaches';
+
+>>>>>>> ea82d9b5a9989cdf8d1fd8c9dd2563c932ed78a9:containers/profile.js
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +31,11 @@ const styles = StyleSheet.create({
     paddingVertical: padding.lg,
     width: dimensions.fullWidth,
     fontFamily: fonts.primary,
+  },
+  profileBox: {
+    backgroundColor: 'blue',
+    width: dimensions.fullWidth,
+    height: 250,
   },
 });
 
@@ -36,6 +48,7 @@ class Profile extends React.Component {
     headerTintColor: 'black',
   }
 
+<<<<<<< HEAD:components/profile.js
   constructor(props) {
     super(props);
 
@@ -57,10 +70,19 @@ class Profile extends React.Component {
 
   render() {
     if (this.props.User === null) {
+=======
+  componentDidMount() {
+    this.props.fetchUser(this.props.navigation.state.params._id);
+  }
+
+  render() {
+    if (this.props.user === null) {
+>>>>>>> ea82d9b5a9989cdf8d1fd8c9dd2563c932ed78a9:containers/profile.js
       return (<Text>Loading</Text>);
     } else {
       return (
         <View>
+<<<<<<< HEAD:components/profile.js
           <Text>{this.props.User.firstName}</Text>
           {/* <Text>{this.props.User.lastname}</Text>
           <Text>{this.props.User.email}</Text>
@@ -105,6 +127,15 @@ class Profile extends React.Component {
               }
             }}
           />
+=======
+          <View>
+            <Text>{this.props.user.firstName}</Text>
+          </View>
+          <View><Text>Teach:</Text></View>
+          <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
+          <View><Text>Learn:</Text></View>
+          <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
+>>>>>>> ea82d9b5a9989cdf8d1fd8c9dd2563c932ed78a9:containers/profile.js
         </View>
       );
     }
@@ -113,8 +144,12 @@ class Profile extends React.Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
+<<<<<<< HEAD:components/profile.js
     User: reduxState.user.current,
     chat: reduxState.chat.curr,
+=======
+    user: reduxState.user.current,
+>>>>>>> ea82d9b5a9989cdf8d1fd8c9dd2563c932ed78a9:containers/profile.js
     self: reduxState.user.self,
   };
 }
