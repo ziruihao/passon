@@ -164,7 +164,11 @@ class ProfileSelf extends Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
+<<<<<<< HEAD
+    Self: reduxState.user.self,
+=======
     self: reduxState.user.self,
+>>>>>>> ea82d9b5a9989cdf8d1fd8c9dd2563c932ed78a9
   };
 }
 

@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
@@ -31,7 +33,7 @@ import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUsers } from '../actions';
+import { fetchUsers, fetchSelf } from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
 
@@ -76,6 +78,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.fetchUsers();
+    this.props.fetchSelf();
   }
 
   intoProfile(profile) {
@@ -91,7 +94,14 @@ class Home extends Component {
   }
 
   render() {
+    let first, last, userName, otherUserName;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
     const users = this.props.Users.map((element) => {
+      // if (element.firstName !== first
+      //   && element.lastName !== last) {
       return (
         <Container>
           {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
@@ -105,22 +115,30 @@ class Home extends Component {
                 </CardItem>
                 <CardItem>
                   <CardItem>
-                    <Left>
-                      <Icon active name="star" />
-                      <Text>5 stars</Text>
-                      <Text>X yrs</Text>
-                    </Left>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
                   </CardItem>
                   <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>5 stars</Text>
+                        <Text>X yrs</Text>
+                      </Left>
+                    </CardItem>
+
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
                   </CardItem>
                 </CardItem>
               </Card>
@@ -147,7 +165,8 @@ class Home extends Component {
 function mapReduxStateToProps(reduxState) {
   return {
     Users: reduxState.user.all,
+    self: reduxState.user.self,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUsers })(Home);
+export default connect(mapReduxStateToProps, { fetchUsers, fetchSelf })(Home);

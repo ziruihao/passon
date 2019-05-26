@@ -3,20 +3,8 @@ import { ActionTypes } from '../actions';
 // From assignment page
 const initialState = {
   chats: [
-    // {
-    //   userId: [{
-    //     // teach: [],
-    //     // learn: [],
-    //     _id: '',
-    //     firstName: '',
-    //     lastName: '',
-    //     email: '',
-    //   }],
-    //   messages: [],
-    //   _id: '',
-    // },
   ],
-  curr: '',
+  curr: null,
 };
 
 // This is between the Firebase DB and the actual display
@@ -26,11 +14,18 @@ const initialState = {
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.GET_CHATS:
-      return {
+      return Object.assign({}, state, {
         chats: action.payload,
-        curr: '',
-      };
-    default: // Delete post uses fetch post to update central store
+      });
+    case ActionTypes.GET_CHAT:
+      return Object.assign({}, state, {
+        curr: action.payload,
+      });
+    case ActionTypes.CREATE_CHAT:
+      return Object.assign({}, state, {
+        curr: action.payload,
+      });
+    default:
       return state;
   }
 };
