@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
 import React, { Component } from 'react';
@@ -32,7 +33,6 @@ import {
 } from '../styles/base';
 import { fetchUsers, fetchTeachers, fetchLearners } from '../actions';
 
-const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
@@ -95,7 +95,8 @@ class Home extends Component {
   render() {
     const users = this.props.Users.map((element) => {
       return (
-        <Container key={element.id}>
+        <Container>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
           <Content style={styles.container}>
             <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
               <Card style={styles.mb}>
@@ -112,7 +113,6 @@ class Home extends Component {
                       <Text>X yrs</Text>
                     </Left>
                   </CardItem>
-
                   <CardItem>
                     <Image
                       style={{
@@ -128,6 +128,7 @@ class Home extends Component {
               </Card>
             </TouchableHighlight>
           </Content>
+          {/* <Image /> */}
         </Container>
       );
     });
