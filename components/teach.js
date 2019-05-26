@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
 const Teach = (props) => {
   return (
     <View>
-      <Text>{props.title}</Text>
-      <Text>{props.years}</Text>
-      <Text>{props.bio}</Text>
-      <Button onPress={() => props.nav.navigate('EditSkillTeach')} skillTitle={props.title} skillYear={props.years} skillBio={props.bio} title="Edit Skill" />
+      <Text>{props.skill.title}</Text>
+      <Text>{props.skill.years}</Text>
+      <Text>{props.skill.bio}</Text>
+      <Button onPress={() => props.nav.navigate('EditSkillTeach', { skill: props.skill })} title="Edit Skill" />
     </View>
   );
 };

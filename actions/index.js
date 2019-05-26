@@ -76,7 +76,7 @@ export function updateTeach(skill) {
 export function deleteLearn(skill) {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
-    axios.delete(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+    axios.delete(`${ROOT_URL}/learn`, skill, { headers: { Authorization: value } }).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -87,13 +87,16 @@ export function deleteLearn(skill) {
 
 export function deleteTeach(skill) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.delete(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
-      console.log(response.data);
-    })
-      .catch((error) => {
-        console.log(error);
+    AsyncStorage.getItem('token').then((value) => {
+      console.log('WHAT THE HELL');
+      console.log(value);
+      axios.delete(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+        console.log(response.data);
+      }).catch((error) => {
+        console.log('ERRRRRRRRRRRRR');
+        console.log(error.message);
       });
+    });
   };
 }
 

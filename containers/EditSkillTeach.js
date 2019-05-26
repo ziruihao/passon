@@ -8,12 +8,11 @@ import { updateTeach, deleteTeach } from '../actions';
 class EditSkillTeach extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      title: '',
-      years: '',
-      bio: '',
-      ratings: [],
+      title: props.navigation.state.params.skill.title,
+      years: props.navigation.state.params.skill.years,
+      bio: props.navigation.state.params.skill.bio,
+      id: props.navigation.state.params.skill.id,
     };
   }
 
@@ -33,10 +32,9 @@ class EditSkillTeach extends Component {
     // }
     this.props.updateTeach({
       skill: {
-        title: this.state.title,
         years: this.state.years,
         bio: this.state.bio,
-        ratings: this.state.ratings,
+        id: this.state.id,
       },
     });
     this.props.navigation.navigate('ProfileSelf');
@@ -45,38 +43,25 @@ class EditSkillTeach extends Component {
   delete = () => {
     this.props.deleteTeach({
       skill: {
-        title: this.state.title,
-        years: this.state.years,
-        bio: this.state.bio,
-        ratings: this.state.ratings,
+        id: this.state.id,
       },
     });
     this.props.navigation.navigate('ProfileSelf');
   };
 
   render() {
-    console.log('EDIT SKILL TEACH========');
-    console.log(this.props);
-    // console.log(this.props.skillTitle);
-    // console.log(this.props.skillYears);
-    // console.log(this.props.skillBio);
     return (
       <View>
-        <Text>Edit Skill</Text>
-        <TextInput
-          placeholder="Skill"
-          onChangeText={(text) => { this.setState({ title: text }); }}
-          defaultValue={this.props.skillTitle}
-        />
+        <Text>Edit Skill: {this.state.title}</Text>
         <TextInput
           placeholder="Years of experience"
-          onChangeText={(text) => { this.setState({ years: text }); }}
-          defaultValue={this.props.skillYears}
+          onChangeText={(text) => { this.setState({ years: Number(text) }); }}
+          defaultValue={this.state.years.toString()}
         />
         <TextInput
           placeholder="Description of experience"
           onChangeText={(text) => { this.setState({ bio: text }); }}
-          defaultValue={this.props.skillBio}
+          defaultValue={this.state.bio}
         />
         <Button onPress={() => { this.edit(); }} title="Save" />
         <Button onPress={() => { this.delete(); }} title="Delete" />
