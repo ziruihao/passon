@@ -358,12 +358,40 @@ export const getTeachers = (req, res) => {
 
 // testing: do not remove yet
 export const addSkillRating = (req, res) => {
-  Skill.findById(req.params.id).then((result) => {
-    const rating = new Rating();
-    rating.score = 5;
-    result.ratings.push(rating);
-    res.send(result);
-  }).catch((error) => {
-    res.send({ msg: error.message });
-  });
+  User.findById(req.user.id).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
+  })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
+    .then((result) => {
+      result.teach.forEach((element) => {
+        if (element.id === req.body.skill.id) {
+          const rating = new Rating();
+          rating.score = req.body.skill.score;
+          rating.save().then((skill) => {
+            element.ratings.push(skill);
+
+            element.save().then(() => {
+              result.save().then((response) => {
+                res.json(response);
+              }).catch((error) => {
+                res.status(500).json({ msg: error.message });
+              });
+            });
+          });
+        }
+      });
+    })
+    .catch((error) => {
+      res.status(404).json({ error });
+    });
 };
