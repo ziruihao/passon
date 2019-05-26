@@ -92,7 +92,6 @@ class Messaging extends Component {
             const chat = {
               email: this.state.otherUser, // email of the target message user
               messages: [],
-              user: 'temp user id', // this will be deleted in the future
             };
             this.props.create_chat(chat);
           }}
@@ -124,9 +123,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  // auth: state.auth.authenticated,
   chats: state.chat.chats,
-  self: state.user.current,
+  self: state.user.self,
 }
 );
 

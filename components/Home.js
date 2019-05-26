@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 /* eslint-disable react/no-access-state-in-setstate */
+=======
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
+>>>>>>> 96378841c95fc67f494d6893ea047eaa95ee7061
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
@@ -143,6 +148,11 @@ class Home extends Component {
   }
 
   render() {
+    let first, last, userName, otherUserName;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
     const double_matches = this.state.double_matches.map((element) => {
       return (
         <Container key={element.id}>
@@ -196,22 +206,30 @@ class Home extends Component {
                 </CardItem>
                 <CardItem>
                   <CardItem>
-                    <Left>
-                      <Icon active name="star" />
-                      <Text>5 stars</Text>
-                      <Text>X yrs</Text>
-                    </Left>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
                   </CardItem>
                   <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>5 stars</Text>
+                        <Text>X yrs</Text>
+                      </Left>
+                    </CardItem>
+
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
                   </CardItem>
                 </CardItem>
               </Card>
@@ -243,6 +261,7 @@ function mapReduxStateToProps(reduxState) {
     Users: reduxState.user.all,
     teachers: reduxState.user.teachers,
     learners: reduxState.user.learners,
+    self: reduxState.user.self,
   };
 }
 

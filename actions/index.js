@@ -11,7 +11,6 @@ export const ActionTypes = {
   // getting users
   FETCH_USER: 'FETCH_USER',
   FETCH_USERS: 'FETCH_USERS',
-  FETCH_SELF: 'FETCH_SELF',
 
   // chats
   GET_CHATS: 'GET_CHATS',
@@ -19,6 +18,11 @@ export const ActionTypes = {
   // teachers
   SAVE_TEACHERS: 'SAVE_TEACHERS',
   SAVE_LEARNERS: 'SAVE_LEARNERS',
+  GET_CHAT: 'GET_CHAT',
+  FETCH_LEARNS: 'FETCH_LEARNS',
+  FETCH_TEACHES: 'FETCH_TEACHES',
+  FETCH_LEARN: 'FETCH_LEARN',
+  FETCH_TEACH: 'FETCH_TEACH',
 };
 
 // From assignment page
@@ -229,13 +233,25 @@ export function signoutUser(history) {
   };
 }
 
-// TODO
 export function fetchChats() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function fetchChat(otherId) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/messaging/${otherId}`, { headers: { authorization: value } })
+      .then((response) => {
+        dispatch({ type: ActionTypes.GET_CHAT, payload: response.data });
       })
       .catch((error) => {
         console.log(error);

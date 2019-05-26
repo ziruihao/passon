@@ -12,7 +12,7 @@ class Chat extends React.Component {
 
     constructor(props) {
       super(props);
-      const room = this.props.id; // would be chat's objectID
+      const room = this.props.navigation.getParam('id', null); // would be chat's objectID
 
       // Creating the socket-client instance will automatically connect to the server.
       const socket = io('http://localhost:3000');
@@ -116,7 +116,7 @@ class Chat extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-  self: state.user.current,
+  self: state.user.self,
 }
 );
 
