@@ -8,74 +8,73 @@ import { updateTeach, deleteTeach } from '../actions';
 class EditSkillTeach extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      title: '',
-      years: '',
-      bio: '',
-      ratings: [],
+      title: props.navigation.state.params.skill.title,
+      years: props.navigation.state.params.skill.years,
+      bio: props.navigation.state.params.skill.bio,
+      id: props.navigation.state.params.skill.id,
+      errorYears: false,
+      errorBio: false,
     };
   }
 
   edit = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.title === ''
-    || this.state.years === ''
-    || this.state.bio === '') {
-      this.setState({ valid_entry: false });
+    if (this.state.years === '') {
+      this.setState({ errorYears: true });
     } else {
+      this.setState({ errorYears: false });
+    }
+    if (this.state.bio === '') {
+      this.setState({ errorBio: true });
+    } else {
+      this.setState({ errorBio: false });
+    }
+    if (this.state.years !== ''
+    && this.state.bio !== '') {
       this.props.updateTeach({
-        title: this.state.title,
-        years: this.state.years,
-        bio: this.state.bio,
-        ratings: this.state.ratings,
+        skill: {
+          years: this.state.years,
+          bio: this.state.bio,
+          id: this.state.id,
+        },
       });
       this.props.navigation.navigate('ProfileSelf');
     }
   };
 
   delete = () => {
-    this.props.deleteTeach({
-      title: this.state.title,
-      years: this.state.years,
-      bio: this.state.bio,
-      ratings: this.state.ratings,
-    });
+    console.log('IDDDDDD');
+    console.log(this.state.id);
+    this.props.deleteTeach(this.state.id);
     this.props.navigation.navigate('ProfileSelf');
-  };
-
-  renderResponse = () => {
-    if (!this.state.valid_entry) {
-      return (
-        <Text>Field missing</Text>
-      );
-    } else {
-      return (
-        <Text>Please fill in missing fields.</Text>
-      );
-    }
   };
 
   render() {
     return (
       <View>
-        <Text>Edit Skill</Text>
-        <TextInput
-          placeholder="Skill"
-          onChangeText={(text) => { this.setState({ title: text }); }}
-        />
+        <Text>Edit Skill: {this.state.title}</Text>
         <TextInput
           placeholder="Years of experience"
-          onChangeText={(text) => { this.setState({ years: text }); }}
+          onChangeText={(text) => { this.setState({ years: Number(text) }); }}
+          defaultValue={this.state.years.toString()}
         />
+        { this.state.errorYears === true ? (
+          <Text>
+               Please enter years of experience to proceed.
+          </Text>
+        ) : null }
         <TextInput
           placeholder="Description of experience"
           onChangeText={(text) => { this.setState({ bio: text }); }}
+          defaultValue={this.state.bio}
         />
-        <View>
-          {this.renderResponse()}
-          <Button onPress={() => { this.edit(); }} title="Save" />
-          <Button onPress={() => { this.delete(); }} title="Delete" />
-        </View>
+        { this.state.errorBio === true ? (
+          <Text>
+              Please enter description of experience to proceed.
+          </Text>
+        ) : null }
+        <Button onPress={() => { this.edit(); }} title="Save" />
+        <Button onPress={() => { this.delete(); }} title="Delete" />
       </View>
     );
   }

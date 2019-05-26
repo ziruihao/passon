@@ -1,5 +1,4 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
-// import { Button } from 'react-native';
 import SignIn from '../containers/signin';
 import SignUp from '../containers/signup';
 import FirstScreen from '../components/FirstScreen';
