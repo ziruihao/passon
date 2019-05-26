@@ -30,7 +30,7 @@ import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUsers } from '../actions';
+import { fetchUsers, fetchTeachers, fetchLearners } from '../actions';
 
 const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
@@ -75,7 +75,9 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchUsers();
+    // this.props.fetchUsers();
+    this.props.fetchTeachers();
+    this.props.fetchLearners();
   }
 
   intoProfile(profile) {

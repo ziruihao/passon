@@ -15,6 +15,10 @@ export const ActionTypes = {
 
   // chats
   GET_CHATS: 'GET_CHATS',
+
+  // teachers
+  SAVE_TEACHERS: 'SAVE_TEACHERS',
+  SAVE_LEARNERS: 'SAVE_LEARNERS',
 };
 
 // From assignment page
@@ -82,7 +86,6 @@ export function deleteTeach(id) {
     axios.delete(`${ROOT_URL}/teach`, { data: { id } }).then((response) => {
       console.log(response.data);
     }).catch((error) => {
-      console.log('ERRRRRRRRRRRRR');
       console.log(error.message);
     });
   };
@@ -149,6 +152,30 @@ export function deleteUser(id, history) {
   };
 }
 
+
+export function fetchTeachers(skills) {
+  return async (dispatch) => {
+    axios.get(`${ROOT_URL}/getTeachers`, skills).then((response) => {
+      console.log(response);
+      dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data }); s;
+    }).catch((error) => {
+      console.log(error.message);
+    });
+  };
+}
+
+export function fetchLearners(skills) {
+  return async (dispatch) => {
+    axios.get(`${ROOT_URL}/getLearners`, skills).then((response) => {
+      console.log(response);
+      dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data }); s;
+    }).catch((error) => {
+      console.log(error.message);
+    });
+  };
+}
+
+
 // trigger to deauth if there is error
 // can also use in your error reducer if you have one to display an error message
 export function authError(error) {
@@ -159,14 +186,6 @@ export function authError(error) {
 }
 
 export function signinUser({ email, password }) {
-  // takes in an object with email and password (minimal user object)
-  // returns a thunk method that takes dispatch as an argument (just like our create post method really)
-  // does an axios.post on the /signin endpoint
-  // on success does:
-  //  dispatch({ type: ActionTypes.AUTH_USER });
-  //  localStorage.setItem('token', response.data.token);
-  // on error should dispatch(authError(`Sign In Failed: ${error.response.data}`));
-
   return (dispatch) => {
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then(async (response) => {
@@ -184,14 +203,6 @@ export function signinUser({ email, password }) {
 export function signupUser({
   firstName, lastName, email, password, university,
 }) {
-  // takes in an object with email and password (minimal user object)
-  // returns a thunk method that takes dispatch as an argument (just like our create post method really)
-  // does an axios.post on the /signup endpoint (only difference from above)
-  // on success does:
-  //  dispatch({ type: ActionTypes.AUTH_USER });
-  //  localStorage.setItem('token', response.data.token);
-  // on error should dispatch(authError(`Sign Up Failed: ${error.response.data}`));
-
   return (dispatch) => {
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
