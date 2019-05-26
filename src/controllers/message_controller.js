@@ -43,22 +43,43 @@ export const getChat = (req, res) => {
 
   Chat.find({ userId: { $all: [selfId, req.params.id] } }).populate('userId').populate('messages')
     .then((result) => {
-      if (result == null) {
+      if (result.length === 0) {
         Chat.find({ userId: { $all: [req.params.id, selfId] } }).populate('userId').populate('messages')
           .then((result2) => {
-            if (result2 != null) {
-              console.log(`in getChat function, chat found: ${result}`);
-              res.send(result2);
+            if (result2.length !== 0) {
+              console.log(`in getChat function, chat found2: ${result}`);
+              res.send(result2[0]);
+            } else {
+              console.log('chat not found, creating new');
+              const chat = new Chat();
+              User.findById(req.params.id).then((u) => {
+                console.log(`other user in chat: ${JSON.stringify(u[0])}`);
+                console.log(`self: ${req.user}`);
+                chat.userId = [u, req.user];
+                chat.messages = req.body.messages; // probs nothing
+
+                chat.populate('userId').populate('messages').save()
+                  .then(() => {
+                    console.log('chat created! ');
+                  })
+                  .catch((error) => {
+                    res.status(500).json({ error });
+                    console.log('chat create failed!');
+                  });
+                res.send(chat);
+              }).catch((error) => {
+                res.status(500).json({ error });
+                console.log('Other user not found');
+              });
             }
           })
           .catch((error) => {
             res.status(500).json({ error });
           });
-      }
-      if (result != null) {
+      } else {
         console.log(`in getChat function, chat found: ${result}`);
+        res.send(result[0]);
       }
-      res.send(result);
     })
     .catch((error) => {
       res.status(500).json({ error });
