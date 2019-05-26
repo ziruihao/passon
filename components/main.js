@@ -6,11 +6,13 @@ import MainTabBar from '../navigation/main_tab_bar';
 
 class Main extends Component {
   render() {
-    if (this.props.authenticated) {
-      return (<MainTabBar onNavigationStateChange={null} />);
-    } else {
-      return (<FirstScreenNav />);
-    }
+    return (<FirstScreenNav />);
+
+    // if (this.props.authenticated) {
+    //   return (<MainTabBar onNavigationStateChange={null} />);
+    // } else {
+    //   return (<FirstScreenNav />);
+    // }
   }
 }
 
