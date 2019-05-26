@@ -1,6 +1,5 @@
 import axios from 'axios/index';
 import { AsyncStorage } from 'react-native';
-
 // From assignment page
 export const ActionTypes = {
   // signin or signup
@@ -26,8 +25,7 @@ const ROOT_URL = 'http://localhost:9090/api';
 
 export function addLearn(skill) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.post(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+    axios.post(`${ROOT_URL}/learn`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -38,8 +36,7 @@ export function addLearn(skill) {
 
 export function addTeach(skill) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.post(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+    axios.post(`${ROOT_URL}/teach`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -50,10 +47,7 @@ export function addTeach(skill) {
 
 export function updateLearn(skill) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    console.log('TOKEN IN UPDATE LEARN========');
-    console.log(value);
-    axios.put(`${ROOT_URL}/learn`, skill, { headers: { authorization: value } }).then((response) => {
+    axios.put(`${ROOT_URL}/learn`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -64,8 +58,7 @@ export function updateLearn(skill) {
 
 export function updateTeach(skill) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.put(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
+    axios.put(`${ROOT_URL}/teach`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -74,10 +67,9 @@ export function updateTeach(skill) {
   };
 }
 
-export function deleteLearn(skill) {
+export function deleteLearn(id) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.delete(`${ROOT_URL}/learn`, skill, { headers: { Authorization: value } }).then((response) => {
+    axios.delete(`${ROOT_URL}/learn`, { data: { id } }).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
@@ -86,17 +78,13 @@ export function deleteLearn(skill) {
   };
 }
 
-export function deleteTeach(skill) {
+export function deleteTeach(id) {
   return async (dispatch) => {
-    AsyncStorage.getItem('token').then((value) => {
-      console.log('WHAT THE HELL');
-      console.log(value);
-      axios.delete(`${ROOT_URL}/teach`, skill, { headers: { authorization: value } }).then((response) => {
-        console.log(response.data);
-      }).catch((error) => {
-        console.log('ERRRRRRRRRRRRR');
-        console.log(error.message);
-      });
+    axios.delete(`${ROOT_URL}/teach`, { data: { id } }).then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log('ERRRRRRRRRRRRR');
+      console.log(error.message);
     });
   };
 }
@@ -131,10 +119,7 @@ export function fetchUsers(id) {
 
 export function fetchSelf() {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    console.log('FETCH SELF TOKEN');
-    console.log(value);
-    axios.get(`${ROOT_URL}/self`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/self`)
       .then((response) => {
         dispatch({ type: ActionTypes.SAVE_USER, payload: response.data });
       })
@@ -146,9 +131,7 @@ export function fetchSelf() {
 
 export function updateUser(id, post) {
   return async (dispatch) => {
-    // axios.put(`${ROOT_URL}/posts/${id}`, post)
-    const value = await AsyncStorage.getItem('token');
-    axios.put(`${ROOT_URL}/posts/${id}`, post, { headers: { authorization: value } })
+    axios.put(`${ROOT_URL}/posts/${id}`, post)
       .then((response) => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: response.data });
       })
@@ -160,9 +143,7 @@ export function updateUser(id, post) {
 
 export function deleteUser(id, history) {
   return async (dispatch) => {
-    // axios.delete(`${ROOT_URL}/posts/${id}`)
-    const value = await AsyncStorage.getItem('token');
-    axios.delete(`${ROOT_URL}/posts/${id}`, { headers: { authorization: value } })
+    axios.delete(`${ROOT_URL}/posts/${id}`)
       .then(() => {
         dispatch({ type: ActionTypes.UPDATE_POST, payload: null });
         history.push('/');
@@ -199,6 +180,7 @@ export function signinUser({ email, password }) {
       .then(async (response) => {
         await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
         await AsyncStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
       })
       .catch((error) => {
@@ -226,6 +208,7 @@ export function signupUser({
       .then(async (response) => {
         await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
         await AsyncStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
         // history.push('/');
       })
