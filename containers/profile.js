@@ -13,6 +13,8 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import { fetchUser } from '../actions';
+import Learns from '../components/learns';
+import Teaches from '../components/teaches';
 
 
 const styles = StyleSheet.create({
@@ -42,25 +44,19 @@ class Profile extends React.Component {
     this.props.fetchUser(this.props.navigation.state.params._id);
   }
 
-
-  // componentDidMount() {
-  //   this.props.fetchUser(this.props.User.id);
-  // }
-
   render() {
-    console.log(`User in render: ${this.props.User}`);
-    if (this.props.User === null) {
+    if (this.props.user === null) {
       return (<Text>Loading</Text>);
     } else {
       return (
-        <View style={styles.profileBox}>
-          <Text>{this.props.User.firstName}</Text>
-          {/* <Text>{this.props.User.lastname}</Text>
-          <Text>{this.props.User.email}</Text>
-          <Text>{this.props.User.teach}</Text>
-          <Text>{this.props.User.learn}</Text>
-          <Text>{this.props.User.rating}</Text>
-          <Text>{this.props.User.univerity}</Text> */}
+        <View>
+          <View>
+            <Text>{this.props.user.firstName}</Text>
+          </View>
+          <View><Text>Teach:</Text></View>
+          <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
+          <View><Text>Learn:</Text></View>
+          <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
         </View>
       );
     }
@@ -69,7 +65,8 @@ class Profile extends React.Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
-    User: reduxState.user.current,
+    user: reduxState.user.current,
+    self: reduxState.user.self,
   };
 }
 

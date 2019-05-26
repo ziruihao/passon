@@ -20,20 +20,20 @@ const styles = StyleSheet.create({
 });
 
 const Learn = (props) => {
-  return (
-    // <Container style={styles.container}>
-    //   <Header>
-    //     <Body>
-    //       <Title>{props.title}</Title>
-    //     </Body>
-    //     <Right />
-    //   </Header>
-    // </Container>
-    <View>
-      <Text>{props.title}</Text>
-      <Button onPress={() => props.navigation.navigate('EditSkillLearn')} title="Edit Skill" />
-    </View>
-  );
+  if (props.user.id === props.self.id) {
+    return (
+      <View>
+        <Text>{props.skill.title}</Text>
+        <Button onPress={() => props.nav.navigate('EditSkillLearn', { skill: props.skill })} title="Edit Skill" />
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <Text>{props.skill.title}</Text>
+      </View>
+    );
+  }
 };
 
 export default Learn;

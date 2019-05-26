@@ -92,8 +92,6 @@ class Home extends Component {
 
   render() {
     const users = this.props.Users.map((element) => {
-      // console.log('element: ');
-
       return (
         <Container>
           {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
@@ -135,11 +133,6 @@ class Home extends Component {
     return (
       <Container>
         <Header searchBar rounded barStyle="light-content">
-          {/* <Item> */}
-          {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button> */}
-          {/* </Item> */}
           <Item>
             <Icon name="ios-search" />
             <Input placeholder="Search" onChangeText={text => this.search(text)} />

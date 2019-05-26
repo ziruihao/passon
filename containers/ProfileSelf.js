@@ -5,6 +5,7 @@ import {
   StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigationFocus } from 'react-navigation';
 import { fetchUser, fetchSelf, signoutUser } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
@@ -81,15 +82,15 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    return <View><Teaches teaches={this.props.Self.teach} /></View>;
+    return <View><Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.Self.learn} /></View>;
+    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
   }
 
   render() {
-    if (this.props.Self === null) {
+    if (this.props.self === null) {
       return (<Text>Loading</Text>);
     } else if (this.state.teach === false) {
       return (
@@ -163,8 +164,8 @@ class ProfileSelf extends Component {
 
 function mapReduxStateToProps(reduxState) {
   return {
-    Self: reduxState.user.current,
+    self: reduxState.user.self,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUser, fetchSelf, signoutUser })(ProfileSelf);
+export default withNavigationFocus(connect(mapReduxStateToProps, { fetchUser, fetchSelf, signoutUser })(ProfileSelf));

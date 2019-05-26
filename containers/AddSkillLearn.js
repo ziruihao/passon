@@ -21,7 +21,9 @@ class AddSkillLearn extends Component {
     } else {
       this.setState({ errorTitle: false });
       this.props.addLearn({
-        title: this.state.title,
+        skill: {
+          title: this.state.title,
+        },
       });
       this.props.navigation.navigate('ProfileSelf');
     }

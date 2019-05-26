@@ -10,43 +10,21 @@ class EditSkillLearn extends Component {
     super(props);
 
     this.state = {
-      title: '',
-      errorTitle: false,
+      title: props.navigation.state.params.skill.title,
+      id: props.navigation.state.params.skill.id,
     };
   }
 
-  edit = () => { // Check that there are no bad or empty values that the user is attempting to post
-    if (this.state.title === '') {
-      this.setState({ errorTitle: true });
-    } else {
-      this.setState({ errorTitle: false });
-      this.props.updateLearn({
-        title: this.state.title,
-      });
-      this.props.navigation.navigate('ProfileSelf');
-    }
-  };
-
   delete = () => {
-    this.props.deleteLearn({ title: this.state.title });
+    this.props.deleteLearn(this.state.id);
     this.props.navigation.navigate('ProfileSelf');
   };
 
   render() {
     return (
       <View>
-        <Text>Edit Skill</Text>
-        <TextInput
-          placeholder="Skill"
-          onChangeText={(text) => { this.setState({ title: text }); }}
-        />
-        { this.state.errorTitle === true ? (
-          <Text>
-               Please enter skill title to proceed.
-          </Text>
-        ) : null }
+        <Text>Edit Skill: {this.state.title}</Text>
         <View>
-          <Button onPress={() => { this.edit(); }} title="Save" />
           <Button onPress={() => { this.delete(); }} title="Delete" />
         </View>
       </View>
