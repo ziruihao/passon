@@ -60,6 +60,9 @@ router.route('/messaging/:id') // id is userID
 router.route('/teachers')
   .get(User.getTeachers);
 
+router.route('/learners')
+  .get(User.getLearners);
+
 router.route('/test/:id')
   .post(User.addSkillRating);
 

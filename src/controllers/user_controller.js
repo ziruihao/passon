@@ -340,9 +340,31 @@ export const getTeachers = (req, res) => {
     .then((results) => {
       const out = [];
       results.forEach((user) => {
-        // console.log('-------------------');
-        // console.log(user.teach.filter(skill => skill.title === req.params.title));
         user.teach.forEach((skill) => {
+          if (upperCased.includes(skill.title.toUpperCase()) && !out.includes(user)) {
+            out.push(user);
+          }
+        });
+      });
+      res.send(out);
+    })
+    .catch((error) => {
+      res.status(404).json({ error });
+    });
+};
+
+/**
+ * Returns the set of [User]s that wanr to [learn] a certain [Skill].
+ * @param {*} req
+ * @param {*} res
+ */
+export const getLearners = (req, res) => {
+  const upperCased = req.body.skills.map(skill => skill.toUpperCase());
+  User.find({}).populate('teach').populate('learn')
+    .then((results) => {
+      const out = [];
+      results.forEach((user) => {
+        user.learn.forEach((skill) => {
           if (upperCased.includes(skill.title.toUpperCase()) && !out.includes(user)) {
             out.push(user);
           }
