@@ -14,12 +14,18 @@ import {
 } from '../styles/base';
 import { fetchUser } from '../actions';
 
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: padding.sm,
     paddingVertical: padding.lg,
     width: dimensions.fullWidth,
     fontFamily: fonts.primary,
+  },
+  profileBox: {
+    backgroundColor: 'blue',
+    width: dimensions.fullWidth,
+    height: 250,
   },
 });
 
@@ -33,8 +39,6 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log('==================-=======-=-=-=Profil: ');
-    console.log(this.props.navigation.state.params.id);
     this.props.fetchUser(this.props.navigation.state.params._id);
   }
 
@@ -49,7 +53,7 @@ class Profile extends React.Component {
       return (<Text>Loading</Text>);
     } else {
       return (
-        <View>
+        <View style={styles.profileBox}>
           <Text>{this.props.User.firstName}</Text>
           {/* <Text>{this.props.User.lastname}</Text>
           <Text>{this.props.User.email}</Text>
