@@ -20,6 +20,7 @@ router.post('/signup', User.signup);
 
 router.route('/users/:id')
   .post(requireAuth, User.updateUser) // TODO: make this require auth like others later
+  .put(requireAuth, User.addSkillRating)
   .get(User.getUser)
   .delete(requireAuth, User.deleteUser);
 
