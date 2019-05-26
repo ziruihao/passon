@@ -2,35 +2,6 @@
 import Chat from '../models/chat_model';
 import User from '../models/user_model';
 
-// export const saveMessage = (req, res) => {
-//   const msg = new Message();
-
-//   msg.text = req.body.text;
-//   msg.createdAt = new Date();
-//   msg.userId = req.body.userId;
-//   msg.chatId = req.body.chatId;
-
-//   Chat.findById(req.body.chatId).then((chat) => {
-//     const newArray = chat.messages.slice();
-//     newArray.push(msg);
-//     chat.messages = newArray;
-//     console.log('chat found for message');
-//   })
-//     .catch((error) => {
-//       res.status(500).json({ error });
-//     });
-
-//   // msg.save()
-//   //   .then(() => {
-//   //     res.json({ message: 'Message saved!' });
-//   //   })
-//   //   .catch((error) => {
-//   //     res.status(500).json({ error });
-//   //   });
-// };
-
-//
-
 export const createChat = (req, res) => {
   const chat = new Chat();
   User.find({ email: req.body.email.toLowerCase() }).then((result) => {
@@ -56,8 +27,6 @@ export const createChat = (req, res) => {
 };
 
 export const getChats = (req, res) => {
-  // // res.send('posts should be returned');
-  console.log('in getChats function');
   Chat.find({}).populate('userId').populate('messages')
     .then((result) => {
       res.send(result);
@@ -67,46 +36,31 @@ export const getChats = (req, res) => {
     });
 };
 
-//
 
-export const getPost = (req, res) => {
-  // // res.send('single post looked up');
+export const getChat = (req, res) => {
+  const selfId = req.user.id;
+  console.log(`selfID: ${selfId} otherID: ${req.params.id}`);
 
-  // Post.findById(req.params.id)
-  //   .then((result) => {
-  //     res.send(result);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
-};
-
-//
-
-export const deletePost = (req, res) => {
-  // // res.send('delete a post here');
-  // Post.findByIdAndDelete(req.params.id)
-  //   .then(() => {
-  //     res.json({ message: 'Post deleted!' });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
-};
-
-// Helped Trevor with this part
-export const updatePost = (req, res) => {
-  // Post.findByIdAndUpdate(req.params.id, req.body)
-  //   .then(() => {
-  //     Post.findById(req.params.id)
-  //       .then((result) => {
-  //         res.send(result);
-  //       })
-  //       .catch((error) => {
-  //         res.status(500).json({ error });
-  //       });
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).json({ error });
-  //   });
+  Chat.find({ userId: { $all: [selfId, req.params.id] } }).populate('userId').populate('messages')
+    .then((result) => {
+      if (result == null) {
+        Chat.find({ userId: { $all: [req.params.id, selfId] } }).populate('userId').populate('messages')
+          .then((result2) => {
+            if (result2 != null) {
+              console.log(`in getChat function, chat found: ${result}`);
+              res.send(result2);
+            }
+          })
+          .catch((error) => {
+            res.status(500).json({ error });
+          });
+      }
+      if (result != null) {
+        console.log(`in getChat function, chat found: ${result}`);
+      }
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };

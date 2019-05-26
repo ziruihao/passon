@@ -49,6 +49,9 @@ router.route('/messaging') // id is userID
   .get(requireAuth, Messaging.getChats);
 
 
+router.route('/messaging/:id') // id is userID
+  .get(requireAuth, Messaging.getChat);
+
 /**
  * SKILL ROUTES
  */
