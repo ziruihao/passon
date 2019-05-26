@@ -14,7 +14,9 @@ import {
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUser, fetchChat, fetchSelf } from '../actions';
+import {
+  fetchUser, fetchChat, fetchSelf, createChat,
+} from '../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,11 +36,22 @@ class Profile extends React.Component {
     headerTintColor: 'black',
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // btn: false,
+    };
+  }
+
   componentDidMount() {
-    console.log(`looking at profile of ${this.props.navigation.getParam('firstName', null)}`);
+    // console.log(`looking at profile of ${this.props.navigation.getParam('firstName', null)}`);
     this.props.fetch_user(this.props.navigation.getParam('_id', null));
     this.props.fetch_self();
     this.props.fetch_chat(this.props.navigation.getParam('_id', null));
+    setInterval(() => {
+      console.log(`props check: ${JSON.stringify(this.props.chat)}`);
+    }, 3000);
   }
 
 
@@ -57,25 +70,28 @@ class Profile extends React.Component {
           <Text>{this.props.User.univerity}</Text> */}
           <Button title="Go to Chat"
             onPress={() => {
+              // this.setState({ btn: true });
               let first, last, userName, otherUserName;
-              if (this.props.User != null) {
+              if (this.props.self != null) {
                 first = this.props.self.firstName;
                 last = this.props.self.lastName;
               }
 
-
-              if (this.props.chat !== null) {
-                const chat = this.props.chat[0]; // not sure why it's an array here
+              if (this.props.chat !== undefined) {
+                const { chat } = this.props; // not sure why it's an array here
                 console.log(`chat in profile: ${JSON.stringify(chat)}`);
                 if (chat.userId[0].firstName === first
                 && chat.userId[0].lastName === last) {
                   userName = `${first} ${last}`;
                   otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
+                  console.log(`${userName} other: ${otherUserName}`);
                 } else if (chat.userId[1].firstName === first
                 && chat.userId[1].lastName === last) {
                   userName = `${first} ${last}`;
                   otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
+                  console.log(`${userName} other: ${otherUserName}`);
                 } else {
+                  console.log('names no match');
                   return null;
                 }
 

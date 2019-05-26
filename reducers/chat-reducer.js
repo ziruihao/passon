@@ -21,7 +21,11 @@ const ChatReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         curr: action.payload,
       });
-    default: // Delete post uses fetch post to update central store
+    case ActionTypes.CREATE_CHAT:
+      return Object.assign({}, state, {
+        curr: action.payload,
+      });
+    default:
       return state;
   }
 };

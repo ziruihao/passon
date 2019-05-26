@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-pascal-case */
 
 import React, { Component } from 'react';
@@ -30,7 +32,7 @@ import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUsers } from '../actions';
+import { fetchUsers, fetchSelf } from '../actions';
 
 const logo = require('../assets/sunset.jpg');
 const cardImage = require('../assets/sunset.jpg');
@@ -76,6 +78,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.fetchUsers();
+    this.props.fetchSelf();
   }
 
   intoProfile(profile) {
@@ -91,45 +94,51 @@ class Home extends Component {
   }
 
   render() {
+    let first, last, userName, otherUserName;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
     const users = this.props.Users.map((element) => {
-      // console.log('element: ');
-
-      return (
-        <Container>
-          <Content style={styles.container}>
-            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-              <Card style={styles.mb}>
-                <CardItem>
-                  <Text> {element.firstName}</Text>
-                  <Text> {element.lastName}</Text>
-                  <Text> {element.email}</Text>
-                </CardItem>
-                <CardItem>
+      if (element.firstName !== first
+        && element.lastName !== last) {
+        return (
+          <Container>
+            <Content style={styles.container}>
+              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+                <Card style={styles.mb}>
                   <CardItem>
-                    <Left>
-                      <Icon active name="star" />
-                      <Text>5 stars</Text>
-                      <Text>X yrs</Text>
-                    </Left>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
                   </CardItem>
-
                   <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>5 stars</Text>
+                        <Text>X yrs</Text>
+                      </Left>
+                    </CardItem>
+
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
                   </CardItem>
-                </CardItem>
-              </Card>
-            </TouchableHighlight>
-          </Content>
-        </Container>
-      );
+                </Card>
+              </TouchableHighlight>
+            </Content>
+          </Container>
+        );
+      }
     });
     return (
       <Container>
@@ -153,7 +162,8 @@ class Home extends Component {
 function mapReduxStateToProps(reduxState) {
   return {
     Users: reduxState.user.all,
+    self: reduxState.user.self,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUsers })(Home);
+export default connect(mapReduxStateToProps, { fetchUsers, fetchSelf })(Home);
