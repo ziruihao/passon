@@ -234,16 +234,18 @@ export const addTeach = (req, res) => {
 export const deleteLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      result.learn.forEach((element, index, object) => {
-        if (element.id === req.body.skill.id) {
-          object.splice(index, 1);
-        }
-      });
-      result.save().then((response) => {
-        res.json(response);
-      }).catch((error) => {
-        res.status(500).json({ msg: error.message });
-      });
+      if (result.learn.length !== 0) {
+        result.learn.forEach((element, index, object) => {
+          if (element.id === req.body.id) {
+            object.splice(index, 1);
+            result.save().then((response) => {
+              res.json(response);
+            }).catch((error) => {
+              res.status(500).json({ msg: error.message });
+            });
+          }
+        });
+      } else res.send('User doesnt even have any skills dude.');
     })
     .catch((error) => {
       res.status(404).json({ message: error.message });
@@ -254,16 +256,18 @@ export const deleteLearn = (req, res) => {
 export const deleteTeach = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      result.teach.forEach((element, index, object) => {
-        if (element.id === req.body.skill.id) {
-          object.splice(index, 1);
-        }
-      });
-      result.save().then((response) => {
-        res.json(response);
-      }).catch((error) => {
-        res.status(500).json({ msg: error.message });
-      });
+      if (result.teach.length !== 0) {
+        result.teach.forEach((element, index, object) => {
+          if (element.id === req.body.id) {
+            object.splice(index, 1);
+            result.save().then((response) => {
+              res.json(response);
+            }).catch((error) => {
+              res.status(500).json({ msg: error.message });
+            });
+          }
+        });
+      } else res.send('User doesnt even have any skills dude.');
     })
     .catch((error) => {
       res.status(404).json({ message: error.message });
@@ -277,21 +281,23 @@ export const deleteTeach = (req, res) => {
 export const updateLearn = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      result.learn.forEach((element) => {
-        if (element.id === req.body.skill.id) {
-          element.bio = req.body.skill.bio;
-          element.save().then(() => {
-            result.save().then((response) => {
-              res.json(response);
-            }).catch((error) => {
-              res.status(500).json({ msg: error.message });
+      if (result.learn.length !== 0) {
+        result.learn.forEach((element) => {
+          if (element.id === req.body.skill.id) {
+            element.bio = req.body.skill.bio;
+            element.save().then(() => {
+              result.save().then((response) => {
+                res.json(response);
+              }).catch((error) => {
+                res.status(500).json({ msg: error.message });
+              });
             });
-          });
-        }
-      });
+          }
+        });
+      } else res.send('User doesnt even have any skills dude.');
     })
     .catch((error) => {
-      res.status(404).json({ error });
+      res.status(404).json({ message: error.message });
     });
 };
 
@@ -302,19 +308,21 @@ export const updateLearn = (req, res) => {
 export const updateTeach = (req, res) => {
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
-      result.teach.forEach((element) => {
-        if (element.id === req.body.skill.id) {
-          element.bio = req.body.skill.bio;
-          element.years = req.body.skill.years;
-          element.save().then(() => {
-            result.save().then((response) => {
-              res.json(response);
-            }).catch((error) => {
-              res.status(500).json({ msg: error.message });
+      if (result.teach.length !== 0) {
+        result.teach.forEach((element) => {
+          if (element.id === req.body.skill.id) {
+            element.bio = req.body.skill.bio;
+            element.years = req.body.skill.years;
+            element.save().then(() => {
+              result.save().then((response) => {
+                res.json(response);
+              }).catch((error) => {
+                res.status(500).json({ msg: error.message });
+              });
             });
-          });
-        }
-      });
+          }
+        });
+      } else res.send('User doesnt have any skills dude');
     })
     .catch((error) => {
       res.status(404).json({ error });
