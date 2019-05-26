@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+/* eslint-disable react/no-access-state-in-setstate */
+=======
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
+>>>>>>> 96378841c95fc67f494d6893ea047eaa95ee7061
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
@@ -33,7 +37,7 @@ import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUsers, fetchSelf } from '../actions';
+import { fetchUsers, fetchTeachers, fetchLearners } from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
 
@@ -72,14 +76,64 @@ class Home extends Component {
     super(props);
     this.state = {
       search_query: '',
+      double_matches: [],
+      single_matches: [],
     };
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
   componentDidMount() {
-    this.props.fetchUsers();
-    this.props.fetchSelf();
+    this.fetchUsers().then(() => {
+      this.combineUsers();
+    }).catch((error) => {
+      console.log(error);
+    });
   }
+
+  fetchUsers() {
+    return new Promise((resolve, reject) => {
+      this.props.fetchTeachers({
+        skills: ['Golf', 'Tennis'],
+      }).then(() => {
+        this.props.fetchLearners({
+          skills: ['Golf'],
+        }).then(() => {
+          resolve();
+        });
+      }).catch(error => reject(error));
+      // this.props.fetchLearners({ skills: ['Golf'] });
+    });
+  }
+
+  combineUsers() {
+    this.setState({
+      double_matches: this.props.teachers.filter((teacher) => {
+        let includes = false;
+        this.props.learners.forEach((learner) => {
+          if (learner.id === teacher.id) includes = true;
+        });
+        return includes;
+      }),
+    });
+    this.setState({
+      single_matches: this.props.teachers.concat(this.props.learners).filter((user) => {
+        let notIncludes = true;
+        this.state.double_matches.forEach((double_matcher) => {
+          if (double_matcher.id === user.id) notIncludes = false;
+        });
+        return notIncludes;
+      }),
+    });
+    console.log('teachers');
+    console.log(this.props.teachers);
+    console.log('learners');
+    console.log(this.props.learners);
+    console.log('double');
+    console.log(this.state.double_matches);
+    console.log('single');
+    console.log(this.state.single_matches);
+  }
+
 
   intoProfile(profile) {
     console.log('Profile: +++++++++++++++++++ ');
@@ -99,11 +153,48 @@ class Home extends Component {
       first = this.props.self.firstName;
       last = this.props.self.lastName;
     }
-    const users = this.props.Users.map((element) => {
-      // if (element.firstName !== first
-      //   && element.lastName !== last) {
+    const double_matches = this.state.double_matches.map((element) => {
       return (
-        <Container>
+        <Container key={element.id}>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+          <Content style={styles.container}>
+            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+              <Card style={styles.mb}>
+                <CardItem>
+                  <Text> {element.firstName}</Text>
+                  <Text> {element.lastName}</Text>
+                  <Text> {element.email}</Text>
+                </CardItem>
+                <CardItem>
+                  <CardItem>
+                    <Left>
+                      <Icon active name="star" />
+                      <Text>5 stars</Text>
+                      <Text>X yrs</Text>
+                    </Left>
+                  </CardItem>
+                  <CardItem>
+                    <Image
+                      style={{
+                        resizeMode: 'cover',
+                        width: null,
+                        height: 200,
+                        flex: 1,
+                      }}
+                      source={cardImage}
+                    />
+                  </CardItem>
+                </CardItem>
+              </Card>
+            </TouchableHighlight>
+          </Content>
+          {/* <Image /> */}
+        </Container>
+      );
+    });
+    const single_matches = this.state.single_matches.map((element) => {
+      return (
+        <Container key={element.id}>
           {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
           <Content style={styles.container}>
             <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
@@ -156,7 +247,10 @@ class Home extends Component {
             <Input placeholder="Search" onChangeText={text => this.search(text)} />
           </Item>
         </Header>
-        {users}
+        <Text>Double Matches</Text>
+        {double_matches}
+        <Text>Single Matches</Text>
+        {single_matches}
       </Container>
     );
   }
@@ -165,8 +259,10 @@ class Home extends Component {
 function mapReduxStateToProps(reduxState) {
   return {
     Users: reduxState.user.all,
+    teachers: reduxState.user.teachers,
+    learners: reduxState.user.learners,
     self: reduxState.user.self,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUsers, fetchSelf })(Home);
+export default connect(mapReduxStateToProps, { fetchUsers, fetchLearners, fetchTeachers })(Home);
