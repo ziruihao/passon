@@ -236,7 +236,7 @@ export const deleteLearn = (req, res) => {
     .then((result) => {
       if (result.learn.length !== 0) {
         result.learn.forEach((element, index, object) => {
-          if (element.id === req.body.skill.id) {
+          if (element.id === req.body.id) {
             object.splice(index, 1);
             result.save().then((response) => {
               res.json(response);
@@ -258,7 +258,7 @@ export const deleteTeach = (req, res) => {
     .then((result) => {
       if (result.teach.length !== 0) {
         result.teach.forEach((element, index, object) => {
-          if (element.id === req.body.skill.id) {
+          if (element.id === req.body.id) {
             object.splice(index, 1);
             result.save().then((response) => {
               res.json(response);
