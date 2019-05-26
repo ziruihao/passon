@@ -1,11 +1,10 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button,
+  StyleSheet, View, Text, Button, AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
-import { fetchUser, fetchSelf } from '../actions';
+import { fetchUser, fetchSelf, signoutUser } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
 
@@ -58,6 +57,15 @@ class ProfileSelf extends Component {
           <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
             title="Add Skill"
           />
+          <Button onPress={() => {
+            // Uncomment these next two lines to determine whether token has changed
+            // console.log("TOKEN");
+            // AsyncStorage.getItem('token').then(response => console.log(response));
+            AsyncStorage.removeItem('token');
+            this.props.signoutUser();
+          }}
+            title="Sign Out"
+          />
         </View>
       );
     }
@@ -70,4 +78,4 @@ function mapReduxStateToProps(reduxState) {
   };
 }
 
-export default withNavigationFocus(connect(mapReduxStateToProps, { fetchUser, fetchSelf })(ProfileSelf));
+export default withNavigationFocus(connect(mapReduxStateToProps, { fetchUser, fetchSelf, signoutUser })(ProfileSelf));

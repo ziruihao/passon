@@ -13,8 +13,8 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import { fetchUser } from '../actions';
-import Learns from './learns';
-import Teaches from './teaches';
+import Learns from '../components/learns';
+import Teaches from '../components/teaches';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +39,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    console.log(`User in render: ${this.props.user}`);
     if (this.props.user === null) {
       return (<Text>Loading</Text>);
     } else {
@@ -47,12 +46,6 @@ class Profile extends React.Component {
         <View>
           <View>
             <Text>{this.props.user.firstName}</Text>
-            {/* <Text>{this.props.User.lastname}</Text>
-            <Text>{this.props.User.email}</Text>
-            <Text>{this.props.User.teach}</Text>
-            <Text>{this.props.User.learn}</Text>
-            <Text>{this.props.User.rating}</Text>
-            <Text>{this.props.User.univerity}</Text> */}
           </View>
           <View><Text>Teach:</Text></View>
           <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>

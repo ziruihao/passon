@@ -15,7 +15,6 @@ export const ActionTypes = {
 
   // chats
   GET_CHATS: 'GET_CHATS',
-
 };
 
 // From assignment page
@@ -103,15 +102,11 @@ export function fetchUser(id) {
 
 export function fetchUsers(id) {
   return (dispatch) => {
-    // console.log('================================================================================================================================================================');
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {
-        // eslint-disable-next-line max-len
         dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
       })
       .catch((error) => {
-        // eslint-disable-next-line max-len
-        // console.log('f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++f+_++__++++++++++++++++++++++');
         console.log(error);
       });
   };
@@ -172,10 +167,7 @@ export function signinUser({ email, password }) {
   //  localStorage.setItem('token', response.data.token);
   // on error should dispatch(authError(`Sign In Failed: ${error.response.data}`));
 
-  // const token = await AsyncStorage.getItem('token');
-
   return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then(async (response) => {
         await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
@@ -201,7 +193,6 @@ export function signupUser({
   // on error should dispatch(authError(`Sign Up Failed: ${error.response.data}`));
 
   return (dispatch) => {
-    // axios.post(`${ROOT_URL}/posts`, post)
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
     })
@@ -210,7 +201,6 @@ export function signupUser({
         await AsyncStorage.setItem('token', response.data.token);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
-        // history.push('/');
       })
       .catch((error) => {
         dispatch(authError(`Sign Up Failed: ${error}`));
@@ -239,7 +229,7 @@ export function fetchChats() {
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
       .catch((error) => {
-      //  console.log(error);
+        console.log(error);
       });
   };
 }

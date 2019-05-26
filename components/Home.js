@@ -92,8 +92,6 @@ class Home extends Component {
 
   render() {
     const users = this.props.Users.map((element) => {
-      // console.log('element: ');
-
       return (
         <Container key={element.id}>
           <Content style={styles.container}>
@@ -134,11 +132,6 @@ class Home extends Component {
     return (
       <Container>
         <Header searchBar rounded barStyle="light-content">
-          {/* <Item> */}
-          {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
-            <Icon name="arrow-back" />
-          </Button> */}
-          {/* </Item> */}
           <Item>
             <Icon name="ios-search" />
             <Input placeholder="Search" onChangeText={text => this.search(text)} />

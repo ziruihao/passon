@@ -20,14 +20,6 @@ const styles = StyleSheet.create({
 });
 
 const Learn = (props) => {
-  // <Container style={styles.container}>
-  //   <Header>
-  //     <Body>
-  //       <Title>{props.title}</Title>
-  //     </Body>
-  //     <Right />
-  //   </Header>
-  // </Container>
   if (props.user.id === props.self.id) {
     return (
       <View>
