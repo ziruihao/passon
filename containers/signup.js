@@ -1,9 +1,61 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Text, View, Button, TextInput,
+  StyleSheet, Text, View, Button, TextInput, ImageBackground,
 } from 'react-native';
 import { signupUser } from '../actions';
+import {
+  colors, fonts, padding, dimensions,
+} from '../styles/base';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  between: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: fonts.h1,
+    color: '#FFFFFF',
+    margin: 30,
+  },
+  input: {
+    width: 276,
+    height: 45,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    color: '#2D2A32',
+  },
+  button: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 50,
+    width: 213,
+    height: 53,
+    fontSize: fonts.h1,
+    justifyContent: 'center',
+    margin: 10,
+  },
+  smallText: {
+    fontSize: fonts.p3,
+    margin: 10,
+  },
+  errorText: {
+    color: '#FFFFFF',
+  },
+});
 
 class SignUp extends Component {
   constructor(props) {
@@ -63,63 +115,76 @@ class SignUp extends Component {
       });
       if (this.props.authenticated) {
         this.props.navigation.navigate('Main');
+      } else {
+        alert('Sign Up Failed');
       }
     }
   };
 
   render() {
     return (
-      <View>
-        <Text style={{ margin: 50 }}>Create an Account</Text>
-        <TextInput
-          placeholder="First Name"
-          onChangeText={(text) => { this.setState({ firstName: text }); }}
-        />
-        { this.state.errorFirstName === true ? (
-          <Text>
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.between}>
+            <View style={styles.content}>
+              <Text style={styles.title}>Create an Account</Text>
+              { this.state.errorFirstName === true ? (
+                <Text style={styles.errorText}>
               Please enter first name to proceed.
-          </Text>
-        ) : null }
-        <TextInput
-          placeholder="Last Name"
-          onChangeText={(text) => { this.setState({ lastName: text }); }}
-        />
-        { this.state.errorLastName === true ? (
-          <Text>
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="First Name"
+                onChangeText={(text) => { this.setState({ firstName: text }); }}
+              />
+              { this.state.errorLastName === true ? (
+                <Text style={styles.errorText}>
                Please enter last name to proceed.
-          </Text>
-        ) : null }
-        <TextInput
-          placeholder="Email"
-          onChangeText={(text) => { this.setState({ email: text }); }}
-        />
-        { this.state.errorEmail === true ? (
-          <Text>
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Last Name"
+                onChangeText={(text) => { this.setState({ lastName: text }); }}
+              />
+              { this.state.errorEmail === true ? (
+                <Text style={styles.errorText}>
                 Please enter email to proceed.
-          </Text>
-        ) : null }
-        <TextInput
-          placeholder="Password"
-          onChangeText={(text) => { this.setState({ password: text }); }}
-        />
-        { this.state.errorPassword === true ? (
-          <Text>
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                onChangeText={(text) => { this.setState({ email: text }); }}
+              />
+              { this.state.errorPassword === true ? (
+                <Text style={styles.errorText}>
               Please enter password to proceed.
-          </Text>
-        ) : null }
-        <TextInput
-          placeholder="University"
-          onChangeText={(text) => { this.setState({ university: text }); }}
-        />
-        { this.state.errorUniversity === true ? (
-          <Text>
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry
+                onChangeText={(text) => { this.setState({ password: text }); }}
+              />
+              { this.state.errorUniversity === true ? (
+                <Text style={styles.errorText}>
               Please enter university to proceed.
-          </Text>
-        ) : null }
-        <View>
-          <Button onPress={() => { this.signUp(); }} title="Sign Up" />
-          <Button onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." />
-        </View>
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="University"
+                onChangeText={(text) => { this.setState({ university: text }); }}
+              />
+
+              <View style={styles.button}><Button color={colors.posButton} onPress={() => { this.signUp(); }} title="Sign Up" /></View>
+            </View>
+            <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." /></View>
+          </View>
+        </ImageBackground>
       </View>
     );
   }
