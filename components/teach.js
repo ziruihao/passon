@@ -24,33 +24,25 @@ const styles = StyleSheet.create({
 });
 
 const Teach = (props) => {
-  return (
-    <View>
-      <Text>{props.skill.title}</Text>
-      <Text>{props.skill.years}</Text>
-      <Text>{props.skill.bio}</Text>
-      <Button onPress={() => props.nav.navigate('EditSkillTeach', { skill: props.skill })} title="Edit Skill" />
-    </View>
-  );
+  if (props.user.id === props.self.id) {
+    return (
+      <View>
+        <Text>{props.skill.title}</Text>
+        <Text>{props.skill.years}</Text>
+        <Text>{props.skill.bio}</Text>
+        <Button onPress={() => props.nav.navigate('EditSkillTeach', { skill: props.skill })} title="Edit Skill" />
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <Text>{props.skill.title}</Text>
+        <Text>{props.skill.years}</Text>
+        <Text>{props.skill.bio}</Text>
+      </View>
+    );
+  }
 };
-
-// class Teach extends Component {
-//   edit = () => {
-//     this.props.nav.navigate('EditSkillTeach');
-//   }
-
-//   render() {
-//     return (
-//       <View>
-//         <Text>{this.props.title}</Text>
-//         <Text>{this.props.years}</Text>
-//         <Text>{this.props.bio}</Text>
-//         <Button onPress={() => this.edit()} title="Edit Skill" />
-//       </View>
-//     );
-//   }
-// }
-
 
 export default Teach;
 

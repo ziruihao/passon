@@ -31,13 +31,11 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    // this.props.fetchSelf();
-    return <View><Teaches teaches={this.props.self.teach} nav={this.props.navigation} /></View>;
+    return <View><Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
   }
 
   renderLearns() {
-    // this.props.fetchSelf();
-    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} /></View>;
+    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
   }
 
   render() {
@@ -49,25 +47,17 @@ class ProfileSelf extends Component {
           <Text>
             Teach:
           </Text>
-          {/* <View><Teaches teaches={this.props.User.teach} /></View> */}
           {this.renderTeaches()}
           <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
             title="Add Skill"
           />
-          {/* <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
-            title="Edit Skill"
-          /> */}
           <Text>
             Learn:
           </Text>
           {this.renderLearns()}
-          {/* <View><Learns learns={this.props.User.learn} /></View> */}
           <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
             title="Add Skill"
           />
-          {/* <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
-            title="Edit Skill"
-          /> */}
         </View>
       );
     }
