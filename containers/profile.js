@@ -16,12 +16,18 @@ import { fetchUser } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
 
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: padding.sm,
     paddingVertical: padding.lg,
     width: dimensions.fullWidth,
     fontFamily: fonts.primary,
+  },
+  profileBox: {
+    backgroundColor: 'blue',
+    width: dimensions.fullWidth,
+    height: 250,
   },
 });
 
