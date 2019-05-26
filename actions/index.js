@@ -116,8 +116,8 @@ export function fetchUsers(id) {
 }
 
 export function fetchSelf() {
-  return async (dispatch) => {
-    axios.get(`${ROOT_URL}/self`)
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/self`)
       .then((response) => {
         dispatch({ type: ActionTypes.SAVE_USER, payload: response.data });
       })
@@ -152,27 +152,28 @@ export function deleteUser(id, history) {
   };
 }
 
-
 export function fetchTeachers(skills) {
-  return async (dispatch) => {
-    axios.get(`${ROOT_URL}/getTeachers`, skills).then((response) => {
-      console.log(response);
-      dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data }); s;
+  return dispatch => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
+      console.log('aaa');
+      dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data });
+      resolve(response.data);
     }).catch((error) => {
-      console.log(error.message);
+      reject(error.message);
     });
-  };
+  }));
 }
 
 export function fetchLearners(skills) {
-  return async (dispatch) => {
-    axios.get(`${ROOT_URL}/getLearners`, skills).then((response) => {
-      console.log(response);
-      dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data }); s;
+  return dispatch => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/learners`, skills).then((response) => {
+      console.log('bbb');
+      dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data });
+      resolve(response.data);
     }).catch((error) => {
-      console.log(error.message);
+      reject(error.message);
     });
-  };
+  }));
 }
 
 
@@ -185,24 +186,20 @@ export function authError(error) {
   };
 }
 
-export function signinUser({ email, password }) {
-  return (dispatch) => {
-    axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then(async (response) => {
-        await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
-        await AsyncStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common = { authorization: response.data.token };
-        await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
-      })
-      .catch((error) => {
-        dispatch(authError(`Sign In Failed: ${error.data}`));
-      });
+export function signinUser({ email, password }, navigation) {
+  return async (dispatch) => {
+    const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
+    await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+    await AsyncStorage.setItem('token', response.data.token);
+    axios.defaults.headers.common = await { authorization: response.data.token };
+    await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
+    navigation.navigate('Main');
   };
 }
 
 export function signupUser({
   firstName, lastName, email, password, university,
-}) {
+}, navigation) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
@@ -212,6 +209,7 @@ export function signupUser({
         await AsyncStorage.setItem('token', response.data.token);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
+        navigation.navigate('Main');
       })
       .catch((error) => {
         dispatch(authError(`Sign Up Failed: ${error}`));
