@@ -74,6 +74,12 @@ class ProfileSelf extends Component {
     this.props.fetchSelf();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.props.fetchSelf();
+    }
+  }
+
   toggleTeach = () => {
     console.log('TOGGLED');
     this.setState((prevState) => {
