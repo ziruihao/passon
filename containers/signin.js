@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
     fontSize: fonts.p3,
     margin: 10,
   },
+  errorText: {
+    color: '#FFFFFF',
+  },
 });
 
 class SignIn extends Component {
@@ -86,7 +89,7 @@ class SignIn extends Component {
       });
       if (this.props.authenticated) {
         this.props.navigation.navigate('Main');
-      } else {
+      } else if (this.props.authError !== '') {
         alert('Sign In Failed');
       }
     }
@@ -99,15 +102,20 @@ class SignIn extends Component {
           <View style={styles.between}>
             <View style={styles.content}>
               <Text style={styles.title}>Sign In</Text>
+              { this.state.errorEmail === true ? (
+                <Text style={styles.errorText}>
+                    Please enter email to proceed.
+                </Text>
+              ) : null }
               <TextInput
                 style={styles.input}
                 placeholder="Email"
                 placeholderTextColor="#9A989E"
                 onChangeText={(text) => { this.setState({ email: text }); }}
               />
-              { this.state.errorEmail === true ? (
-                <Text>
-                    Please enter email to proceed.
+              { this.state.errorPassword === true ? (
+                <Text style={styles.errorText}>
+                    Please enter password to proceed.
                 </Text>
               ) : null }
               <TextInput
@@ -117,11 +125,7 @@ class SignIn extends Component {
                 secureTextEntry
                 onChangeText={(text) => { this.setState({ password: text }); }}
               />
-              { this.state.errorPassword === true ? (
-                <Text>
-                    Please enter password to proceed.
-                </Text>
-              ) : null }
+
               <View style={styles.button}><Button color={colors.posButton} onPress={() => { this.signIn(); }} title="Sign In" /></View>
             </View>
             <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." /></View>
@@ -135,6 +139,7 @@ class SignIn extends Component {
 function mapStateToProps(reduxState) {
   return {
     authenticated: reduxState.auth.authenticated,
+    authError: reduxState.auth.error,
   };
 }
 
