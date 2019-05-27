@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -82,7 +83,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.fetchUsers().then(() => {
+    this.fetchUsers([]).then(() => {
       this.combineUsers();
     }).catch((error) => {
       console.log(error);
@@ -91,7 +92,7 @@ class Home extends Component {
     this.props.fetchSelf();
   }
 
-  mapFunction = (element) => {
+  renderUser = (element) => {
     // console.log('==== ELEMENT ====')
     if (element.id !== this.props.self.id) {
       return (
@@ -135,12 +136,10 @@ class Home extends Component {
     }
   };
 
-  fetchUsers() {
+  fetchUsers(learn_arr) {
     const teach_arr = [];
-    const learn_arr = [];
-
     this.props.self.teach.forEach(elem => teach_arr.push(elem.title));
-    this.props.self.learn.forEach(elem => learn_arr.push(elem.title));
+    if (learn_arr.length === 0 || learn_arr[0] === '') learn_arr = this.props.self.learn.map(elem => elem.title);
 
     // We want to fetch the teachers for this user's learn and
     // the learners for this user's teaches to facilitate matching
@@ -177,54 +176,50 @@ class Home extends Component {
         return notIncludes;
       }),
     });
-    // console.log('teachers');
-    // console.log(this.props.teachers);
-    // console.log('learners');
-    // console.log(this.props.learners);
-    // console.log('double');
-    // console.log(this.state.double_matches);
-    // console.log('single');
-    // console.log(this.state.single_matches);
+    console.log('teachers');
+    console.log(this.props.teachers);
+    console.log('learners');
+    console.log(this.props.learners);
+    console.log('double');
+    console.log(this.state.double_matches);
+    console.log('single');
+    console.log(this.state.single_matches);
   }
 
 
   intoProfile(profile) {
-    console.log('Profile: +++++++++++++++++++ ');
-    console.log(profile);
+    // console.log('Profile: +++++++++++++++++++ ');
+    // console.log(profile);
     this.props.navigation.navigate('Profile', profile);
   }
 
   search(search_query) {
-    this.setState({ search_query });
-    console.log('querying search');
-    console.log(this.state.search_query);
+    console.log(search_query);
+    this.setState({ search_query }, () => {
+      this.fetchUsers(this.state.search_query.split(' ')).then(() => {
+        this.combineUsers();
+      }).catch((error) => {
+        console.log(error);
+      });
+    });
+    // console.log('querying search');
+    // console.log(this.state.search_query);
   }
 
   renderContent = () => {
-    if (this.state.search_query === '') {
-      return (
-        <Container>
-          {this.renderMatches()}
-        </Container>
-      );
-    } else {
-      return (
-        <Container>
-          {this.renderSearch()}
-        </Container>
-      );
-    }
+    return (
+      <Container>
+        {this.renderMatches()}
+      </Container>
+    );
   };
 
   renderSearch = () => {
-    this.props.fetchSearch({
-      skills: [this.state.search_query],
-    });
-
-    console.log(this.props.search);
-
+    // console.log(this.props.search);
     return (
-      this.props.search.map(element => this.mapFunction(element)));
+      this.props.search.map(element => this.renderUser(element))
+    );
+    // to-do make a pretty loading screen as a component that we can use everywhere
   };
 
   renderMatches = () => {
@@ -233,8 +228,8 @@ class Home extends Component {
       first = this.props.self.firstName;
       last = this.props.self.lastName;
     }
-    const double_matches = this.state.double_matches.map(element => this.mapFunction(element));
-    const single_matches = this.state.single_matches.map(element => this.mapFunction(element));
+    const double_matches = this.state.double_matches.map(element => this.renderUser(element));
+    const single_matches = this.state.single_matches.map(element => this.renderUser(element));
     return (
       <Container>
         <Text>Double Matches</Text>
