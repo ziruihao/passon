@@ -115,8 +115,8 @@ class SignUp extends Component {
       });
       if (this.props.authenticated) {
         this.props.navigation.navigate('Main');
-      } else {
-        alert('Sign Up Failed');
+      } else if (this.props.authError !== '') {
+        alert('Sign In Failed');
       }
     }
   };
@@ -193,6 +193,7 @@ class SignUp extends Component {
 function mapStateToProps(reduxState) {
   return {
     authenticated: reduxState.auth.authenticated,
+    authError: reduxState.auth.error,
   };
 }
 
