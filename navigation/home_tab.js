@@ -12,8 +12,10 @@ const HomeTab = createStackNavigator({
   ProfileNav,
 });
 
-HomeTab.navigationOptions = {
-  tabBarLabel: 'Home',
-};
+// // override some navigation options - set a pretty icon
+// HomeTab.navigationOptions = ({ navigation }) => ({
+//   tabBarLabel: 'Home',
+// },
+// );
 
 export default HomeTab;
