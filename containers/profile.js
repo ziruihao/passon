@@ -56,9 +56,9 @@ class Profile extends React.Component {
     this.props.fetch_user(this.props.navigation.getParam('_id', null));
     this.props.fetch_self();
     this.props.fetch_chat(this.props.navigation.getParam('_id', null));
-    setInterval(() => {
-      console.log(`props check: ${JSON.stringify(this.props.chat)}`);
-    }, 3000);
+    // setInterval(() => {
+    //   console.log(`props check: ${JSON.stringify(this.props.chat)}`);
+    // }, 3000);
   }
 
 
