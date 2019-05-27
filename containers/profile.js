@@ -68,13 +68,15 @@ class Profile extends React.Component {
     } else {
       return (
         <View>
-          <Text>{this.props.User.firstName}</Text>
-          {/* <Text>{this.props.User.lastname}</Text>
-          <Text>{this.props.User.email}</Text>
-          <Text>{this.props.User.teach}</Text>
-          <Text>{this.props.User.learn}</Text>
-          <Text>{this.props.User.rating}</Text>
-          <Text>{this.props.User.univerity}</Text> */}
+          <View>
+            <View>
+              <Text>{this.props.user.firstName}</Text>
+            </View>
+            <View><Text>Teach:</Text></View>
+            <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
+            <View><Text>Learn:</Text></View>
+            <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
+          </View>
           <Button title="Go to Chat"
             onPress={() => {
               // this.setState({ btn: true });
