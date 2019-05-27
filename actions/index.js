@@ -23,6 +23,7 @@ export const ActionTypes = {
   FETCH_TEACHES: 'FETCH_TEACHES',
   FETCH_LEARN: 'FETCH_LEARN',
   FETCH_TEACH: 'FETCH_TEACH',
+  SAVE_SEARCH: 'SAVE_SEARCH',
 };
 
 // From assignment page
@@ -156,10 +157,22 @@ export function deleteUser(id, history) {
   };
 }
 
+export function fetchSearch(skills) {
+  return dispatch => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
+      // console.log('aaa');
+      dispatch({ type: ActionTypes.SAVE_SEARCH, payload: response.data });
+      resolve(response.data);
+    }).catch((error) => {
+      reject(error.message);
+    });
+  }));
+}
+
 export function fetchTeachers(skills) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
-      console.log('aaa');
+      // console.log('aaa');
       dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data });
       resolve(response.data);
     }).catch((error) => {
@@ -171,7 +184,7 @@ export function fetchTeachers(skills) {
 export function fetchLearners(skills) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/learners`, skills).then((response) => {
-      console.log('bbb');
+      // console.log('bbb');
       dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data });
       resolve(response.data);
     }).catch((error) => {

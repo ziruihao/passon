@@ -34,7 +34,9 @@ import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
-import { fetchUsers, fetchTeachers, fetchLearners } from '../actions';
+import {
+  fetchUsers, fetchTeachers, fetchLearners, fetchSearch,
+} from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
 
@@ -121,14 +123,14 @@ class Home extends Component {
         return notIncludes;
       }),
     });
-    console.log('teachers');
-    console.log(this.props.teachers);
-    console.log('learners');
-    console.log(this.props.learners);
-    console.log('double');
-    console.log(this.state.double_matches);
-    console.log('single');
-    console.log(this.state.single_matches);
+    // console.log('teachers');
+    // console.log(this.props.teachers);
+    // console.log('learners');
+    // console.log(this.props.learners);
+    // console.log('double');
+    // console.log(this.state.double_matches);
+    // console.log('single');
+    // console.log(this.state.single_matches);
   }
 
 
@@ -144,7 +146,81 @@ class Home extends Component {
     console.log(this.state.search_query);
   }
 
-  render() {
+  renderContent = () => {
+    if (this.state.search_query === '') {
+      return (
+        <Container>
+          {this.renderMatches()}
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          {this.renderSearch()}
+        </Container>
+      );
+    }
+  };
+
+  renderSearch = () => {
+    this.props.fetchSearch({
+      skills: [this.state.search_query],
+    });
+
+    console.log(this.props.search);
+
+    return (
+      this.props.search.map((element) => {
+        return (
+          <Container key={element.id}>
+            {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+            <Content style={styles.container}>
+              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+                <Card style={styles.mb}>
+                  <CardItem>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
+                  </CardItem>
+                  <CardItem>
+                    <CardItem>
+                      <Text> {element.firstName}</Text>
+                      <Text> {element.lastName}</Text>
+                      <Text> {element.email}</Text>
+                    </CardItem>
+                    <CardItem>
+                      <CardItem>
+                        <Left>
+                          <Icon active name="star" />
+                          <Text>5 stars</Text>
+                          <Text>X yrs</Text>
+                        </Left>
+                      </CardItem>
+
+                      <CardItem>
+                        <Image
+                          style={{
+                            resizeMode: 'cover',
+                            width: null,
+                            height: 200,
+                            flex: 1,
+                          }}
+                          source={cardImage}
+                        />
+                      </CardItem>
+                    </CardItem>
+                  </CardItem>
+                </Card>
+              </TouchableHighlight>
+            </Content>
+            {/* <Image /> */}
+          </Container>
+        );
+      })
+    );
+  };
+
+  renderMatches = () => {
     let first, last, userName, otherUserName;
     if (this.props.self != null) {
       first = this.props.self.firstName;
@@ -238,16 +314,26 @@ class Home extends Component {
     });
     return (
       <Container>
+        <Text>Double Matches</Text>
+        {double_matches}
+        <Text>Single Matches</Text>
+        {single_matches}
+      </Container>
+    );
+  };
+
+  render() {
+    return (
+      <Container>
         <Header searchBar rounded barStyle="light-content">
           <Item>
             <Icon name="ios-search" />
             <Input placeholder="Search" onChangeText={text => this.search(text)} />
           </Item>
         </Header>
-        <Text>Double Matches</Text>
-        {double_matches}
-        <Text>Single Matches</Text>
-        {single_matches}
+        <Container>
+          {this.renderContent()}
+        </Container>
       </Container>
     );
   }
@@ -259,7 +345,10 @@ function mapReduxStateToProps(reduxState) {
     teachers: reduxState.user.teachers,
     learners: reduxState.user.learners,
     self: reduxState.user.self,
+    search: reduxState.user.search,
   };
 }
 
-export default connect(mapReduxStateToProps, { fetchUsers, fetchLearners, fetchTeachers })(Home);
+export default connect(mapReduxStateToProps, {
+  fetchUsers, fetchLearners, fetchTeachers, fetchSearch,
+})(Home);
