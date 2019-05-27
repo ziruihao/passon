@@ -82,6 +82,7 @@ class Home extends Component {
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
+
   componentDidMount() {
     this.fetchUsers([]).then(() => {
       this.combineUsers();
@@ -90,6 +91,17 @@ class Home extends Component {
     });
 
     this.props.fetchSelf();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.fetchUsers([]).then(() => {
+        this.combineUsers();
+      }).catch((error) => {
+        console.log(error);
+      });
+      this.props.fetchSelf();
+    }
   }
 
   renderUser = (element) => {
