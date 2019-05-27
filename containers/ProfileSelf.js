@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     zIndex: 1,
+    width: '100%',
   },
   image: {
     width: 400,
@@ -32,11 +33,11 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     flexDirection: 'row',
     flexWrap: 'nowrap',
     alignItems: 'flex-end',
-
+    width: '100%',
   },
   tabs: {
     width: 120,
@@ -134,12 +135,10 @@ class ProfileSelf extends Component {
           <Image source={require('../assets/learnBg.jpg')} style={styles.bg} />
           <Image />
           <View style={styles.tabsContainer}>
-            <View style={styles.tabs}>
-              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
-              </TouchableHighlight>
-              <Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} />
-            </View>
+            <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+              <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
+            </TouchableHighlight>
+            <Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} />
           </View>
           <View style={styles.body}>
             {this.renderLearns()}
