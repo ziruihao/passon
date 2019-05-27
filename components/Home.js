@@ -35,7 +35,7 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSearch,
+  fetchUsers, fetchTeachers, fetchLearners, fetchSearch, fetchSelf,
 } from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
@@ -87,6 +87,8 @@ class Home extends Component {
     }).catch((error) => {
       console.log(error);
     });
+
+    this.props.fetchSelf();
   }
 
   fetchUsers() {
@@ -171,6 +173,107 @@ class Home extends Component {
 
     return (
       this.props.search.map((element) => {
+        // console.log('==== ELEMENT ====')
+        if (element.id !== this.props.self.id) {
+          return (
+            <Container key={element.id}>
+              {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+              <Content style={styles.container}>
+                <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+                  <Card style={styles.mb}>
+                    <CardItem>
+                      <Text> {element.firstName}</Text>
+                      <Text> {element.lastName}</Text>
+                      <Text> {element.email}</Text>
+                    </CardItem>
+                    <CardItem>
+                      <CardItem>
+                        <Text> {element.firstName}</Text>
+                        <Text> {element.lastName}</Text>
+                        <Text> {element.email}</Text>
+                      </CardItem>
+                      <CardItem>
+                        <CardItem>
+                          <Left>
+                            <Icon active name="star" />
+                            <Text>5 stars</Text>
+                            <Text>X yrs</Text>
+                          </Left>
+                        </CardItem>
+
+                        <CardItem>
+                          <Image
+                            style={{
+                              resizeMode: 'cover',
+                              width: null,
+                              height: 200,
+                              flex: 1,
+                            }}
+                            source={cardImage}
+                          />
+                        </CardItem>
+                      </CardItem>
+                    </CardItem>
+                  </Card>
+                </TouchableHighlight>
+              </Content>
+              {/* <Image /> */}
+            </Container>
+          );
+        }
+      })
+    );
+  };
+
+  renderMatches = () => {
+    let first, last, userName, otherUserName;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
+    const double_matches = this.state.double_matches.map((element) => {
+      if (element.id !== this.props.self.id) {
+        return (
+          <Container key={element.id}>
+            {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+            <Content style={styles.container}>
+              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+                <Card style={styles.mb}>
+                  <CardItem>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
+                  </CardItem>
+                  <CardItem>
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>5 stars</Text>
+                        <Text>X yrs</Text>
+                      </Left>
+                    </CardItem>
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
+                  </CardItem>
+                </Card>
+              </TouchableHighlight>
+            </Content>
+            {/* <Image /> */}
+          </Container>
+        );
+      }
+    });
+    const single_matches = this.state.single_matches.map((element) => {
+      if (element.id !== this.props.self.id) {
         return (
           <Container key={element.id}>
             {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
@@ -216,101 +319,7 @@ class Home extends Component {
             {/* <Image /> */}
           </Container>
         );
-      })
-    );
-  };
-
-  renderMatches = () => {
-    let first, last, userName, otherUserName;
-    if (this.props.self != null) {
-      first = this.props.self.firstName;
-      last = this.props.self.lastName;
-    }
-    const double_matches = this.state.double_matches.map((element) => {
-      return (
-        <Container key={element.id}>
-          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-          <Content style={styles.container}>
-            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-              <Card style={styles.mb}>
-                <CardItem>
-                  <Text> {element.firstName}</Text>
-                  <Text> {element.lastName}</Text>
-                  <Text> {element.email}</Text>
-                </CardItem>
-                <CardItem>
-                  <CardItem>
-                    <Left>
-                      <Icon active name="star" />
-                      <Text>5 stars</Text>
-                      <Text>X yrs</Text>
-                    </Left>
-                  </CardItem>
-                  <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
-                  </CardItem>
-                </CardItem>
-              </Card>
-            </TouchableHighlight>
-          </Content>
-          {/* <Image /> */}
-        </Container>
-      );
-    });
-    const single_matches = this.state.single_matches.map((element) => {
-      return (
-        <Container key={element.id}>
-          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-          <Content style={styles.container}>
-            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-              <Card style={styles.mb}>
-                <CardItem>
-                  <Text> {element.firstName}</Text>
-                  <Text> {element.lastName}</Text>
-                  <Text> {element.email}</Text>
-                </CardItem>
-                <CardItem>
-                  <CardItem>
-                    <Text> {element.firstName}</Text>
-                    <Text> {element.lastName}</Text>
-                    <Text> {element.email}</Text>
-                  </CardItem>
-                  <CardItem>
-                    <CardItem>
-                      <Left>
-                        <Icon active name="star" />
-                        <Text>5 stars</Text>
-                        <Text>X yrs</Text>
-                      </Left>
-                    </CardItem>
-
-                    <CardItem>
-                      <Image
-                        style={{
-                          resizeMode: 'cover',
-                          width: null,
-                          height: 200,
-                          flex: 1,
-                        }}
-                        source={cardImage}
-                      />
-                    </CardItem>
-                  </CardItem>
-                </CardItem>
-              </Card>
-            </TouchableHighlight>
-          </Content>
-          {/* <Image /> */}
-        </Container>
-      );
+      }
     });
     return (
       <Container>
@@ -350,5 +359,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSearch,
+  fetchUsers, fetchLearners, fetchTeachers, fetchSearch, fetchSelf,
 })(Home);
