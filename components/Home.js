@@ -91,6 +91,57 @@ class Home extends Component {
     this.props.fetchSelf();
   }
 
+  mapFunction = (element) => {
+    // console.log('==== ELEMENT ====')
+    if (element.id !== this.props.self.id) {
+      return (
+        <Container key={element.id}>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+          <Content style={styles.container}>
+            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+              <Card style={styles.mb}>
+                <CardItem>
+                  <Text> {element.firstName}</Text>
+                  <Text> {element.lastName}</Text>
+                  <Text> {element.email}</Text>
+                </CardItem>
+                <CardItem>
+                  <CardItem>
+                    <Text> {element.firstName}</Text>
+                    <Text> {element.lastName}</Text>
+                    <Text> {element.email}</Text>
+                  </CardItem>
+                  <CardItem>
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>5 stars</Text>
+                        <Text>X yrs</Text>
+                      </Left>
+                    </CardItem>
+
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
+                  </CardItem>
+                </CardItem>
+              </Card>
+            </TouchableHighlight>
+          </Content>
+          {/* <Image /> */}
+        </Container>
+      );
+    }
+  };
+
   fetchUsers() {
     const teach_arr = [];
     const learn_arr = [];
@@ -180,57 +231,7 @@ class Home extends Component {
     console.log(this.props.search);
 
     return (
-      this.props.search.map((element) => {
-        // console.log('==== ELEMENT ====')
-        if (element.id !== this.props.self.id) {
-          return (
-            <Container key={element.id}>
-              {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-              <Content style={styles.container}>
-                <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-                  <Card style={styles.mb}>
-                    <CardItem>
-                      <Text> {element.firstName}</Text>
-                      <Text> {element.lastName}</Text>
-                      <Text> {element.email}</Text>
-                    </CardItem>
-                    <CardItem>
-                      <CardItem>
-                        <Text> {element.firstName}</Text>
-                        <Text> {element.lastName}</Text>
-                        <Text> {element.email}</Text>
-                      </CardItem>
-                      <CardItem>
-                        <CardItem>
-                          <Left>
-                            <Icon active name="star" />
-                            <Text>5 stars</Text>
-                            <Text>X yrs</Text>
-                          </Left>
-                        </CardItem>
-
-                        <CardItem>
-                          <Image
-                            style={{
-                              resizeMode: 'cover',
-                              width: null,
-                              height: 200,
-                              flex: 1,
-                            }}
-                            source={cardImage}
-                          />
-                        </CardItem>
-                      </CardItem>
-                    </CardItem>
-                  </Card>
-                </TouchableHighlight>
-              </Content>
-              {/* <Image /> */}
-            </Container>
-          );
-        }
-      })
-    );
+      this.props.search.map(element => this.mapFunction(element)));
   };
 
   renderMatches = () => {
@@ -239,96 +240,8 @@ class Home extends Component {
       first = this.props.self.firstName;
       last = this.props.self.lastName;
     }
-    const double_matches = this.state.double_matches.map((element) => {
-      if (element.id !== this.props.self.id) {
-        return (
-          <Container key={element.id}>
-            {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-            <Content style={styles.container}>
-              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-                <Card style={styles.mb}>
-                  <CardItem>
-                    <Text> {element.firstName}</Text>
-                    <Text> {element.lastName}</Text>
-                    <Text> {element.email}</Text>
-                  </CardItem>
-                  <CardItem>
-                    <CardItem>
-                      <Left>
-                        <Icon active name="star" />
-                        <Text>5 stars</Text>
-                        <Text>X yrs</Text>
-                      </Left>
-                    </CardItem>
-                    <CardItem>
-                      <Image
-                        style={{
-                          resizeMode: 'cover',
-                          width: null,
-                          height: 200,
-                          flex: 1,
-                        }}
-                        source={cardImage}
-                      />
-                    </CardItem>
-                  </CardItem>
-                </Card>
-              </TouchableHighlight>
-            </Content>
-            {/* <Image /> */}
-          </Container>
-        );
-      }
-    });
-    const single_matches = this.state.single_matches.map((element) => {
-      if (element.id !== this.props.self.id) {
-        return (
-          <Container key={element.id}>
-            {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-            <Content style={styles.container}>
-              <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-                <Card style={styles.mb}>
-                  <CardItem>
-                    <Text> {element.firstName}</Text>
-                    <Text> {element.lastName}</Text>
-                    <Text> {element.email}</Text>
-                  </CardItem>
-                  <CardItem>
-                    <CardItem>
-                      <Text> {element.firstName}</Text>
-                      <Text> {element.lastName}</Text>
-                      <Text> {element.email}</Text>
-                    </CardItem>
-                    <CardItem>
-                      <CardItem>
-                        <Left>
-                          <Icon active name="star" />
-                          <Text>5 stars</Text>
-                          <Text>X yrs</Text>
-                        </Left>
-                      </CardItem>
-
-                      <CardItem>
-                        <Image
-                          style={{
-                            resizeMode: 'cover',
-                            width: null,
-                            height: 200,
-                            flex: 1,
-                          }}
-                          source={cardImage}
-                        />
-                      </CardItem>
-                    </CardItem>
-                  </CardItem>
-                </Card>
-              </TouchableHighlight>
-            </Content>
-            {/* <Image /> */}
-          </Container>
-        );
-      }
-    });
+    const double_matches = this.state.double_matches.map(element => this.mapFunction(element));
+    const single_matches = this.state.single_matches.map(element => this.mapFunction(element));
     return (
       <Container>
         <Text>Double Matches</Text>
