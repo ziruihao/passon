@@ -8,6 +8,8 @@ const MessagingTab = createStackNavigator({
   // keys are the names of the "routes"
   Overview: { screen: MessagingScreen },
   Chat: { screen: ChatScreen },
+}, {
+  headerMode: 'none',
 });
 
 export default MessagingTab;

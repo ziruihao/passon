@@ -81,6 +81,7 @@ class Home extends Component {
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
+
   componentDidMount() {
     this.fetchUsers().then(() => {
       this.combineUsers();
@@ -89,6 +90,17 @@ class Home extends Component {
     });
 
     this.props.fetchSelf();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.fetchUsers().then(() => {
+        this.combineUsers();
+      }).catch((error) => {
+        console.log(error);
+      });
+      this.props.fetchSelf();
+    }
   }
 
   mapFunction = (element) => {
@@ -139,9 +151,10 @@ class Home extends Component {
     const teach_arr = [];
     const learn_arr = [];
 
-    this.props.self.teach.forEach(elem => teach_arr.push(elem.title));
-    this.props.self.learn.forEach(elem => learn_arr.push(elem.title));
-
+    if (this.props.self !== null) {
+      this.props.self.teach.forEach(elem => teach_arr.push(elem.title));
+      this.props.self.learn.forEach(elem => learn_arr.push(elem.title));
+    }
     // We want to fetch the teachers for this user's learn and
     // the learners for this user's teaches to facilitate matching
     return new Promise((resolve, reject) => {

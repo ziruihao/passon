@@ -52,6 +52,7 @@ const MainTabBar = createBottomTabNavigator(
   },
   {
     initialRouteName: 'HomeTab',
+    headerMode: 'none',
   },
 );
 
