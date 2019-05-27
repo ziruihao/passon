@@ -53,7 +53,7 @@ class AddSkillTeach extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{ margin: 50 }}>
         <Text>Add Skill</Text>
         <TextInput
           placeholder="Skill"

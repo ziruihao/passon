@@ -23,7 +23,7 @@ class EditSkillLearn extends Component {
   render() {
     return (
       <View>
-        <Text>Edit Skill: {this.state.title}</Text>
+        <Text style={{ margin: 50 }}>Edit Skill: {this.state.title}</Text>
         <View>
           <Button onPress={() => { this.delete(); }} title="Delete" />
         </View>
