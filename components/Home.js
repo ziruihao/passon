@@ -103,14 +103,8 @@ class Home extends Component {
                 <CardItem>
                   <Text> {element.firstName}</Text>
                   <Text> {element.lastName}</Text>
-                  <Text> {element.email}</Text>
                 </CardItem>
                 <CardItem>
-                  <CardItem>
-                    <Text> {element.firstName}</Text>
-                    <Text> {element.lastName}</Text>
-                    <Text> {element.email}</Text>
-                  </CardItem>
                   <CardItem>
                     <CardItem>
                       <Left>
@@ -119,7 +113,6 @@ class Home extends Component {
                         <Text>X yrs</Text>
                       </Left>
                     </CardItem>
-
                     <CardItem>
                       <Image
                         style={{
@@ -176,7 +169,7 @@ class Home extends Component {
       }),
     });
     this.setState({
-      single_matches: this.props.teachers.concat(this.props.learners).filter((user) => {
+      single_matches: this.props.teachers.filter((user) => {
         let notIncludes = true;
         this.state.double_matches.forEach((double_matcher) => {
           if (double_matcher.id === user.id) notIncludes = false;
