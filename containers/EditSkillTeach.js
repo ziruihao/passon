@@ -52,7 +52,7 @@ class EditSkillTeach extends Component {
   render() {
     return (
       <View>
-        <Text>Edit Skill: {this.state.title}</Text>
+        <Text style={{ margin: 50 }}>Edit Skill: {this.state.title}</Text>
         <TextInput
           placeholder="Years of experience"
           onChangeText={(text) => { this.setState({ years: Number(text) }); }}

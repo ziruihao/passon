@@ -32,7 +32,7 @@ class AddSkillLearn extends Component {
   render() {
     return (
       <View>
-        <Text>Add Skill</Text>
+        <Text style={{ margin: 50 }}>Add Skill</Text>
         <TextInput
           placeholder="Skill"
           onChangeText={(text) => { this.setState({ title: text }); }}

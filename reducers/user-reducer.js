@@ -17,6 +17,9 @@ const initialState = {
       // profile_pic_url:
     },
   ],
+  teachers: [],
+  learners: [],
+  both: [],
   current: null,
   self: null,
 };
@@ -38,6 +41,14 @@ const UserReducer = (state = initialState, action) => {
     case ActionTypes.SAVE_USER:
       return Object.assign({}, state, {
         self: action.payload,
+      });
+    case ActionTypes.SAVE_TEACHERS:
+      return Object.assign({}, state, {
+        teachers: action.payload,
+      });
+    case ActionTypes.SAVE_LEARNERS:
+      return Object.assign({}, state, {
+        learners: action.payload,
       });
     default: // Delete post uses fetch post to update central store
       return state;

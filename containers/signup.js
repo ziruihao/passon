@@ -75,7 +75,7 @@ class SignUp extends Component {
     };
   }
 
-  signUp = () => { // Check that there are no bad or empty values that the user is attempting to signup
+  signUp = async () => { // Check that there are no bad or empty values that the user is attempting to signup
     if (this.state.firstName === '') {
       this.setState({ errorFirstName: true });
     } else {
@@ -106,13 +106,13 @@ class SignUp extends Component {
     && this.state.email !== ''
     && this.state.password !== ''
     && this.state.university !== '') {
-      this.props.signupUser({
+      await this.props.signupUser({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
         password: this.state.password,
         university: this.state.university,
-      });
+      }, this.props.navigation);
       if (this.props.authenticated) {
         this.props.navigation.navigate('Main');
       } else if (this.props.authError !== '') {

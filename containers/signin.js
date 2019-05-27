@@ -69,7 +69,7 @@ class SignIn extends Component {
     };
   }
 
-  signIn = () => { // Check that there are no bad or empty values that the user is attempting to signin
+  signIn = async () => { // Check that there are no bad or empty values that the user is attempting to signin
     if (this.state.email === '') {
       this.setState({ errorEmail: true });
     }
@@ -83,10 +83,10 @@ class SignIn extends Component {
       this.setState({ errorPassword: false });
     }
     if (this.state.email !== '' && this.state.password !== '') {
-      this.props.signinUser({
+      await this.props.signinUser({
         email: this.state.email,
         password: this.state.password,
-      });
+      }, this.props.navigation);
       if (this.props.authenticated) {
         this.props.navigation.navigate('Main');
       } else if (this.props.authError !== '') {

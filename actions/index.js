@@ -11,10 +11,18 @@ export const ActionTypes = {
   // getting users
   FETCH_USER: 'FETCH_USER',
   FETCH_USERS: 'FETCH_USERS',
-  FETCH_SELF: 'FETCH_SELF',
 
   // chats
   GET_CHATS: 'GET_CHATS',
+
+  // teachers
+  SAVE_TEACHERS: 'SAVE_TEACHERS',
+  SAVE_LEARNERS: 'SAVE_LEARNERS',
+  GET_CHAT: 'GET_CHAT',
+  FETCH_LEARNS: 'FETCH_LEARNS',
+  FETCH_TEACHES: 'FETCH_TEACHES',
+  FETCH_LEARN: 'FETCH_LEARN',
+  FETCH_TEACH: 'FETCH_TEACH',
 };
 
 // From assignment page
@@ -82,7 +90,6 @@ export function deleteTeach(id) {
     axios.delete(`${ROOT_URL}/teach`, { data: { id } }).then((response) => {
       console.log(response.data);
     }).catch((error) => {
-      console.log('ERRRRRRRRRRRRR');
       console.log(error.message);
     });
   };
@@ -113,8 +120,8 @@ export function fetchUsers(id) {
 }
 
 export function fetchSelf() {
-  return async (dispatch) => {
-    axios.get(`${ROOT_URL}/self`)
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/self`)
       .then((response) => {
         dispatch({ type: ActionTypes.SAVE_USER, payload: response.data });
       })
@@ -149,6 +156,31 @@ export function deleteUser(id, history) {
   };
 }
 
+export function fetchTeachers(skills) {
+  return dispatch => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
+      console.log('aaa');
+      dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data });
+      resolve(response.data);
+    }).catch((error) => {
+      reject(error.message);
+    });
+  }));
+}
+
+export function fetchLearners(skills) {
+  return dispatch => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/learners`, skills).then((response) => {
+      console.log('bbb');
+      dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data });
+      resolve(response.data);
+    }).catch((error) => {
+      reject(error.message);
+    });
+  }));
+}
+
+
 // trigger to deauth if there is error
 // can also use in your error reducer if you have one to display an error message
 export function authError(error) {
@@ -158,40 +190,20 @@ export function authError(error) {
   };
 }
 
-export function signinUser({ email, password }) {
-  // takes in an object with email and password (minimal user object)
-  // returns a thunk method that takes dispatch as an argument (just like our create post method really)
-  // does an axios.post on the /signin endpoint
-  // on success does:
-  //  dispatch({ type: ActionTypes.AUTH_USER });
-  //  localStorage.setItem('token', response.data.token);
-  // on error should dispatch(authError(`Sign In Failed: ${error.response.data}`));
-
-  return (dispatch) => {
-    axios.post(`${ROOT_URL}/signin`, { email, password })
-      .then(async (response) => {
-        await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
-        await AsyncStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common = { authorization: response.data.token };
-        await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
-      })
-      .catch((error) => {
-        dispatch(authError(`Sign In Failed: ${error.data}`));
-      });
+export function signinUser({ email, password }, navigation) {
+  return async (dispatch) => {
+    const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
+    await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
+    await AsyncStorage.setItem('token', response.data.token);
+    axios.defaults.headers.common = await { authorization: response.data.token };
+    await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
+    navigation.navigate('Main');
   };
 }
 
 export function signupUser({
   firstName, lastName, email, password, university,
-}) {
-  // takes in an object with email and password (minimal user object)
-  // returns a thunk method that takes dispatch as an argument (just like our create post method really)
-  // does an axios.post on the /signup endpoint (only difference from above)
-  // on success does:
-  //  dispatch({ type: ActionTypes.AUTH_USER });
-  //  localStorage.setItem('token', response.data.token);
-  // on error should dispatch(authError(`Sign Up Failed: ${error.response.data}`));
-
+}, navigation) {
   return (dispatch) => {
     axios.post(`${ROOT_URL}/signup`, {
       firstName, lastName, email, password, university,
@@ -201,6 +213,7 @@ export function signupUser({
         await AsyncStorage.setItem('token', response.data.token);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
+        navigation.navigate('Main');
       })
       .catch((error) => {
         dispatch(authError(`Sign Up Failed: ${error}`));
@@ -220,13 +233,25 @@ export function signoutUser(history) {
   };
 }
 
-// TODO
 export function fetchChats() {
   return async (dispatch) => {
     const value = await AsyncStorage.getItem('token');
     axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
       .then((response) => {
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function fetchChat(otherId) {
+  return async (dispatch) => {
+    const value = await AsyncStorage.getItem('token');
+    axios.get(`${ROOT_URL}/messaging/${otherId}`, { headers: { authorization: value } })
+      .then((response) => {
+        dispatch({ type: ActionTypes.GET_CHAT, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
