@@ -65,15 +65,6 @@ class ProfileSelf extends Component {
     this.toggleTeach = this.toggleTeach.bind(this);
   }
 
-  // renderText = () => {
-  //   return (
-  //     <div>{this.props.currentUser.}</div>
-  //   );
-  // };
-  componentWillMount() {
-    this.props.fetchSelf();
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       this.props.fetchSelf();

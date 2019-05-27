@@ -1,9 +1,61 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Text, View, Button, TextInput,
+  StyleSheet, Text, View, Button, TextInput, ImageBackground,
 } from 'react-native';
 import { signinUser } from '../actions';
+import {
+  colors, fonts, padding, dimensions,
+} from '../styles/base';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  between: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: fonts.h1,
+    color: '#FFFFFF',
+    margin: 30,
+  },
+  input: {
+    width: 276,
+    height: 45,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    color: '#2D2A32',
+  },
+  button: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 50,
+    width: 213,
+    height: 53,
+    fontSize: fonts.h1,
+    justifyContent: 'center',
+    margin: 10,
+  },
+  smallText: {
+    fontSize: fonts.p3,
+    margin: 10,
+  },
+  errorText: {
+    color: '#FFFFFF',
+  },
+});
 
 class SignIn extends Component {
   constructor(props) {
@@ -35,35 +87,50 @@ class SignIn extends Component {
         email: this.state.email,
         password: this.state.password,
       }, this.props.navigation);
+      if (this.props.authenticated) {
+        this.props.navigation.navigate('Main');
+      } else if (this.props.authError !== '') {
+        alert('Sign In Failed');
+      }
     }
   };
 
   render() {
     return (
-      <View>
-        <Text style={{ margin: 50 }}>Sign In</Text>
-        <TextInput
-          placeholder="Email"
-          onChangeText={(text) => { this.setState({ email: text }); }}
-        />
-        { this.state.errorEmail === true ? (
-          <Text>
-               Please enter email to proceed.
-          </Text>
-        ) : null }
-        <TextInput
-          placeholder="Password"
-          onChangeText={(text) => { this.setState({ password: text }); }}
-        />
-        { this.state.errorPassword === true ? (
-          <Text>
-               Please enter password to proceed.
-          </Text>
-        ) : null }
-        <View>
-          <Button onPress={() => { this.signIn(); }} title="Sign In" />
-          <Button onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." />
-        </View>
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.between}>
+            <View style={styles.content}>
+              <Text style={styles.title}>Sign In</Text>
+              { this.state.errorEmail === true ? (
+                <Text style={styles.errorText}>
+                    Please enter email to proceed.
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="#9A989E"
+                onChangeText={(text) => { this.setState({ email: text }); }}
+              />
+              { this.state.errorPassword === true ? (
+                <Text style={styles.errorText}>
+                    Please enter password to proceed.
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#9A989E"
+                secureTextEntry
+                onChangeText={(text) => { this.setState({ password: text }); }}
+              />
+
+              <View style={styles.button}><Button color={colors.posButton} onPress={() => { this.signIn(); }} title="Sign In" /></View>
+            </View>
+            <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." /></View>
+          </View>
+        </ImageBackground>
       </View>
     );
   }
@@ -72,7 +139,7 @@ class SignIn extends Component {
 function mapStateToProps(reduxState) {
   return {
     authenticated: reduxState.auth.authenticated,
-    User: reduxState.user.current,
+    authError: reduxState.auth.error,
   };
 }
 

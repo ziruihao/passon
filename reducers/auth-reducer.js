@@ -4,6 +4,7 @@ import { ActionTypes } from '../actions';
 const initialState = {
   token: '',
   authenticated: false,
+  error: '',
 };
 
 // This is between the Firebase DB and the actual display
@@ -26,6 +27,7 @@ const AuthReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         token: '',
         authenticated: false,
+        error: action.message,
       });
     default: // Delete post uses fetch post to update central store
       return state;
