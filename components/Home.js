@@ -92,12 +92,20 @@ class Home extends Component {
   }
 
   fetchUsers() {
+    const teach_arr = [];
+    const learn_arr = [];
+
+    this.props.self.teach.forEach(elem => teach_arr.push(elem.title));
+    this.props.self.learn.forEach(elem => learn_arr.push(elem.title));
+
+    // We want to fetch the teachers for this user's learn and
+    // the learners for this user's teaches to facilitate matching
     return new Promise((resolve, reject) => {
       this.props.fetchTeachers({
-        skills: ['Golf', 'Tennis'],
+        skills: learn_arr,
       }).then(() => {
         this.props.fetchLearners({
-          skills: ['Golf'],
+          skills: teach_arr,
         }).then(() => {
           resolve();
         });
