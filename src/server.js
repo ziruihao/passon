@@ -9,14 +9,170 @@ import apiRouter from './router';
 // import * as Message from './controllers/message_controller';
 import Message from './models/message_model';
 import Chat from './models/chat_model';
+import User from './models/user_model';
+import Skill from './models/skill_model';
 
 dotenv.config({ silent: true });
 
+const setUpDB = () => {
+  const self = new User();
+  self.firstName = 'Pass';
+  self.lastName = 'On';
+  self.email = 'passon';
+  self.password = 'password';
+  self.university = 'Dartmouth';
+  self.learn = [];
+  self.teach = [];
+  let skill = new Skill();
+  skill.title = 'Golf';
+  skill.bio = 'I can teach golf.';
+  skill.save().then((saved) => {
+    self.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Drinking';
+    skill.bio = 'I want to learn drinking.';
+    skill.save().then((saved2) => {
+      self.learn.push(saved2);
+      skill = new Skill();
+      skill.title = 'Coding';
+      skill.bio = 'I want to learn baseball.';
+      skill.save().then((saved3) => {
+        self.learn.push(saved3);
+        self.save();
+      });
+    });
+  });
+
+  const zirui = new User();
+  zirui.firstName = 'Zirui';
+  zirui.lastName = 'Hao';
+  zirui.email = 'zirui';
+  zirui.password = 'password';
+  zirui.university = 'Dartmouth';
+  zirui.learn = [];
+  zirui.teach = [];
+  skill = new Skill();
+  skill.title = 'Coding';
+  skill.bio = 'I can teach coding.';
+  skill.save().then((saved) => {
+    zirui.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Drinking';
+    skill.bio = 'I can teach excessive drinking.';
+    skill.save().then((saved2) => {
+      zirui.teach.push(saved2);
+      skill = new Skill();
+      skill.title = 'Baseball';
+      skill.bio = 'I want to learn baseball.';
+      skill.save().then((saved3) => {
+        zirui.learn.push(saved3);
+        zirui.save();
+      });
+    });
+  });
+
+  const john = new User();
+  john.firstName = 'John';
+  john.lastName = 'Sullivan';
+  john.email = 'john';
+  john.password = 'password';
+  john.university = 'Dartmouth';
+  skill = new Skill();
+  skill.title = 'Baseball';
+  skill.bio = 'I can teach insane baseball.';
+  skill.save().then((saved) => {
+    john.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Golf';
+    skill.bio = 'I can teach mad golf.';
+    skill.save().then((saved2) => {
+      john.teach.push(saved2);
+      skill = new Skill();
+      skill.title = 'Drinking';
+      skill.bio = 'I want to learn how to binge drink.';
+      skill.save().then((saved3) => {
+        john.learn.push(saved3);
+        john.save();
+      });
+    });
+  });
+
+  const cat = new User();
+  cat.firstName = 'Cat';
+  cat.lastName = 'Zhao';
+  cat.email = 'cat';
+  cat.password = 'password';
+  cat.university = 'Dartmouth';
+  skill = new Skill();
+  skill.title = 'Drinking';
+  skill.bio = 'I can teach drinking.';
+  skill.save().then((saved) => {
+    cat.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Golf';
+    skill.bio = 'I want to learn golf.';
+    skill.save().then((saved2) => {
+      cat.learn.push(saved2);
+      cat.save();
+    });
+  });
+
+  const julian = new User();
+  julian.firstName = 'Julian';
+  julian.lastName = 'Grunauer';
+  julian.email = 'julian';
+  julian.password = 'password';
+  julian.university = 'Dartmouth';
+  skill = new Skill();
+  skill.title = 'Coding';
+  skill.bio = 'I can teach coding.';
+  skill.save().then((saved) => {
+    julian.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Tennis';
+    skill.bio = 'I want to learn tennis.';
+    skill.save().then((saved2) => {
+      julian.learn.push(saved2);
+      julian.save();
+    });
+  });
+
+  const gillian = new User();
+  gillian.firstName = 'Gillian';
+  gillian.lastName = 'Yue';
+  gillian.email = 'gillian';
+  gillian.password = 'password';
+  gillian.university = 'Dartmouth';
+  skill = new Skill();
+  skill.title = 'Tennis';
+  skill.bio = 'I can teach tennis.';
+  skill.save().then((saved) => {
+    gillian.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Coding';
+    skill.bio = 'I want to learn coding.';
+    skill.save().then((saved2) => {
+      gillian.learn.push(saved2);
+      gillian.save();
+    });
+  });
+};
+
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/passon';
-mongoose.connect(mongoURI);
+mongoose.connect(mongoURI, () => { // this code clears the database on every server run
+  mongoose.connection.db.dropDatabase(() => {
+    mongoose.connection.close(() => {
+      mongoose.connect(mongoURI);
+      console.log('reconnected');
+      setUpDB();
+      console.log('default db set up');
+    });
+  });
+});
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
+
 
 // initialize
 const app = express();
@@ -55,7 +211,6 @@ app.listen(port);
 console.log(`listening on: ${port}`);
 
 app.use('/api', apiRouter);
-
 
 // SOCKET
 
