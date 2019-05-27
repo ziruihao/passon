@@ -6,11 +6,7 @@ import MainTabBar from '../navigation/main_tab_bar';
 
 class Main extends Component {
   render() {
-    if (this.props.authenticated) {
-      return (<MainTabBar onNavigationStateChange={null} />);
-    } else {
-      return (<FirstScreenNav />);
-    }
+    return (<FirstScreenNav />); // don't change, we can't load [<MainTabBar>] because [axios.defaults.headers] may not be set yet.
   }
 }
 

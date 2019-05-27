@@ -23,7 +23,6 @@ export const ActionTypes = {
   FETCH_TEACHES: 'FETCH_TEACHES',
   FETCH_LEARN: 'FETCH_LEARN',
   FETCH_TEACH: 'FETCH_TEACH',
-  SAVE_SEARCH: 'SAVE_SEARCH',
 };
 
 // From assignment page
@@ -97,39 +96,43 @@ export function deleteTeach(id) {
 }
 
 export function fetchUser(id) {
-  return (dispatch) => {
+  return dispatch => new Promise(((resolve, reject) => {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
+        resolve(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        reject(error.message);
       });
-  };
+  }));
 }
 
 export function fetchUsers(id) {
-  return (dispatch) => {
+  return dispatch => new Promise(((resolve, reject) => {
     axios.get(`${ROOT_URL}/users`)
       .then((response) => {
         dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
+        resolve(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        reject(error.message);
       });
-  };
+  }));
 }
 
 export function fetchSelf() {
-  return (dispatch) => {
+  console.log(axios.defaults.headers.common);
+  return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/self`)
       .then((response) => {
         dispatch({ type: ActionTypes.SAVE_USER, payload: response.data });
+        resolve(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        reject(error.message);
       });
-  };
+  }));
 }
 
 export function updateUser(id, post) {
@@ -155,18 +158,6 @@ export function deleteUser(id, history) {
         console.log(error);
       });
   };
-}
-
-export function fetchSearch(skills) {
-  return dispatch => new Promise(((resolve, reject) => {
-    axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
-      // console.log('aaa');
-      dispatch({ type: ActionTypes.SAVE_SEARCH, payload: response.data });
-      resolve(response.data);
-    }).catch((error) => {
-      reject(error.message);
-    });
-  }));
 }
 
 export function fetchTeachers(skills) {

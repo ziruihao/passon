@@ -82,17 +82,17 @@ class Home extends Component {
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
-
   componentDidMount() {
-    this.fetchUsers([]).then(() => {
-      this.combineUsers();
-    }).catch((error) => {
-      console.log(error);
+    this.props.fetchSelf().then(() => {
+      this.fetchUsers([]).then(() => { // we need to pass in that empty array
+        this.combineUsers();
+      }).catch((error) => {
+        console.log(error);
+      });
     });
-
-    this.props.fetchSelf();
   }
 
+  // why do we need this?
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       this.fetchUsers([]).then(() => {
@@ -104,6 +104,9 @@ class Home extends Component {
     }
   }
 
+  /**
+   * Handles rendering for a [user].
+   */
   renderUser = (element) => {
     // console.log('==== ELEMENT ====')
     if (element.id !== this.props.self.id) {
@@ -148,6 +151,10 @@ class Home extends Component {
     }
   };
 
+  /**
+   * Fetches both [teachers] and [learners] based on a [search_query] and [self.teach].
+   * @param {Array} learn_arr
+   */
   fetchUsers(learn_arr) {
     const teach_arr = [];
     this.props.self.teach.forEach(elem => teach_arr.push(elem.title));
@@ -169,6 +176,9 @@ class Home extends Component {
     });
   }
 
+  /**
+   * Algorithm to combine [learners] and [teachers] fetched from API into [single_matches] and [double_matches].
+   */
   combineUsers() {
     this.setState({
       double_matches: this.props.teachers.filter((teacher) => {
@@ -205,8 +215,11 @@ class Home extends Component {
     this.props.navigation.navigate('Profile', profile);
   }
 
+  /**
+   * Handles a change in the search bar, and then sends [search_query] to API for results.
+   * @param {String} search_query
+   */
   search(search_query) {
-    console.log(search_query);
     this.setState({ search_query }, () => {
       this.fetchUsers(this.state.search_query.split(' ')).then(() => {
         this.combineUsers();
@@ -214,10 +227,12 @@ class Home extends Component {
         console.log(error);
       });
     });
-    // console.log('querying search');
-    // console.log(this.state.search_query);
   }
 
+  /**
+   * Handles rendering for all users that are fetched.
+   * TO-DO make a pretty loading screen as a component that we can use everywhere
+   */
   renderContent = () => {
     return (
       <Container>
@@ -226,14 +241,9 @@ class Home extends Component {
     );
   };
 
-  renderSearch = () => {
-    // console.log(this.props.search);
-    return (
-      this.props.search.map(element => this.renderUser(element))
-    );
-    // to-do make a pretty loading screen as a component that we can use everywhere
-  };
-
+  /**
+   * Handles rendering the division between [single_matches] and [double_matches].
+   */
   renderMatches = () => {
     let first, last, userName, otherUserName;
     if (this.props.self != null) {
