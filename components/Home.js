@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 /* eslint-disable react/no-access-state-in-setstate */
-=======
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
->>>>>>> 96378841c95fc67f494d6893ea047eaa95ee7061
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-pascal-case */
 
