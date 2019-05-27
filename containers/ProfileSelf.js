@@ -93,71 +93,68 @@ class ProfileSelf extends Component {
     } else if (this.state.teach === false) {
       return (
         <View style={styles.container}>
-          <Image source={require('../assets/teachBg.jpg')} style={styles.bg} />
-          <Image />
-          <View style={styles.tabsContainer}>
-            <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
-            <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-              <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
-            </TouchableHighlight>
-          </View>
-          <View style={styles.body}>
-            {/* <View><Teaches teaches={this.props.User.teach} /></View> */}
-            {this.renderTeaches()}
-            <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
-              underlayColor="orange"
-              style={styles.button}
-              title="Add Skill"
-              type="raised"
-              color="#620BC9"
-              borderRadius="5"
-              BackgroundColor="#FFFFFF"
-              width="297"
-              height="41"
-            />
-            <Button onPress={() => {
+          <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
+            <View style={styles.tabsContainer}>
+              <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
+              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+            </View>
+            <View style={styles.body}>
+              {/* <View><Teaches teaches={this.props.User.teach} /></View> */}
+              {this.renderTeaches()}
+              <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
+                underlayColor="orange"
+                style={styles.button}
+                title="Add Skill"
+                type="raised"
+                color="#620BC9"
+                borderRadius="5"
+                BackgroundColor="#FFFFFF"
+                width="297"
+                height="41"
+              />
+              <Button onPress={() => {
               // Uncomment these next two lines to determine whether token has changed
               // console.log("TOKEN");
               // AsyncStorage.getItem('token').then(response => console.log(response));
-              this.props.signoutUser(this.props.navigation);
-            }}
-              title="Sign Out"
-            />
-            {/* <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
-            title="Edit Skill"
-          /> */}
-          </View>
+                this.props.signoutUser(this.props.navigation);
+              }}
+                title="Sign Out"
+              />
+            </View>
+          </ImageBackground>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Image source={require('../assets/learnBg.jpg')} style={styles.bg} />
-          <Image />
-          <View style={styles.tabsContainer}>
-            <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-              <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
-            </TouchableHighlight>
-            <Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} />
-          </View>
-          <View style={styles.body}>
-            {this.renderLearns()}
-            {/* <View><Learns learns={this.props.User.learn} /></View> */}
-            <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
-              title="Add Skill"
-            />
-            {/* <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
+          <ImageBackground source={require('../assets/learnBackground.png')} style={{ width: '100%', height: '100%' }}>
+            <View style={styles.tabsContainer}>
+              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+              <Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} />
+            </View>
+            <View style={styles.body}>
+              {this.renderLearns()}
+              {/* <View><Learns learns={this.props.User.learn} /></View> */}
+              <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
+                title="Add Skill"
+              />
+              {/* <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
           title="Edit Skill"
         /> */}
-            <Button onPress={() => {
-              // Uncomment these next two lines to determine whether token has changed
-              // console.log("TOKEN");
-              // AsyncStorage.getItem('token').then(response => console.log(response));
-              this.props.signoutUser(this.props.navigation);
-            }}
-              title="Sign Out"
-            />
-          </View>
+              <Button onPress={() => {
+                // Uncomment these next two lines to determine whether token has changed
+                // console.log("TOKEN");
+                // AsyncStorage.getItem('token').then(response => console.log(response));
+                this.props.signoutUser(this.props.navigation);
+              }}
+                title="Sign Out"
+              />
+            </View>
+          </ImageBackground>
         </View>
       );
     }
