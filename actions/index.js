@@ -224,12 +224,12 @@ export function signupUser({
 
 // deletes token from localstorage
 // and deauths
-export function signoutUser(history) {
+export function signoutUser(navigation) {
   return async (dispatch) => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
-    history.push('/');
+    navigation.navigate('FirstScreen');
   };
 }
 

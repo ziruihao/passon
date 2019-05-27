@@ -114,6 +114,14 @@ class ProfileSelf extends Component {
               width="297"
               height="41"
             />
+            <Button onPress={() => {
+              // Uncomment these next two lines to determine whether token has changed
+              // console.log("TOKEN");
+              // AsyncStorage.getItem('token').then(response => console.log(response));
+              this.props.signoutUser(this.props.navigation);
+            }}
+              title="Sign Out"
+            />
             {/* <Button onPress={() => this.props.navigation.navigate('EditSkillTeach')}
             title="Edit Skill"
           /> */}
@@ -146,8 +154,7 @@ class ProfileSelf extends Component {
               // Uncomment these next two lines to determine whether token has changed
               // console.log("TOKEN");
               // AsyncStorage.getItem('token').then(response => console.log(response));
-              AsyncStorage.removeItem('token');
-              this.props.signoutUser();
+              this.props.signoutUser(this.props.navigation);
             }}
               title="Sign Out"
             />
