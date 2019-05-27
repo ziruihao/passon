@@ -9,8 +9,12 @@ import ChatScreen from '../components/Chat';
 import ProfileNav from './profile_nav';
 
 const Messaging = createStackNavigator({
-  Overview: { screen: MessagingScreen },
+  Overview: {
+    screen: MessagingScreen,
+  },
   Chat: { screen: ChatScreen },
+}, {
+  headerMode: 'none',
 });
 
 
@@ -23,7 +27,6 @@ const MainTabBar = createBottomTabNavigator(
       screen: Messaging,
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: 'Messaging',
-
       }),
     },
     ProfileTab: {
@@ -35,6 +38,7 @@ const MainTabBar = createBottomTabNavigator(
   },
   {
     initialRouteName: 'ProfileTab',
+    headerMode: 'none',
   },
 );
 
