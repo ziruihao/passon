@@ -15,6 +15,7 @@ import {
   Text,
   TouchableHighlight,
   FlatList,
+  ImageBackground,
 } from 'react-native';
 import {
   Container,
@@ -139,17 +140,6 @@ class Home extends Component {
                       <Text>5 stars</Text>
                       <Text>X yrs</Text>
                     </Left>
-                  </CardItem>
-                  <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
                   </CardItem>
                 </CardItem>
               </CardItem>
