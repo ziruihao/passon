@@ -197,11 +197,11 @@ export function authError(error) {
 export function signinUser({ email, password }, navigation) {
   return async (dispatch) => {
     const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
-    await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
     await AsyncStorage.setItem('token', response.data.token);
     axios.defaults.headers.common = await { authorization: response.data.token };
     await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
     navigation.navigate('Main');
+    await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
   };
 }
 
@@ -213,11 +213,11 @@ export function signupUser({
       firstName, lastName, email, password, university,
     })
       .then(async (response) => {
-        await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
         await AsyncStorage.setItem('token', response.data.token);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
         navigation.navigate('Main');
+        await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
       })
       .catch((error) => {
         dispatch(authError(`Sign Up Failed: ${error}`));
@@ -270,6 +270,17 @@ export function createChat(chat) {
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+}
+
+export function addRating(skill) {
+  return async (dispatch) => {
+    axios.post(`${ROOT_URL}/addRating`, skill).then((response) => {
+      console.log(response.data);
+    })
       .catch((error) => {
         console.log(error);
       });

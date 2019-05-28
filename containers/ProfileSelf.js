@@ -173,6 +173,14 @@ class ProfileSelf extends Component {
                 title="Sign Out"
               />
             </View>
+            <Text>{this.props.self.firstName} {this.props.self.lastName}</Text>
+            <Text>Avg Rating: {this.props.self.avg_rating}</Text>
+            {/* <View style={styles.tabsContainer}>
+              <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
+              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+            </View> */}
             <View style={styles.nameContainer}>
               <Text style={styles.name}>
                 {this.props.self.firstName} {this.props.self.lastName}
@@ -268,7 +276,7 @@ class ProfileSelf extends Component {
                   color="#FFFFFF"
                 />
               </View>
-            </View>      
+            </View>
             {/* </View> */}
           </ImageBackground>
         </View>
