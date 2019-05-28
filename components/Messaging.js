@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable global-require */
 /* eslint-disable new-cap */
 /* eslint-disable react/prefer-stateless-function */
@@ -165,38 +167,40 @@ class Messaging extends Component {
             } else {
               return null;
             }
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  const pass = {
-                    messages: chat.messages, id: chat.id, userName, otherUserName,
-                  };
-                  this.props.navigation.navigate('Chat', pass);
-                }}
-              >
-                <View style={styles.chat}>
-                  <View>
-                    <Image source={require('../assets/profile.png')} style={styles.profile_img} />
-                  </View>
+            if (chat.messages.length > 0) {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    const pass = {
+                      messages: chat.messages, id: chat.id, userName, otherUserName,
+                    };
+                    this.props.navigation.navigate('Chat', pass);
+                  }}
+                >
+                  <View style={styles.chat}>
+                    <View>
+                      <Image source={require('../assets/profile.png')} style={styles.profile_img} />
+                    </View>
 
-                  <View style={{ flex: 1, flexDirection: 'column' }}>
-                    <View style={styles.dateContainer}>
-                      <Text style={styles.text}>{chat.messages[chat.messages.length - 1].createdAt.substring(5, 10)}</Text>
-                    </View>
-                    <View style={{
-                      flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 7,
-                    }}
-                    >
-                      {displayName}
-                      <Text style={styles.text}>{(chat.messages[chat.messages.length - 1].text.length > 30)
-                        ? `${chat.messages[chat.messages.length - 1].text.substring(0, 30)}...`
-                        : chat.messages[chat.messages.length - 1].text}
-                      </Text>
+                    <View style={{ flex: 1, flexDirection: 'column' }}>
+                      <View style={styles.dateContainer}>
+                        <Text style={styles.text}>{chat.messages[chat.messages.length - 1].createdAt.substring(5, 10)}</Text>
+                      </View>
+                      <View style={{
+                        flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 7,
+                      }}
+                      >
+                        {displayName}
+                        <Text style={styles.text}>{(chat.messages[chat.messages.length - 1].text.length > 30)
+                          ? `${chat.messages[chat.messages.length - 1].text.substring(0, 30)}...`
+                          : chat.messages[chat.messages.length - 1].text}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
+                </TouchableOpacity>
+              );
+            }
           })
         }
 
