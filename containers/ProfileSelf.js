@@ -2,7 +2,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight, FlatList,
+  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight, ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    zIndex: 1,
   },
   image: {
     width: 400,
@@ -39,7 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // flexWrap: 'nowrap',
     alignItems: 'center',
-    paddingBottom: 140,
   },
   tabs: {
     marginLeft: 50,
@@ -56,37 +54,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: dimensions.fullWidth,
-    paddingBottom: 23,
+    paddingBottom: '5%',
   },
   button: {
     backgroundColor: '#620BC9',
     borderRadius: 5,
     color: '#FFFFFF',
-    width: 297,
+    width: '75%',
     height: 41,
     zIndex: 0,
   },
   cardContainer: {
     flex: 3,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   name: {
     fontSize: fonts.h3,
     color: '#FFFFFF',
   },
-  nameContainer: {
+  profileContainer: {
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   signOut: {
     position: 'absolute',
     top: 0,
     right: 0,
-    // margin: 10,
+    zIndex: 1,
+  },
+  rating: {
+    fontSize: fonts.p1,
+    color: '#FFFFFF',
+  },
+  svg: {
+    width: '100%',
   },
 });
 
@@ -160,9 +165,9 @@ class ProfileSelf extends Component {
     } else if (this.state.teach === true) {
       return (
         <View style={styles.container}>
-          {/* <Image source={require('../assets/teachBg.jpg')} style={styles.bg} />
-          <Image /> */}
+          {/* <Image source={require('../assets/teach.svg')} style={styles.svg} /> */}
           <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
+            {/* <ImageBackground source={require('../assets/teachBackground.svg')} style={{ width: '100%' }}> */}
             <View style={styles.signOut}>
               <Button
                 color={colors.white}
@@ -173,26 +178,25 @@ class ProfileSelf extends Component {
                 title="Sign Out"
               />
             </View>
-            <Text>{this.props.self.firstName} {this.props.self.lastName}</Text>
-            <Text>Avg Rating: {this.props.self.avg_rating}</Text>
             {/* <View style={styles.tabsContainer}>
               <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
               <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
                 <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
               </TouchableHighlight>
             </View> */}
-            <View style={styles.nameContainer}>
+            <View style={styles.profileContainer}>
               <Text style={styles.name}>
                 {this.props.self.firstName} {this.props.self.lastName}
               </Text>
+              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
             </View>
             <View style={styles.tabsContainer}>
               {/* <View><Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} /></View>
-              <View>
-                <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                  <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
-                </TouchableHighlight>
-              </View> */}
+            <View>
+              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+            </View> */}
               <Button onPress={() => { this.toggleTeach(true); }}
                 title="Teach"
                 color="#620BC9"
@@ -203,12 +207,9 @@ class ProfileSelf extends Component {
               />
             </View>
             <View style={styles.cardContainer}>
-              {/* <FlatList
-                data={this.props.self.teaches}
-                renderItem={this.renderTeaches}
-                keyExtractor={item => item.id}
-              /> */}
-              {this.renderTeaches()}
+              <ScrollView>
+                {this.renderTeaches()}
+              </ScrollView>
             </View>
             <View style={styles.buttonContainer}>
               <View style={styles.button}>
@@ -237,10 +238,11 @@ class ProfileSelf extends Component {
                 title="Sign Out"
               />
             </View>
-            <View style={styles.nameContainer}>
+            <View style={styles.profileContainer}>
               <Text style={styles.name}>
                 {this.props.self.firstName} {this.props.self.lastName}
               </Text>
+              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
             </View>
             <View style={styles.tabsContainer}>
               {/* <View style={styles.tabs}> */}
@@ -267,7 +269,9 @@ class ProfileSelf extends Component {
                 renderItem={this.renderLearns}
                 keyExtractor={item => item.id}
               /> */}
-              {this.renderLearns()}
+              <ScrollView>
+                {this.renderLearns()}
+              </ScrollView>
             </View>
             <View style={styles.buttonContainer}>
               <View style={styles.button}>

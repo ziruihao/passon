@@ -75,7 +75,7 @@ const Learn = (props) => {
           <View style={styles.icon}><Ionicons
             name="edit"
             size={16}
-            onPress={() => props.nav.navigate('EditSkillTeach', { skill: props.skill })}
+            onPress={() => props.nav.navigate('EditSkillLearn', { skill: props.skill })}
           />
           </View>
         </View>

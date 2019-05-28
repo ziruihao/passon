@@ -133,11 +133,12 @@ class EditSkillTeach extends Component {
               placeholder="Description of experience"
               onChangeText={(text) => { this.setState({ bio: text }); }}
               defaultValue={this.state.bio}
-            />   
+            />
             <View style={styles.buttonContainer}>
               <View style={styles.buttonSave}><Button color={colors.white} onPress={() => { this.edit(); }} title="Save" /></View>
               <View style={styles.buttonDelete}><Button color={colors.white} onPress={() => { this.delete(); }} title="Delete" /></View>
             </View>
+            <View style={styles.buttonCancel}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" /></View>
           </View>
         </ImageBackground>
       </View>
