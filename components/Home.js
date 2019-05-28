@@ -38,28 +38,40 @@ import {
 import {
   fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
+import DoubleMatchCard from './DoubleMatchCard';
 
-const cardImage = require('../assets/sunset.jpg');
+// const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#4000F4',
+    flex: 1,
+    zIndex: 1,
+    width: '100%',
+  },
+  cards: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignContent: 'center',
   },
-  mb: {
-    marginBottom: 17,
-    width: dimensions.fullWidth - (2 * dimensions.lg),
-    height: 170,
-    padding: dimensions.sm,
-    flex: 1,
-  },
+  // mb: {
+  //   marginBottom: 17,
+  //   width: dimensions.fullWidth - (2 * dimensions.lg),
+  //   height: 170,
+  //   padding: dimensions.sm,
+  //   flex: 1,
+  // },
   title: {
     flex: 1,
     fontSize: fonts.h2,
     color: '#620BC9',
   },
-
+  card: {
+    height: 170,
+    width: 297,
+    borderRadius: 10,
+    color: '#FFFFFF',
+  },
 });
 
 class Home extends Component {
@@ -232,9 +244,13 @@ class Home extends Component {
    */
   renderContent = () => {
     return (
-      <Container>
-        {this.renderMatches()}
-      </Container>
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.container}>
+            {this.renderMatches()}
+          </View>
+        </ImageBackground>
+      </View>
     );
   };
 
@@ -253,7 +269,7 @@ class Home extends Component {
     console.log('WOOO');
     console.log(this.state.single_matches);
     return (
-      <Container>
+      <View style={styles.cards}>
         <Text>Double Matches</Text>
         <FlatList
           data={this.state.double_matches}
@@ -269,7 +285,7 @@ class Home extends Component {
 
         />
         {/* {single_matches} */}
-      </Container>
+      </View>
     );
   };
 
