@@ -9,7 +9,8 @@ const MessagingTab = createStackNavigator({
   Overview: { screen: MessagingScreen },
   Chat: { screen: ChatScreen },
 }, {
-  headerMode: 'none',
+  headerMode: 'screen',
+  headerBackTitleVisible: true,
 });
 
 export default MessagingTab;
