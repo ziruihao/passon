@@ -22,15 +22,16 @@ const UserSchema = new Schema({
  * Calculates the [avg_rating] virtual based on all the [rating]s of each [skill] the [user] has.
  */
 UserSchema.virtual('avg_rating').get(function calc() {
-  const sum = 0;
-  const count = 0;
-  // this.teach.forEach((skill) => {
-  //   skill.ratings.forEach((rating) => {
-  //     count += 1;
-  //     sum += rating.score;
-  //   });
-  // });
-  return sum / count;
+  let sum = 0;
+  let count = 0;
+  this.teach.forEach((skill) => {
+    skill.ratings.forEach((rating) => {
+      count += 1;
+      sum += rating.score;
+    });
+  });
+  if (count === 0) return -1;
+  else return sum / count;
 });
 
 

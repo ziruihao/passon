@@ -78,16 +78,30 @@ export const signup = (req, res, next) => {
  * @param {*} res
  */
 export const getUsers = (req, res) => { // why do we need both req and res? why is the async working?
-  User.find({}).populate('teach').populate('learn').then((results) => {
-    const removePersonalInfoArray = [];
-    results.forEach((result) => {
-      const removePersonalInfo = Object.assign({}, result);
-      delete removePersonalInfo._doc.password;
-      // delete removePersonalInfo._doc.email;
-      removePersonalInfoArray.push(removePersonalInfo._doc);
-    });
-    res.send(results);
+  User.find({}).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
   })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
+    .then((results) => {
+      const removePersonalInfoArray = [];
+      results.forEach((result) => {
+        const removePersonalInfo = Object.assign({}, result);
+        delete removePersonalInfo._doc.password;
+        // delete removePersonalInfo._doc.email;
+        removePersonalInfoArray.push(removePersonalInfo._doc);
+      });
+      res.send(results);
+    })
     .catch((error) => {
       res.status(404).json({ msg: error.message });
     });
@@ -381,40 +395,30 @@ export const getLearners = (req, res) => {
 
 // testing: do not remove yet
 export const addSkillRating = (req, res) => {
-  User.findById(req.user.id).populate('teach').populate('learn').populate({
-    path: 'teach',
-    populate: {
-      path: 'ratings',
-      model: 'Rating',
-    },
-  })
-    .populate({
-      path: 'learn',
-      populate: {
-        path: 'ratings',
-        model: 'Rating',
-      },
-    })
+  console.log(req.body.skill.id);
+  Skill.findById(req.body.skill.id).populate('ratings')
     .then((result) => {
-      result.teach.forEach((element) => {
-        if (element.id === req.body.skill.id) {
-          const rating = new Rating();
-          rating.score = req.body.skill.score;
-          rating.save().then((skill) => {
-            element.ratings.push(skill);
+      console.log(result);
+      const rating = new Rating();
+      rating.score = req.body.skill.score;
 
-            element.save().then(() => {
-              result.save().then((response) => {
-                res.json(response);
-              }).catch((error) => {
-                res.status(500).json({ msg: error.message });
-              });
-            });
+      // console.log(rating);
+      rating.save().then((skill) => {
+        console.log(rating.score);
+        result.ratings.push(skill);
+
+        result.save().then(() => {
+          result.save().then((response) => {
+            res.json(response);
+          }).catch(() => {
+            res.send({ msg: 'error saving' });
           });
-        }
+        });
+      }).catch(() => {
+        res.send({ msg: 'error making rating' });
       });
     })
-    .catch((error) => {
-      res.status(404).json({ error });
+    .catch(() => {
+      res.send({ msg: 'error getting skill' });
     });
 };

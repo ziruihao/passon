@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const RatingSchema = new Schema({
   score: Number,
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  // user: { type: Schema.Types.ObjectId, ref: 'User' },
 }, {
   toJSON: {
     virtuals: true,
