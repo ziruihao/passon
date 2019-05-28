@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
   // mb: {
   //   marginBottom: 15,
   // },
-  teachCard: {
+  learnCard: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     width: 300,
-    height: 130,
+    height: 70,
     // marginBottom: 22,
     borderColor: '#620BC9',
     borderRadius: 10,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   top: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
@@ -69,7 +69,7 @@ const Learn = (props) => {
     //   <Text>{props.skill.title}</Text>
     //   <Button onPress={() => props.nav.navigate('EditSkillLearn', { skill: props.skill })} title="Edit Skill" />
     // </View>
-      <View style={styles.teachCard}>
+      <View style={styles.learnCard}>
         <View style={styles.top}>
           <View><Text style={styles.title}>{props.skill.title}</Text></View>
           <View style={styles.icon}><Ionicons
@@ -83,8 +83,8 @@ const Learn = (props) => {
     );
   } else {
     return (
-      <View>
-        <Text>{props.skill.title}</Text>
+      <View style={styles.learnCard}>
+        <View><Text style={styles.title}>{props.skill.title}</Text></View>
       </View>
     );
   }

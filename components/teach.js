@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   top: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
@@ -68,17 +68,16 @@ const Teach = (props) => {
           />
           </View>
         </View>
-        <Text style={styles.years}>{props.skill.years}</Text>
+        <Text style={styles.years}>{props.skill.years} yrs</Text>
         <Text style={styles.bio}>{props.skill.bio}</Text>
-        {/* <Button onPress={() => props.nav.navigate('EditSkillTeach', { skill: props.skill })} title="Edit Skill" /> */}
       </View>
     );
   } else {
     return (
-      <View>
-        <Text>{props.skill.title}</Text>
-        <Text>{props.skill.years}</Text>
-        <Text>{props.skill.bio}</Text>
+      <View style={styles.teachCard}>
+        <Text style={styles.title}>{props.skill.title}</Text>
+        <Text style={styles.years}>{props.skill.years}</Text>
+        <Text style={styles.bio}>{props.skill.bio}</Text>
       </View>
     );
   }
