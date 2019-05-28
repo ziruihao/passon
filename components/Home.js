@@ -13,8 +13,8 @@ import {
   View,
   Image,
   Text,
-  ListView,
   TouchableHighlight,
+  FlatList,
 } from 'react-native';
 import {
   Container,
@@ -36,7 +36,7 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSearch, fetchSelf,
+  fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
@@ -108,45 +108,42 @@ class Home extends Component {
    * Handles rendering for a [user].
    */
   renderUser = (element) => {
-    // console.log('==== ELEMENT ====')
-    if (element.id !== this.props.self.id) {
+    console.log(element.item.id === this.props.self.id);
+    if (element.item.id !== this.props.self.id) {
       return (
-        <Container key={element.id}>
+        <Content style={styles.container}>
           {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-          <Content style={styles.container}>
-            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-              <Card style={styles.mb}>
-                <CardItem>
-                  <Text> {element.firstName}</Text>
-                  <Text> {element.lastName}</Text>
-                </CardItem>
+          <TouchableHighlight onPress={() => this.intoProfile(element.item)} underlayColor="orange">
+            <Card style={styles.mb}>
+              <CardItem>
+                <Text> {element.item.firstName}</Text>
+                <Text> {element.item.lastName}</Text>
+              </CardItem>
+              <CardItem>
                 <CardItem>
                   <CardItem>
-                    <CardItem>
-                      <Left>
-                        <Icon active name="star" />
-                        <Text>5 stars</Text>
-                        <Text>X yrs</Text>
-                      </Left>
-                    </CardItem>
-                    <CardItem>
-                      <Image
-                        style={{
-                          resizeMode: 'cover',
-                          width: null,
-                          height: 200,
-                          flex: 1,
-                        }}
-                        source={cardImage}
-                      />
-                    </CardItem>
+                    <Left>
+                      <Icon active name="star" />
+                      <Text>5 stars</Text>
+                      <Text>X yrs</Text>
+                    </Left>
+                  </CardItem>
+                  <CardItem>
+                    <Image
+                      style={{
+                        resizeMode: 'cover',
+                        width: null,
+                        height: 200,
+                        flex: 1,
+                      }}
+                      source={cardImage}
+                    />
                   </CardItem>
                 </CardItem>
-              </Card>
-            </TouchableHighlight>
-          </Content>
-          {/* <Image /> */}
-        </Container>
+              </CardItem>
+            </Card>
+          </TouchableHighlight>
+        </Content>
       );
     }
   };
@@ -250,14 +247,28 @@ class Home extends Component {
       first = this.props.self.firstName;
       last = this.props.self.lastName;
     }
-    const double_matches = this.state.double_matches.map(element => this.renderUser(element));
-    const single_matches = this.state.single_matches.map(element => this.renderUser(element));
+    // const double_matches = this.state.double_matches.map(element => this.renderUser(element));
+    // const single_matches = this.state.single_matches.map(element => this.renderUser(element));
+
+    console.log('WOOO');
+    console.log(this.state.single_matches);
     return (
       <Container>
         <Text>Double Matches</Text>
-        {double_matches}
+        <FlatList
+          data={this.state.double_matches}
+          renderItem={this.renderUser}
+          keyExtractor={item => item.id}
+        />
+
         <Text>Single Matches</Text>
-        {single_matches}
+        <FlatList
+          data={this.state.single_matches}
+          renderItem={this.renderUser}
+          keyExtractor={item => item.id}
+
+        />
+        {/* {single_matches} */}
       </Container>
     );
   };
@@ -290,5 +301,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSearch, fetchSelf,
+  fetchUsers, fetchLearners, fetchTeachers, fetchSelf,
 })(Home);

@@ -10,12 +10,24 @@ const styles = StyleSheet.create({
   mb: {
     marginBottom: 15,
   },
+  teachCard: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 300,
+    height: 130,
+    marginBottom: 22,
+    borderColor: '#620BC9',
+    borderRadius: 10,
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+  },
 });
 
 const Teach = (props) => {
   if (props.user.id === props.self.id) {
     return (
-      <View>
+      <View style={styles.teachCard}>
         <Text>{props.skill.title}</Text>
         <Text>{props.skill.years}</Text>
         <Text>{props.skill.bio}</Text>
