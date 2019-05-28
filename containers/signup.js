@@ -112,12 +112,12 @@ class SignUp extends Component {
         email: this.state.email,
         password: this.state.password,
         university: this.state.university,
-      }, this.props.navigation);
-      if (this.props.authenticated) {
-        this.props.navigation.navigate('Main');
-      } else if (this.props.authError !== '') {
-        alert('Sign In Failed');
-      }
+      }, this.props.navigation); // we don't need the below code, because the [actionCreator] will navigate for us
+      // if (this.props.authenticated) {
+      //   this.props.navigation.navigate('Main');
+      // } else if (this.props.authError !== '') {
+      //   alert('Sign In Failed');
+      // }
     }
   };
 
