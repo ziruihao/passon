@@ -2,28 +2,29 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight,
+  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight, ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
 import { fetchUser, fetchSelf, signoutUser } from '../actions';
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
+import {
+  colors, fonts, padding, dimensions,
+} from '../styles/base';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    zIndex: 1,
-    width: '100%',
   },
   image: {
     width: 400,
     height: 300,
   },
   bg: {
-    flex: 1,
+    flex: -1,
     resizeMode: 'cover',
     width: '100%',
     height: '100%',
@@ -35,24 +36,62 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     flexDirection: 'row',
-    flexWrap: 'nowrap',
-    alignItems: 'flex-end',
-    width: '100%',
+    // flexWrap: 'nowrap',
+    alignItems: 'center',
   },
   tabs: {
+    marginLeft: 50,
+    marginRight: 50,
     width: 120,
     height: 50,
     resizeMode: 'contain',
+    top: 40,
   },
-  body: {
-    flex: 3,
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    width: dimensions.fullWidth,
+    paddingBottom: '5%',
   },
   button: {
     backgroundColor: '#620BC9',
     borderRadius: 5,
     color: '#FFFFFF',
-    width: 297,
+    width: '75%',
     height: 41,
+    zIndex: 0,
+  },
+  cardContainer: {
+    flex: 3,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  name: {
+    fontSize: fonts.h3,
+    color: '#FFFFFF',
+  },
+  profileContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  signOut: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  rating: {
+    fontSize: fonts.p1,
+    color: '#FFFFFF',
+  },
+  svg: {
+    width: '100%',
   },
 });
 
@@ -61,26 +100,59 @@ class ProfileSelf extends Component {
     super(props);
 
     this.state = {
-      teach: false,
+      teach: true,
     };
     this.toggleTeach = this.toggleTeach.bind(this);
   }
 
+  // renderText = () => {
+  //   return (
+  //     <div>{this.props.currentUser.}</div>
+  //   );
+  // };
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       this.props.fetchSelf();
     }
   }
 
-  toggleTeach = () => {
-    console.log('TOGGLED');
+  // toggleTeach = () => {
+  //   console.log('TOGGLED');
+  //   this.setState((prevState) => {
+  //     return { teach: !prevState.teach };
+  //   });
+  // }
+  toggleTeach = (event) => {
     this.setState((prevState) => {
-      return { teach: !prevState.teach };
+      return { teach: event };
     });
   }
 
   renderTeaches() {
-    return <View><Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
+    if (this.props.self.teach != null) {
+      return (
+        <View>
+          <Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
+        </View>
+      );
+
+      // const teaches = this.props.self.teach.map((element) => {
+      //   return (
+      //     <View style={styles.teachCard}>
+      //       <Teaches teaches={element.teach} nav={this.props.navigation} user={element} self={element} />
+      //     </View>
+      //   );
+      // });
+      // return (
+      //   <View>
+      //     { teaches }
+      //   </View>
+      // );
+    } else {
+      return (
+        <View />
+      );
+    }
   }
 
   renderLearns() {
@@ -90,40 +162,62 @@ class ProfileSelf extends Component {
   render() {
     if (this.props.self === null) {
       return (<Text>Loading</Text>);
-    } else if (this.state.teach === false) {
+    } else if (this.state.teach === true) {
       return (
         <View style={styles.container}>
+          {/* <Image source={require('../assets/teach.svg')} style={styles.svg} /> */}
           <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
-            <Text>{this.props.self.firstName} {this.props.self.lastName}</Text>
-            <Text>Avg Rating: {this.props.self.avg_rating}</Text>
-            <View style={styles.tabsContainer}>
+            {/* <ImageBackground source={require('../assets/teachBackground.svg')} style={{ width: '100%' }}> */}
+            <View style={styles.signOut}>
+              <Button
+                color={colors.white}
+                onPress={() => {
+                  AsyncStorage.removeItem('token');
+                  this.props.signoutUser();
+                }}
+                title="Sign Out"
+              />
+            </View>
+            {/* <View style={styles.tabsContainer}>
               <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
               <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
                 <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
               </TouchableHighlight>
+            </View> */}
+            <View style={styles.profileContainer}>
+              <Text style={styles.name}>
+                {this.props.self.firstName} {this.props.self.lastName}
+              </Text>
+              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
             </View>
-            <View style={styles.body}>
-              {/* <View><Teaches teaches={this.props.User.teach} /></View> */}
-              {this.renderTeaches()}
-              <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
-                underlayColor="orange"
-                style={styles.button}
-                title="Add Skill"
-                type="raised"
+            <View style={styles.tabsContainer}>
+              {/* <View><Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} /></View>
+            <View>
+              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+            </View> */}
+              <Button onPress={() => { this.toggleTeach(true); }}
+                title="Teach"
                 color="#620BC9"
-                borderRadius="5"
-                BackgroundColor="#FFFFFF"
-                width="297"
-                height="41"
               />
-              <Button onPress={() => {
-              // Uncomment these next two lines to determine whether token has changed
-              // console.log("TOKEN");
-              // AsyncStorage.getItem('token').then(response => console.log(response));
-                this.props.signoutUser(this.props.navigation);
-              }}
-                title="Sign Out"
+              <Button onPress={() => { this.toggleTeach(false); }}
+                title="Learn"
+                color="#FFFFFF"
               />
+            </View>
+            <View style={styles.cardContainer}>
+              <ScrollView>
+                {this.renderTeaches()}
+              </ScrollView>
+            </View>
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
+                  title="Add Skill"
+                  color="#FFFFFF"
+                />
+              </View>
             </View>
           </ImageBackground>
         </View>
@@ -131,31 +225,63 @@ class ProfileSelf extends Component {
     } else {
       return (
         <View style={styles.container}>
+          {/* <Image source={require('../assets/learnBg.jpg')} style={styles.bg} />
+          <Image /> */}
           <ImageBackground source={require('../assets/learnBackground.png')} style={{ width: '100%', height: '100%' }}>
-            <View style={styles.tabsContainer}>
-              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
-              </TouchableHighlight>
-              <Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} />
-            </View>
-            <View style={styles.body}>
-              {this.renderLearns()}
-              {/* <View><Learns learns={this.props.User.learn} /></View> */}
-              <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
-                title="Add Skill"
-              />
-              {/* <Button onPress={() => this.props.navigation.navigate('EditSkillLearn')}
-          title="Edit Skill"
-        /> */}
-              <Button onPress={() => {
-                // Uncomment these next two lines to determine whether token has changed
-                // console.log("TOKEN");
-                // AsyncStorage.getItem('token').then(response => console.log(response));
-                this.props.signoutUser(this.props.navigation);
-              }}
+            <View style={styles.signOut}>
+              <Button
+                color={colors.white}
+                onPress={() => {
+                  AsyncStorage.removeItem('token');
+                  this.props.signoutUser();
+                }}
                 title="Sign Out"
               />
             </View>
+            <View style={styles.profileContainer}>
+              <Text style={styles.name}>
+                {this.props.self.firstName} {this.props.self.lastName}
+              </Text>
+              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+            </View>
+            <View style={styles.tabsContainer}>
+              {/* <View style={styles.tabs}> */}
+              {/* <View> */}
+              {/* <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
+                <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
+              </TouchableHighlight>
+            </View>
+            <View><Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} /></View> */}
+              {/* </View> */}
+              <Button onPress={() => { this.toggleTeach(true); }}
+                title="Teach"
+                color="#FFFFFF"
+              />
+              <Button onPress={() => { this.toggleTeach(false); }}
+                title="Learn"
+                color="#620BC9"
+              />
+            </View>
+            {/* <View style={styles.body}> */}
+            <View style={styles.cardContainer}>
+              {/* <FlatList
+                data={this.props.self.learns}
+                renderItem={this.renderLearns}
+                keyExtractor={item => item.id}
+              /> */}
+              <ScrollView>
+                {this.renderLearns()}
+              </ScrollView>
+            </View>
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
+                  title="Add Skill"
+                  color="#FFFFFF"
+                />
+              </View>
+            </View>
+            {/* </View> */}
           </ImageBackground>
         </View>
       );
