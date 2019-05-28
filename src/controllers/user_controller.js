@@ -136,7 +136,20 @@ export const getUser = (req, res) => {
  */
 export const getSelf = (req, res) => {
   console.log(req.headers);
-  User.findById(req.user.id).populate('learn').populate('teach')
+  User.findById(req.user.id).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
+  })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .then((user) => {
       res.send(user);
     })
@@ -351,7 +364,20 @@ export const updateTeach = (req, res) => {
  */
 export const getTeachers = (req, res) => {
   const upperCased = req.body.skills.map(skill => skill.toUpperCase());
-  User.find({}).populate('teach').populate('learn')
+  User.find({}).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
+  })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .then((results) => {
       const out = [];
       results.forEach((user) => {
@@ -375,7 +401,20 @@ export const getTeachers = (req, res) => {
  */
 export const getLearners = (req, res) => {
   const upperCased = req.body.skills.map(skill => skill.toUpperCase());
-  User.find({}).populate('teach').populate('learn')
+  User.find({}).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
+  })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .then((results) => {
       const out = [];
       results.forEach((user) => {
