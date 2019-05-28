@@ -13,9 +13,9 @@ import {
   View,
   Image,
   Text,
-  ListView,
   TouchableHighlight,
   Number,
+  FlatList,
 } from 'react-native';
 import {
   Container,
@@ -115,7 +115,8 @@ class Home extends Component {
   };
 
   /**
-   * Handles rendering for a [user].
+   * Handles a change in the search bar, and then sends [search_query] to API for results.
+   * @param {String} search_query
    */
   renderUser = (element) => {
     // console.log('==== ELEMENT ====')
@@ -159,6 +160,16 @@ class Home extends Component {
       );
     }
   };
+
+  search(search_query) {
+    this.setState({ search_query }, () => {
+      this.fetchUsers(this.state.search_query.split(' ')).then(() => {
+        this.combineUsers();
+      }).catch((error) => {
+        console.log(error);
+      });
+    });
+  }
 
   /**
    * Fetches both [teachers] and [learners] based on a [search_query] and [self.teach].
@@ -225,18 +236,47 @@ class Home extends Component {
   }
 
   /**
-   * Handles a change in the search bar, and then sends [search_query] to API for results.
-   * @param {String} search_query
+   * Handles rendering for a [user].
    */
-  search(search_query) {
-    this.setState({ search_query }, () => {
-      this.fetchUsers(this.state.search_query.split(' ')).then(() => {
-        this.combineUsers();
-      }).catch((error) => {
-        console.log(error);
-      });
-    });
-  }
+  renderUser = (element) => {
+    if (element.item.id !== this.props.self.id) {
+      return (
+        <Content style={styles.container}>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+          <TouchableHighlight onPress={() => this.intoProfile(element.item)} underlayColor="orange">
+            <Card style={styles.mb}>
+              <CardItem>
+                <Text> {element.item.firstName}</Text>
+                <Text> {element.item.lastName}</Text>
+              </CardItem>
+              <CardItem>
+                <CardItem>
+                  <CardItem>
+                    <Left>
+                      <Icon active name="star" />
+                      <Text>5 stars</Text>
+                      <Text>X yrs</Text>
+                    </Left>
+                  </CardItem>
+                  <CardItem>
+                    <Image
+                      style={{
+                        resizeMode: 'cover',
+                        width: null,
+                        height: 200,
+                        flex: 1,
+                      }}
+                      source={cardImage}
+                    />
+                  </CardItem>
+                </CardItem>
+              </CardItem>
+            </Card>
+          </TouchableHighlight>
+        </Content>
+      );
+    } else return null;
+  };
 
   /**
    * Handles rendering for all users that are fetched.
@@ -259,14 +299,22 @@ class Home extends Component {
       first = this.props.self.firstName;
       last = this.props.self.lastName;
     }
-    const double_matches = this.state.double_matches.map(element => this.renderUser(element));
-    const single_matches = this.state.single_matches.map(element => this.renderUser(element));
+
     return (
       <Container>
         <Text>Double Matches</Text>
-        {double_matches}
+        <FlatList
+          data={this.state.double_matches}
+          renderItem={this.renderUser}
+          keyExtractor={item => item.id}
+        />
+
         <Text>Single Matches</Text>
-        {single_matches}
+        <FlatList
+          data={this.state.single_matches}
+          renderItem={this.renderUser}
+          keyExtractor={item => item.id}
+        />
       </Container>
     );
   };
