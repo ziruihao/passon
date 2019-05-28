@@ -395,7 +395,6 @@ export const getLearners = (req, res) => {
 
 // testing: do not remove yet
 export const addSkillRating = (req, res) => {
-  console.log(req.body.skill.id);
   Skill.findById(req.body.skill.id).populate('ratings')
     .then((result) => {
       console.log(result);
