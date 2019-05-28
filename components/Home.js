@@ -8,7 +8,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   Image,
@@ -16,22 +15,15 @@ import {
   TouchableHighlight,
   Number,
   FlatList,
+  ScrollView,
+  StatusBar,
+  TextInput,
+  ImageBackground,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Content,
-  Item,
-  Button,
   Icon,
-  Card,
-  CardItem,
-  Thumbnail,
-  Left,
-  Input,
-  Body,
-  Right,
 } from 'native-base';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
@@ -43,10 +35,56 @@ import {
 const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#4000F4',
-    flex: 1,
-    flexDirection: 'column',
+  appArea: {
+    top: getStatusBarHeight(),
+    width: '100%',
+  },
+  searchBar: {
+    height: 50,
+    backgroundColor: 'white',
+    borderColor: 'purple',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  content: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  sectionHeaderArea: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sectionHeader: {
+    fontSize: fonts.h1,
+    color: 'white',
+  },
+  card: {
+    backgroundColor: 'white',
+    width: 297,
+    height: 170,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  left: {
+
+  },
+  leftHead: {
+    color: '#620BC9',
+    fontSize: 18,
+    fontWeight: 'normal',
+  },
+  leftBio: {
+    color: '#656566',
+    fontSize: 14,
+    fontWeight: 'normal',
+  },
+  right: {
+
+  },
+  name: {
+    fontSize: fonts.h3,
   },
   mb: {
     marginBottom: 17,
@@ -196,96 +234,93 @@ class Home extends Component {
   renderUser = (element) => {
     if (element.item.id !== this.props.self.id) {
       return (
-        <Content style={styles.container}>
-          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-          <TouchableHighlight onPress={() => this.intoProfile(element.item)} underlayColor="orange">
-            <Card style={styles.mb}>
-              <CardItem>
-                <Text> {element.item.firstName}</Text>
-                <Text> {element.item.lastName}</Text>
-              </CardItem>
-              <CardItem>
-                <CardItem>
-                  <CardItem>
-                    <Left>
-                      <Icon active name="star" />
-                      <Text>{this.renderRating(element)}</Text>
-                    </Left>
-                  </CardItem>
-                  <CardItem>
-                    <Image
-                      style={{
-                        resizeMode: 'cover',
-                        width: null,
-                        height: 200,
-                        flex: 1,
-                      }}
-                      source={cardImage}
-                    />
-                  </CardItem>
-                </CardItem>
-              </CardItem>
-            </Card>
-          </TouchableHighlight>
-        </Content>
+        <TouchableHighlight key={element.item.id} onPress={() => this.intoProfile(element.item)} underlayColor="orange" style={styles.mb}>
+          <View style={styles.card}>
+            <View style={styles.left}>
+              <Text style={styles.leftHead}> {element.item.teach[0].title}</Text>
+              <Icon active name="star" />
+              <Text>{this.renderRating(element)}</Text>
+              <Text style={styles.leftBio}> {element.item.teach[0].bio}</Text>
+            </View>
+            <View style={styles.right}>
+              <Image
+                style={{
+                  resizeMode: 'cover',
+                  width: null,
+                  height: 200,
+                  flex: 1,
+                }}
+                source={cardImage}
+              />
+              <Text style={styles.name}>{element.item.firstName} {element.item.lastName}</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
       );
     } else return null;
-  };
-
-  /**
-   * Handles rendering for all users that are fetched.
-   * TO-DO make a pretty loading screen as a component that we can use everywhere
-   */
-  renderContent = () => {
-    return (
-      <Container>
-        {this.renderMatches()}
-      </Container>
-    );
   };
 
   /**
    * Handles rendering the division between [single_matches] and [double_matches].
    */
   renderMatches = () => {
-    let first, last, userName, otherUserName;
-    if (this.props.self != null) {
-      first = this.props.self.firstName;
-      last = this.props.self.lastName;
-    }
+    // let first, last, userName, otherUserName;
+    // if (this.props.self != null) {
+    //   first = this.props.self.firstName;
+    //   last = this.props.self.lastName;
+    // }
 
     return (
-      <Container>
-        <Text>Double Matches</Text>
-        <FlatList
+      <ScrollView>
+        <View style={styles.sectionHeaderArea}>
+          <Text style={styles.sectionHeader}>Double Matches</Text>
+          {/* <FlatList
           data={this.state.double_matches}
           renderItem={this.renderUser}
           keyExtractor={item => item.id}
-        />
-
-        <Text>Single Matches</Text>
-        <FlatList
+        /> */}
+        </View>
+        {this.state.double_matches.map(user => this.renderUser({ item: user }))}
+        <View style={styles.sectionHeaderArea}>
+          <Text style={styles.sectionHeader}>Single Matches</Text>
+        </View>
+        {/* <FlatList
           data={this.state.single_matches}
           renderItem={this.renderUser}
           keyExtractor={item => item.id}
-        />
-      </Container>
+        /> */}
+        {this.state.single_matches.map(user => this.renderUser({ item: user }))}
+      </ScrollView>
     );
   };
 
   render() {
     return (
-      <Container>
-        <Header searchBar rounded barStyle="light-content">
-          <Item>
+      <View>
+        <View>
+          <StatusBar translucent barStyle="dark-content" />
+          {/* <Item>
+              <Icon name="ios-search" />
+              <Input placeholder="Search" onChangeText={text => this.search(text)} />
+            </Item> */}
+        </View>
+        <View style={styles.appArea}>
+          <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+            {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
             <Icon name="ios-search" />
-            <Input placeholder="Search" onChangeText={text => this.search(text)} />
-          </Item>
-        </Header>
-        <Container>
-          {this.renderContent()}
-        </Container>
-      </Container>
+            <TextInput value={this.state.search_query} onChangeText={text => this.search(text)} style={styles.searchBar} />
+            <View style={styles.content}>
+              {this.renderMatches()}
+            </View>
+          </ImageBackground>
+        </View>
+      </View>
+    // <Container>
+
+    //   <Container>
+    //     {this.renderContent()}
+    //   </Container>
+    // </Container>
     );
   }
 }

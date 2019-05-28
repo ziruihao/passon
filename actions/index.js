@@ -200,7 +200,7 @@ export function signinUser({ email, password }, navigation) {
     await AsyncStorage.setItem('token', response.data.token);
     axios.defaults.headers.common = await { authorization: response.data.token };
     await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
-    navigation.navigate('Main');
+    await navigation.navigate('Main');
     await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
   };
 }
@@ -216,7 +216,7 @@ export function signupUser({
         await AsyncStorage.setItem('token', response.data.token);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
-        navigation.navigate('Main');
+        await navigation.navigate('Main');
         await dispatch({ type: ActionTypes.AUTH_USER, payload: response.data.token });
       })
       .catch((error) => {
