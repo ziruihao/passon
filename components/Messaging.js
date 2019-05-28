@@ -16,7 +16,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     zIndex: 1,
     width: '100%',
@@ -33,11 +33,7 @@ const styles = StyleSheet.create({
     top: '0%',
   },
   title: {
-    position: 'absolute',
-    width: 280,
-    height: 35,
-    left: 48,
-    top: 43,
+    marginTop: 80,
 
     fontFamily: 'Helvetica',
     fontStyle: 'normal',
@@ -55,17 +51,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FDFCFF',
     borderRadius: 10,
-    width: 300,
+    width: 350,
     height: 100,
     maxWidth: 300,
     maxHeight: 100,
-    margin: 7,
+    margin: 5,
     alignItems: 'center',
   },
   chatContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    marginTop: 30,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'flex-start',
   },
   userName: {
     color: '#620BC9',
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 17,
     /* identical to box height */
-    textAlign: 'center',
+    // textAlign: 'center',
     letterSpacing: 0.208576,
   },
   profile_img: {
@@ -84,8 +81,31 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  text: {
+    fontFamily: 'Helvetica',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontSize: 14,
+    lineHeight: 20,
+    /* identical to box height, or 143% */
+    letterSpacing: 0.25,
+    color: 'rgba(0, 0, 0, 0.6)',
+  },
+  dateContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingTop: 7,
+    paddingRight: 7,
+    maxHeight: 30,
+  },
 });
+
 class Messaging extends Component {
+  static navigationOptions = {
+    headerTransparent: true,
+  };
+
   constructor(props) {
     super(props);
 
@@ -158,11 +178,21 @@ class Messaging extends Component {
                   <View>
                     <Image source={require('../assets/profile.png')} style={styles.profile_img} />
                   </View>
-                  <View>
-                    {displayName}
-                    <Text>{chat.messages[chat.messages.length - 1].createdAt.substring(5, 5)}</Text>
 
-                    <Text>{chat.messages[chat.messages.length - 1].text}</Text>
+                  <View style={{ flex: 1, flexDirection: 'column' }}>
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.text}>{chat.messages[chat.messages.length - 1].createdAt.substring(5, 10)}</Text>
+                    </View>
+                    <View style={{
+                      flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: 7,
+                    }}
+                    >
+                      {displayName}
+                      <Text style={styles.text}>{(chat.messages[chat.messages.length - 1].text.length > 30)
+                        ? `${chat.messages[chat.messages.length - 1].text.substring(0, 30)}...`
+                        : chat.messages[chat.messages.length - 1].text}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>
