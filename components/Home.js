@@ -36,7 +36,7 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSearch, fetchSelf,
+  fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
 
 const cardImage = require('../assets/sunset.jpg');
@@ -290,5 +290,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSearch, fetchSelf,
+  fetchUsers, fetchLearners, fetchTeachers, fetchSelf,
 })(Home);
