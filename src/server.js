@@ -35,7 +35,7 @@ const setUpDB = () => {
     skill.save().then((saved2) => {
       self.learn.push(saved2);
       skill = new Skill();
-      skill.title = 'Coding';
+      skill.title = 'Golf';
       skill.bio = 'I want to learn baseball.';
       skill.save().then((saved3) => {
         self.learn.push(saved3);
@@ -72,6 +72,70 @@ const setUpDB = () => {
       skill.save().then((saved3) => {
         zirui.learn.push(saved3);
         zirui.save();
+      });
+    });
+  });
+
+  const zirui2 = new User();
+  zirui2.firstName = 'Zirui2';
+  zirui2.lastName = 'Hao';
+  zirui2.email = 'zirui2';
+  zirui2.password = 'password';
+  zirui2.university = 'Dartmouth';
+  zirui2.learn = [];
+  zirui2.teach = [];
+  skill = new Skill();
+  skill.title = 'Coding';
+  skill.years = 5;
+  skill.ratings = [];
+  skill.bio = 'I can teach coding.';
+  skill.save().then((saved) => {
+    zirui2.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Drinking';
+    skill.years = 5;
+    skill.ratings = [];
+    skill.bio = 'I can teach excessive drinking.';
+    skill.save().then((saved2) => {
+      zirui2.teach.push(saved2);
+      skill = new Skill();
+      skill.title = 'Baseball';
+      skill.bio = 'I want to learn baseball.';
+      skill.save().then((saved3) => {
+        zirui2.learn.push(saved3);
+        zirui2.save();
+      });
+    });
+  });
+
+  const zirui3 = new User();
+  zirui3.firstName = 'Zirui3';
+  zirui3.lastName = 'Hao';
+  zirui3.email = 'zirui3';
+  zirui3.password = 'password';
+  zirui3.university = 'Dartmouth';
+  zirui3.learn = [];
+  zirui3.teach = [];
+  skill = new Skill();
+  skill.title = 'Coding';
+  skill.years = 5;
+  skill.ratings = [];
+  skill.bio = 'I can teach coding.';
+  skill.save().then((saved) => {
+    zirui3.teach.push(saved);
+    skill = new Skill();
+    skill.title = 'Drinking';
+    skill.years = 5;
+    skill.ratings = [];
+    skill.bio = 'I can teach excessive drinking.';
+    skill.save().then((saved2) => {
+      zirui3.teach.push(saved2);
+      skill = new Skill();
+      skill.title = 'Baseball';
+      skill.bio = 'I want to learn baseball.';
+      skill.save().then((saved3) => {
+        zirui3.learn.push(saved3);
+        zirui3.save();
       });
     });
   });
