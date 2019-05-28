@@ -94,6 +94,8 @@ class ProfileSelf extends Component {
       return (
         <View style={styles.container}>
           <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
+            <Text>{this.props.self.firstName} {this.props.self.lastName}</Text>
+            <Text>Avg Rating: {this.props.self.avg_rating}</Text>
             <View style={styles.tabsContainer}>
               <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
               <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">

@@ -13,6 +13,7 @@ import {
   Image,
   Text,
   TouchableHighlight,
+  Number,
   FlatList,
   ScrollView,
   StatusBar,
@@ -120,32 +121,84 @@ class Home extends Component {
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
+  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   componentDidMount() {
-    this.props.fetchSelf().then(() => {
-      this.fetchUsers([]).then(() => { // we need to pass in that empty array
-        this.combineUsers();
-      }).catch((error) => {
-        console.log(error);
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.props.fetchSelf().then(() => {
+        this.fetchUsers([]).then(() => { // we need to pass in that empty array
+          this.combineUsers();
+        }).catch((error) => {
+          console.log(error);
+        });
       });
     });
   }
 
-  // why do we need this?
-  componentDidUpdate(prevProps) {
-    if (prevProps.isFocused !== this.props.isFocused) {
-      this.fetchUsers([]).then(() => {
-        this.combineUsers();
-      }).catch((error) => {
-        console.log(error);
-      });
-      this.props.fetchSelf();
-    }
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
+
+  renderRating = (element) => {
+    if (element.avg_rating === -1) {
+      return (
+        <Text>No ratings</Text>
+      );
+    } else {
+      return (
+        <Text>{element.avg_rating}</Text>
+      );
+    }
+  };
 
   /**
    * Handles a change in the search bar, and then sends [search_query] to API for results.
    * @param {String} search_query
    */
+  renderUser = (element) => {
+    // console.log('==== ELEMENT ====')
+    if (element.id !== this.props.self.id) {
+      return (
+        <Container key={element.id}>
+          {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
+          <Content style={styles.container}>
+            <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
+              <Card style={styles.mb}>
+                <CardItem>
+                  <Text> {element.firstName}</Text>
+                  <Text> {element.lastName}</Text>
+                </CardItem>
+                <CardItem>
+                  <CardItem>
+                    <CardItem>
+                      <Left>
+                        <Icon active name="star" />
+                        <Text>{this.renderRating(element)}</Text>
+                      </Left>
+                    </CardItem>
+                    <CardItem>
+                      <Image
+                        style={{
+                          resizeMode: 'cover',
+                          width: null,
+                          height: 200,
+                          flex: 1,
+                        }}
+                        source={cardImage}
+                      />
+                    </CardItem>
+                  </CardItem>
+                </CardItem>
+              </Card>
+            </TouchableHighlight>
+          </Content>
+          {/* <Image /> */}
+        </Container>
+      );
+    }
+  };
+
   search(search_query) {
     this.setState({ search_query }, () => {
       this.fetchUsers(this.state.search_query.split(' ')).then(() => {
