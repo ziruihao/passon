@@ -239,6 +239,7 @@ class Home extends Component {
             <View style={styles.left}>
               <Text style={styles.leftHead}> {element.item.teach[0].title}</Text>
               <Icon active name="star" />
+              <Text>{this.renderRating(element)}</Text>
               <Text style={styles.leftBio}> {element.item.teach[0].bio}</Text>
             </View>
             <View style={styles.right}>
