@@ -90,38 +90,6 @@ class Profile extends React.Component {
               <View><Text>Learn:</Text></View>
               <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
             </View>
-<<<<<<< HEAD
-            <View><Text>Teach:</Text></View>
-            <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
-            <View><Text>Learn:</Text></View>
-            <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
-          </View>
-          <Button title="Go to Chat"
-            onPress={() => {
-              // this.setState({ btn: true });
-              let first, last, userName, otherUserName;
-              if (this.props.self != null) {
-                first = this.props.self.firstName;
-                last = this.props.self.lastName;
-              }
-
-              if (this.props.chat !== undefined && this.props.chat !== null) {
-                const { chat } = this.props; // not sure why it's an array here
-                console.log(`chat in profile: ${JSON.stringify(chat)}`);
-                if (chat.userId[0].firstName === first
-                && chat.userId[0].lastName === last) {
-                  userName = `${first} ${last}`;
-                  otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-                  console.log(`${userName} other: ${otherUserName}`);
-                } else if (chat.userId[1].firstName === first
-                && chat.userId[1].lastName === last) {
-                  userName = `${first} ${last}`;
-                  otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-                  console.log(`${userName} other: ${otherUserName}`);
-                } else {
-                  console.log('names no match');
-                  return null;
-=======
             <Button title="Go to Chat"
               onPress={() => {
                 // this.setState({ btn: true });
@@ -129,7 +97,6 @@ class Profile extends React.Component {
                 if (this.props.self != null) {
                   first = this.props.self.firstName;
                   last = this.props.self.lastName;
->>>>>>> 4a5a33c54f4cf1e5688504a4d0c9d06021ff66cc
                 }
 
                 if (this.props.chat !== undefined) {
