@@ -15,6 +15,7 @@ import {
   Text,
   ListView,
   TouchableHighlight,
+  Number,
 } from 'react-native';
 import {
   Container,
@@ -82,27 +83,36 @@ class Home extends Component {
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
+  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   componentDidMount() {
-    this.props.fetchSelf().then(() => {
-      this.fetchUsers([]).then(() => { // we need to pass in that empty array
-        this.combineUsers();
-      }).catch((error) => {
-        console.log(error);
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.props.fetchSelf().then(() => {
+        this.fetchUsers([]).then(() => { // we need to pass in that empty array
+          this.combineUsers();
+        }).catch((error) => {
+          console.log(error);
+        });
       });
     });
   }
 
-  // why do we need this?
-  componentDidUpdate(prevProps) {
-    if (prevProps.isFocused !== this.props.isFocused) {
-      this.fetchUsers([]).then(() => {
-        this.combineUsers();
-      }).catch((error) => {
-        console.log(error);
-      });
-      this.props.fetchSelf();
-    }
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
+
+  renderRating = (element) => {
+    if (element.avg_rating === -1) {
+      return (
+        <Text>No ratings</Text>
+      );
+    } else {
+      return (
+        <Text>{element.avg_rating}</Text>
+      );
+    }
+  };
 
   /**
    * Handles rendering for a [user].
@@ -125,8 +135,7 @@ class Home extends Component {
                     <CardItem>
                       <Left>
                         <Icon active name="star" />
-                        <Text>5 stars</Text>
-                        <Text>X yrs</Text>
+                        <Text>{this.renderRating(element)}</Text>
                       </Left>
                     </CardItem>
                     <CardItem>
