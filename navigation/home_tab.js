@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation';
 import Home from '../components/Home';
 import Profile from '../containers/profile';
 import ProfileNav from './profile_nav';
+import AddRating from '../containers/AddRating';
 
 // nest stack navigator to handle two internal views
 const HomeTab = createStackNavigator({
@@ -10,6 +11,7 @@ const HomeTab = createStackNavigator({
   Home,
   Profile,
   ProfileNav,
+  AddRating,
 });
 
 // // override some navigation options - set a pretty icon
