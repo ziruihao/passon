@@ -24,14 +24,24 @@ const UserSchema = new Schema({
 UserSchema.virtual('avg_rating').get(function calc() {
   let sum = 0;
   let count = 0;
-  this.teach.forEach((skill) => {
-    skill.ratings.forEach((rating) => {
+  for (let i = 0; i < this.teach.length; i += 1) {
+    const skill = this.teach[i];
+    for (let o = 0; o < skill.length; o += 1) {
+      const rating = skill[o];
       count += 1;
       sum += rating.score;
-    });
-  });
-  if (count === 0) return -1;
-  else return sum / count;
+    }
+  }
+
+  // this.teach.forEach((skill) => {
+  //   skill.ratings.forEach((rating) => {
+  //     count += 1;
+  //     sum += rating.score;
+  //   });
+  // });
+  // if (count === 0) return -1;
+  // else
+  return sum / count;
 });
 
 
