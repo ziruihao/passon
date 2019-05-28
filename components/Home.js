@@ -15,6 +15,7 @@ import {
   Text,
   ListView,
   TouchableHighlight,
+  ImageBackground,
 } from 'react-native';
 import {
   Container,
@@ -36,30 +37,42 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSearch, fetchSelf,
+  fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
+import DoubleMatchCard from './DoubleMatchCard';
 
-const cardImage = require('../assets/sunset.jpg');
+// const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#4000F4',
+    flex: 1,
+    zIndex: 1,
+    width: '100%',
+  },
+  cards: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignContent: 'center',
   },
-  mb: {
-    marginBottom: 17,
-    width: dimensions.fullWidth - (2 * dimensions.lg),
-    height: 170,
-    padding: dimensions.sm,
-    flex: 1,
-  },
+  // mb: {
+  //   marginBottom: 17,
+  //   width: dimensions.fullWidth - (2 * dimensions.lg),
+  //   height: 170,
+  //   padding: dimensions.sm,
+  //   flex: 1,
+  // },
   title: {
     flex: 1,
     fontSize: fonts.h2,
     color: '#620BC9',
   },
-
+  card: {
+    height: 170,
+    width: 297,
+    borderRadius: 10,
+    color: '#FFFFFF',
+  },
 });
 
 class Home extends Component {
@@ -108,14 +121,16 @@ class Home extends Component {
    * Handles rendering for a [user].
    */
   renderUser = (element) => {
-    // console.log('==== ELEMENT ====')
+    // console.log('==== ELEMENT ====');
+    // console.log(element);
     if (element.id !== this.props.self.id) {
       return (
+        // <View><DoubleMatchCard element={element} intoProfile={e => this.intoProfile(e)} /></View>
         <Container key={element.id}>
           {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
           <Content style={styles.container}>
             <TouchableHighlight onPress={() => this.intoProfile(element)} underlayColor="orange">
-              <Card style={styles.mb}>
+              <Card style={styles.card}>
                 <CardItem>
                   <Text> {element.firstName}</Text>
                   <Text> {element.lastName}</Text>
@@ -124,12 +139,13 @@ class Home extends Component {
                   <CardItem>
                     <CardItem>
                       <Left>
+                        <Text>Teach Title</Text>
                         <Icon active name="star" />
                         <Text>5 stars</Text>
-                        <Text>X yrs</Text>
+                        <Text>14 years</Text>
                       </Left>
                     </CardItem>
-                    <CardItem>
+                    {/* <CardItem>
                       <Image
                         style={{
                           resizeMode: 'cover',
@@ -139,7 +155,7 @@ class Home extends Component {
                         }}
                         source={cardImage}
                       />
-                    </CardItem>
+                    </CardItem> */}
                   </CardItem>
                 </CardItem>
               </Card>
@@ -235,9 +251,13 @@ class Home extends Component {
    */
   renderContent = () => {
     return (
-      <Container>
-        {this.renderMatches()}
-      </Container>
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.container}>
+            {this.renderMatches()}
+          </View>
+        </ImageBackground>
+      </View>
     );
   };
 
@@ -253,12 +273,12 @@ class Home extends Component {
     const double_matches = this.state.double_matches.map(element => this.renderUser(element));
     const single_matches = this.state.single_matches.map(element => this.renderUser(element));
     return (
-      <Container>
+      <View style={styles.cards}>
         <Text>Double Matches</Text>
-        {double_matches}
+        <View>{double_matches}</View>
         <Text>Single Matches</Text>
-        {single_matches}
-      </Container>
+        <View>{single_matches}</View>
+      </View>
     );
   };
 
@@ -290,5 +310,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSearch, fetchSelf,
+  fetchUsers, fetchLearners, fetchTeachers, fetchSelf,
 })(Home);
