@@ -44,6 +44,19 @@ const styles = StyleSheet.create({
     fontSize: fonts.p1,
     margin: 5,
   },
+  buttonCancel: {
+    backgroundColor: '#A21F77',
+    borderRadius: 5,
+    width: 131,
+    height: 41,
+    fontSize: fonts.p1,
+    margin: 5,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
 });
 
 class EditSkillLearn extends Component {
@@ -65,9 +78,14 @@ class EditSkillLearn extends Component {
     return (
       <View style={styles.container}>
         <ImageBackground source={require('../assets/skillBackground.png')} style={{ width: '100%', height: '100%' }}>
-          <Text style={styles.title}>Edit Skill: {this.state.title}</Text>
-          <View style={styles.buttonDelete}>
-            <Button color={colors.white} onPress={() => { this.delete(); }} title="Delete" />
+          <View style={styles.content}>
+            <Text style={styles.title}>Edit Skill: {this.state.title}</Text>
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonDelete}>
+                <Button color={colors.white} onPress={() => { this.delete(); }} title="Delete" />
+              </View>
+              <View style={styles.buttonCancel}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" /></View>
+            </View>
           </View>
         </ImageBackground>
       </View>

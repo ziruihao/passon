@@ -13,7 +13,6 @@ import {
   Image,
   Text,
   TouchableHighlight,
-  Number,
   FlatList,
   ScrollView,
   StatusBar,
@@ -31,10 +30,16 @@ import {
 import {
   fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
+import DoubleMatchCard from './DoubleMatchCard';
 
 const cardImage = require('../assets/sunset.jpg');
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    zIndex: 1,
+    width: '100%',
+  },
   appArea: {
     top: getStatusBarHeight(),
     width: '100%',
@@ -86,19 +91,24 @@ const styles = StyleSheet.create({
   name: {
     fontSize: fonts.h3,
   },
-  mb: {
-    marginBottom: 17,
-    width: dimensions.fullWidth - (2 * dimensions.lg),
-    height: 170,
-    padding: dimensions.sm,
+  cards: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignContent: 'center',
   },
+  // mb: {
+  //   marginBottom: 17,
+  //   width: dimensions.fullWidth - (2 * dimensions.lg),
+  //   height: 170,
+  //   padding: dimensions.sm,
+  //   flex: 1,
+  // },
   title: {
     flex: 1,
     fontSize: fonts.h2,
     color: '#620BC9',
   },
-
 });
 
 class Home extends Component {

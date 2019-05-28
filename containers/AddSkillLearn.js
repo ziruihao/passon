@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
     fontSize: fonts.p1,
     margin: 5,
   },
+  error: {
+    color: '#505050',
+  },
 });
 
 class AddSkillLearn extends Component {
@@ -89,16 +92,16 @@ class AddSkillLearn extends Component {
         <ImageBackground source={require('../assets/skillBackground.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.content}>
             <Text style={styles.title}>Add Skill</Text>
+            { this.state.errorTitle === true ? (
+              <Text style={styles.error}>
+               Please enter skill title to proceed.
+              </Text>
+            ) : null }
             <TextInput
               style={styles.input}
               placeholder="Skill"
               onChangeText={(text) => { this.setState({ title: text }); }}
             />
-            { this.state.errorTitle === true ? (
-              <Text>
-               Please enter skill title to proceed.
-              </Text>
-            ) : null }
             <View style={styles.buttonContainer}>
               <View style={styles.buttonSave}><Button color={colors.white} onPress={() => { this.add(); }} title="Save" /></View>
               <View style={styles.buttonCancel}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" /></View>
