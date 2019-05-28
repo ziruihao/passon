@@ -26,6 +26,7 @@ const setUpDB = () => {
   let skill = new Skill();
   skill.title = 'Golf';
   skill.bio = 'I can teach golf.';
+  skill.years = 5;
   skill.save().then((saved) => {
     self.teach.push(saved);
     skill = new Skill();
@@ -53,11 +54,15 @@ const setUpDB = () => {
   zirui.teach = [];
   skill = new Skill();
   skill.title = 'Coding';
+  skill.years = 5;
+  skill.ratings = [];
   skill.bio = 'I can teach coding.';
   skill.save().then((saved) => {
     zirui.teach.push(saved);
     skill = new Skill();
     skill.title = 'Drinking';
+    skill.years = 5;
+    skill.ratings = [];
     skill.bio = 'I can teach excessive drinking.';
     skill.save().then((saved2) => {
       zirui.teach.push(saved2);
@@ -79,11 +84,15 @@ const setUpDB = () => {
   john.university = 'Dartmouth';
   skill = new Skill();
   skill.title = 'Baseball';
+  skill.years = 5;
+  skill.ratings = [];
   skill.bio = 'I can teach insane baseball.';
   skill.save().then((saved) => {
     john.teach.push(saved);
     skill = new Skill();
     skill.title = 'Golf';
+    skill.years = 5;
+    skill.ratings = [];
     skill.bio = 'I can teach mad golf.';
     skill.save().then((saved2) => {
       john.teach.push(saved2);
@@ -105,6 +114,8 @@ const setUpDB = () => {
   cat.university = 'Dartmouth';
   skill = new Skill();
   skill.title = 'Drinking';
+  skill.years = 5;
+  skill.ratings = [];
   skill.bio = 'I can teach drinking.';
   skill.save().then((saved) => {
     cat.teach.push(saved);
@@ -125,6 +136,8 @@ const setUpDB = () => {
   julian.university = 'Dartmouth';
   skill = new Skill();
   skill.title = 'Coding';
+  skill.years = 5;
+  skill.ratings = [];
   skill.bio = 'I can teach coding.';
   skill.save().then((saved) => {
     julian.teach.push(saved);
@@ -145,6 +158,8 @@ const setUpDB = () => {
   gillian.university = 'Dartmouth';
   skill = new Skill();
   skill.title = 'Tennis';
+  skill.years = 5;
+  skill.ratings = [];
   skill.bio = 'I can teach tennis.';
   skill.save().then((saved) => {
     gillian.teach.push(saved);
