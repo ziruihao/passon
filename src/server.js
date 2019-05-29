@@ -286,7 +286,7 @@ app.get('/', (req, res) => {
 // START THE SERVER
 // =============================================================================
 const port = process.env.PORT || 9090;
-app.listen(port);
+// app.listen(port);
 
 console.log(`listening on: ${port}`);
 
@@ -298,8 +298,8 @@ const http = require('http');
 const socketio = require('socket.io');
 
 const server = http.Server(app);
-const io = socketio(server).listen(3000, () => console.log('listening on *:9090'));
-// server.listen(3000, () => console.log('listening on *:9090'));
+const io = socketio(server); // .listen(3000, () => console.log('listening on *:3000'));
+server.listen(9090, () => console.log('listening on *:9090'));
 
 // The event will be called when a client is connected.
 io.on('connection', (socket) => {
