@@ -239,8 +239,7 @@ export function signoutUser(navigation) {
 
 export function fetchChats() {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.get(`${ROOT_URL}/messaging`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/messaging`)
       .then((response) => {
         dispatch({ type: ActionTypes.GET_CHATS, payload: response.data });
       })
@@ -252,8 +251,7 @@ export function fetchChats() {
 
 export function fetchChat(otherId) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.get(`${ROOT_URL}/messaging/${otherId}`, { headers: { authorization: value } })
+    axios.get(`${ROOT_URL}/messaging/${otherId}`)
       .then((response) => {
         dispatch({ type: ActionTypes.GET_CHAT, payload: response.data });
       })
@@ -265,8 +263,7 @@ export function fetchChat(otherId) {
 
 export function createChat(chat) {
   return async (dispatch) => {
-    const value = await AsyncStorage.getItem('token');
-    axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
+    axios.post(`${ROOT_URL}/messaging`, chat)
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
       })
