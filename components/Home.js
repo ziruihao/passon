@@ -305,7 +305,7 @@ class Home extends Component {
             </Item> */}
         </View>
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <ImageBackground source={require('../assets/bg.svg')} style={{ width: 100, height: 100 }}>
             {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
             <Icon name="ios-search" />
             <TextInput value={this.state.search_query} onChangeText={text => this.search(text)} style={styles.searchBar} />
