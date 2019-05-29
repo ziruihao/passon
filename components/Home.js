@@ -275,7 +275,7 @@ class Home extends Component {
   };
 
   renderRating = (element) => {
-    const avg_rating = this.calcRating(element.item);
+    const avg_rating = this.calcRating(element);
 
     if (avg_rating === -1) {
       return (

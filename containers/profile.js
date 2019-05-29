@@ -120,10 +120,46 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetch_user(this.props.navigation.getParam('_id', null));
-    this.props.fetch_self();
-    this.props.fetch_chat(this.props.navigation.getParam('_id', null));
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.props.fetch_user(this.props.navigation.getParam('_id', null));
+      this.props.fetch_self();
+      this.props.fetch_chat(this.props.navigation.getParam('_id', null));
+    });
   }
+
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
+  }
+
+  calcRating = (element) => {
+    let sum = 0;
+    let count = 0;
+
+    element.teach.forEach(skill => skill.ratings.forEach((rating) => {
+      sum += rating.score;
+      count += 1;
+    }));
+
+    if (count === 0) return -1;
+    else return (sum / count).toFixed(1);
+  };
+
+  renderRating = (element) => {
+    const avg_rating = this.calcRating(element);
+
+    if (avg_rating === -1) {
+      return (
+        <Text>No ratings</Text>
+      );
+    } else {
+      return (
+        <Text>Avg Rating: {avg_rating}</Text>
+      );
+    }
+  };
 
   toggleTeach = (event) => {
     this.setState((prevState) => {
@@ -169,7 +205,7 @@ class Profile extends React.Component {
     if (this.props.self.teach != null) {
       return (
         <View>
-          <Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
         </View>
       );
     } else {
@@ -180,7 +216,7 @@ class Profile extends React.Component {
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>;
+    return <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>;
   }
 
   render() {
@@ -194,7 +230,7 @@ class Profile extends React.Component {
               <Text style={styles.name}>
                 {this.props.user.firstName} {this.props.user.lastName}
               </Text>
-              <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
+              <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
             </View>
             <View style={styles.tabsContainer}>
               <Button onPress={() => { this.toggleTeach(true); }}
