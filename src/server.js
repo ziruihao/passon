@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -296,8 +297,6 @@ app.use('/api', apiRouter);
 const http = require('http');
 const socketio = require('socket.io');
 
-// const app2 = express();
-// eslint-disable-next-line new-cap
 const server = http.Server(app);
 const io = socketio(server);
 server.listen(3000, () => console.log('listening on *:3000'));
