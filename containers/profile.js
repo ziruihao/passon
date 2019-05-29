@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
+    // paddingHorizontal: padding.sm,
+    // paddingVertical: padding.lg,
+    // width: dimensions.fullWidth,
+    // fontFamily: fonts.primary,
   },
   image: {
     width: 400,
@@ -82,9 +86,6 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: fonts.p1,
     color: '#FFFFFF',
-  },
-  svg: {
-    width: '100%',
   },
   buttonMessage: {
     backgroundColor: '#620BC9',
