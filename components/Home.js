@@ -19,6 +19,9 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
+import {
+  Icon,
+} from 'native-base';
 import { Font } from 'expo';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ActionViewColumn } from 'material-ui/svg-icons';
@@ -30,7 +33,8 @@ import {
 } from '../actions';
 import DoubleMatchCard from './DoubleMatchCard';
 
-const cardImage = require('../assets/profile.png');
+const profileImage = require('../assets/profileDark.png');
+
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   appArea: {
-    top: getStatusBarHeight(),
+    top: dimensions.statusBarHeight,
     width: '100%',
   },
   searchBar: {
@@ -177,6 +181,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scrollView: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
 });
 
 class Home extends Component {
@@ -195,7 +203,7 @@ class Home extends Component {
       search_query: '',
       double_matches: [],
       single_matches: [],
-      fontLoaded: false,
+      fontLoaded: true,
     };
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
@@ -214,17 +222,24 @@ class Home extends Component {
   //   });
   // }
 
+  // async componentWillMount() {
+  //   await Font.loadAsync({
+  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+  //     'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
+  //   });
+  // }
+
   // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   async componentDidMount() {
-    await Font.loadAsync({
-      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-      'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-    }).then((response) => {
-      this.setState({ fontLoaded: true });
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    // await Font.loadAsync({
+    //   'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+    //   'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
+    // }).then((response) => {
+    //   this.setState({ fontLoaded: true });
+    // })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
 
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
@@ -287,7 +302,6 @@ class Home extends Component {
           resolve();
         });
       }).catch(error => reject(error));
-      // this.props.fetchLearners({ skills: ['Golf'] });
     });
   }
 
@@ -313,14 +327,6 @@ class Home extends Component {
         return notIncludes;
       }),
     });
-    console.log('teachers');
-    console.log(this.props.teachers);
-    console.log('learners');
-    console.log(this.props.learners);
-    console.log('double');
-    console.log(this.state.double_matches);
-    console.log('single');
-    console.log(this.state.single_matches);
   }
 
 
@@ -364,7 +370,7 @@ class Home extends Component {
             <View style={styles.right}>
               <Image
                 style={styles.profileImage}
-                source={cardImage}
+                source={profileImage}
               />
               <View style={styles.nameContainer}>
                 {
@@ -385,7 +391,7 @@ class Home extends Component {
    */
   renderMatches = () => {
     return (
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.sectionHeaderArea}>
           {
             this.state.fontLoaded ? (

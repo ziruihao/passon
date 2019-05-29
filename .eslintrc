@@ -35,7 +35,6 @@
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "react/jsx-one-expression-per-line":0,
-    // User added:
     "jsx-a11y/no-autofocus": 0,
     "react/no-danger": 0,
     "react/no-unescaped-entities": 0
