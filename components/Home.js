@@ -22,7 +22,6 @@ import {
 import {
   Icon,
 } from 'native-base';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
@@ -34,6 +33,7 @@ import DoubleMatchCard from './DoubleMatchCard';
 
 const cardImage = require('../assets/sunset.jpg');
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   appArea: {
-    top: getStatusBarHeight(),
+    top: dimensions.statusBarHeight,
     width: '100%',
   },
   searchBar: {
@@ -195,7 +195,6 @@ class Home extends Component {
           resolve();
         });
       }).catch(error => reject(error));
-      // this.props.fetchLearners({ skills: ['Golf'] });
     });
   }
 
@@ -221,20 +220,10 @@ class Home extends Component {
         return notIncludes;
       }),
     });
-    console.log('teachers');
-    console.log(this.props.teachers);
-    console.log('learners');
-    console.log(this.props.learners);
-    console.log('double');
-    console.log(this.state.double_matches);
-    console.log('single');
-    console.log(this.state.single_matches);
   }
 
 
   intoProfile(profile) {
-    // console.log('Profile: +++++++++++++++++++ ');
-    // console.log(profile);
     this.props.navigation.navigate('Profile', profile);
   }
 
@@ -274,31 +263,15 @@ class Home extends Component {
    * Handles rendering the division between [single_matches] and [double_matches].
    */
   renderMatches = () => {
-    // let first, last, userName, otherUserName;
-    // if (this.props.self != null) {
-    //   first = this.props.self.firstName;
-    //   last = this.props.self.lastName;
-    // }
-
     return (
       <ScrollView>
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Double Matches</Text>
-          {/* <FlatList
-          data={this.state.double_matches}
-          renderItem={this.renderUser}
-          keyExtractor={item => item.id}
-        /> */}
         </View>
         {this.state.double_matches.map(user => this.renderUser({ item: user }))}
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Single Matches</Text>
         </View>
-        {/* <FlatList
-          data={this.state.single_matches}
-          renderItem={this.renderUser}
-          keyExtractor={item => item.id}
-        /> */}
         {this.state.single_matches.map(user => this.renderUser({ item: user }))}
       </ScrollView>
     );
@@ -315,7 +288,7 @@ class Home extends Component {
             </Item> */}
         </View>
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <ImageBackground source={require('../assets/background.png')} style={{ width: dimensions.fullWidth, height: dimensions.fullHeight }}>
             {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
             <Icon name="ios-search" />
             <TextInput value={this.state.search_query} onChangeText={text => this.search(text)} style={styles.searchBar} />
