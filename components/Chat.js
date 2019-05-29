@@ -12,7 +12,7 @@ class Chat extends React.Component {
 
     constructor(props) {
       super(props);
-      const room = this.props.navigation.getParam('id', null); // would be chat's objectID
+      const room = this.props.navigation.getParam('id', null); //
 
       // Creating the socket-client instance will automatically connect to the server.
       // const socket = io('http://localhost:9090');
@@ -28,10 +28,25 @@ class Chat extends React.Component {
       socket.on('received', (message) => {
         console.log('Incoming message:', message);
 
-        if (this.props.chat !== undefined) {
-          const { chat } = this.props;
-          this.updateHistoryMsgs(chat.messages);
-        }
+        const msg = {
+          _id: this.state.counter,
+          text: message.body.text,
+          createdAt: message.body.createdAt,
+          user: {
+            _id: message.body.userId, // //////
+            name: this.props.navigation.getParam('otherUserName', 'theirName'),
+            // avatar: 'https://placeimg.com/140/140/any',
+          },
+        };
+        this.setState((previousState) => {
+          return {
+            messages: GiftedChat.append(previousState.messages, msg),
+          };
+        }, () => {
+          this.setState(prevState => ({
+            counter: prevState.counter + 1,
+          }));
+        });
       });
 
       this.state = {
@@ -128,13 +143,11 @@ class Chat extends React.Component {
 }
 const mapStateToProps = state => ({
   self: state.user.self,
-  chat: state.chat.curr,
 }
 );
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
   };
 };
 
