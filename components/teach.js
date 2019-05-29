@@ -71,7 +71,29 @@ class Teach extends Component {
     // console.log('Profile: +++++++++++++++++++ ');
     // console.log(profile);
     this.props.nav.navigate('AddRating', item);
-  }
+  };
+
+  arrAvg = (arr) => {
+    let sum = 0;
+    let ct = 0;
+
+    for (let i = 0; i < arr.length; i += 1) {
+      sum += arr[i].score;
+      ct += 1;
+    }
+
+    if (ct === 0) {
+      return (
+        <Text>No rating</Text>
+      );
+    } else {
+      const avg = (sum / ct).toFixed(1);
+
+      return (
+        <Text>{avg} rating</Text>
+      );
+    }
+  };
 
   render() {
     if (this.props.user.id === this.props.self.id) {
@@ -86,7 +108,7 @@ class Teach extends Component {
             />
             </View>
           </View>
-          <Text style={styles.years}>{this.props.skill.years} yrs</Text>
+          <Text style={styles.years}>{this.props.skill.years} yrs | {this.arrAvg(this.props.skill.ratings)}</Text>
           <Text style={styles.bio}>{this.props.skill.bio}</Text>
         </View>
       );
@@ -103,7 +125,7 @@ class Teach extends Component {
             </View>
           </View>
           {/* <Text style={styles.title}>{this.props.skill.title}</Text> */}
-          <Text style={styles.years}>{this.props.skill.years} yrs</Text>
+          <Text style={styles.years}>{this.props.skill.years} yrs | {this.arrAvg(this.props.skill.ratings)}</Text>
           <Text style={styles.bio}>{this.props.skill.bio}</Text>
           {/* <Button title="Add rating"
             onPress={() => this.intoRating(this.props.skill)}

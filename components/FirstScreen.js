@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, Text, ImageBackground, TouchableOpacity,
+  StyleSheet, View, Text, ImageBackground, TouchableOpacity, Image,
 } from 'react-native';
 import { Font } from 'expo';
 import {
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontSize: 20,
   },
+  logo: {
+    width: '50%',
+    height: '25%',
+    flex: 0,
+    resizeMode: 'contain',
+  },
 });
 const authTestUser = (props) => {
   props.signinUser({
@@ -74,18 +80,19 @@ class FirstScreen extends Component {
       <View style={styles.container}>
         <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.content}>
-            {
-              this.state.fontLoaded ? (
-                <Text style={styles.title}>PassOn</Text>
-              ) : null
-            }
-            {
-              this.state.fontLoaded ? (
-                <TouchableOpacity style={styles.button} onPress={() => { authTestUser(this.props); }}>
-                  <Text style={styles.buttonText}>Test User: Passon</Text>
-                </TouchableOpacity>
-              ) : null
-            }
+            <Image source={require('../assets/logo.png')} style={styles.logo} />
+            {/* { */}
+            {/*  this.state.fontLoaded ? ( */}
+            {/*    <Text style={styles.title}>PassOn</Text> */}
+            {/*  ) : null */}
+            {/* } */}
+            {/* { */}
+            {/*  this.state.fontLoaded ? ( */}
+            {/*    <TouchableOpacity style={styles.button} onPress={() => { authTestUser(this.props); }}> */}
+            {/*      <Text style={styles.buttonText}>Test User: Passon</Text> */}
+            {/*    </TouchableOpacity> */}
+            {/*  ) : null */}
+            {/* } */}
             {
               this.state.fontLoaded ? (
                 <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('SignIn'); }}>
