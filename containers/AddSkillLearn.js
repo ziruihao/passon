@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, TextInput, ImageBackground,
+  StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground,
 } from 'react-native';
 import { addLearn } from '../actions';
 import {
@@ -16,49 +16,49 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  between: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
-    fontSize: fonts.h3,
-    color: '#FFFFFF',
+    fontSize: fonts.h1,
+    color: colors.white,
     margin: 30,
+    fontFamily: 'quicksand-bold',
   },
   input: {
     width: 276,
     height: 45,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 5,
     padding: 10,
-    marginTop: 30,
     marginBottom: 10,
     color: '#2D2A32',
-    borderWidth: 1,
-    borderColor: '#620BC9',
   },
-  buttonContainer: {
-    flex: 1,
+  button: {
+    backgroundColor: colors.white,
+    borderRadius: 50,
+    width: 213,
+    height: 53,
+    fontSize: fonts.h1,
+    margin: 10,
+    flex: 0,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  buttonSave: {
-    backgroundColor: '#620BC9',
-    borderRadius: 5,
-    width: 131,
-    height: 41,
-    fontSize: fonts.p1,
-    margin: 5,
-  },
-  buttonCancel: {
-    backgroundColor: '#A21F77',
-    borderRadius: 5,
-    width: 131,
-    height: 41,
-    fontSize: fonts.p1,
-    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   error: {
-    color: '#505050',
+    color: colors.white,
+  },
+  buttonText: {
+    fontFamily: 'quicksand-bold',
+    color: colors.accent,
+    fontSize: 20,
   },
 });
 
@@ -89,26 +89,54 @@ class AddSkillLearn extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../assets/skillBackground.png')} style={{ width: '100%', height: '100%' }}>
-          <View style={styles.content}>
-            <Text style={styles.title}>Add Skill</Text>
-            { this.state.errorTitle === true ? (
-              <Text style={styles.error}>
-               Please enter skill title to proceed.
-              </Text>
-            ) : null }
-            <TextInput
-              style={styles.input}
-              placeholder="Skill"
-              onChangeText={(text) => { this.setState({ title: text }); }}
-            />
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonSave}><Button color={colors.white} onPress={() => { this.add(); }} title="Save" /></View>
-              <View style={styles.buttonCancel}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" /></View>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.between}>
+            <View style={styles.content}>
+              <Text style={styles.title}>Add Skill</Text>
+              { this.state.errorTitle === true ? (
+                <Text style={styles.error}>
+                  Please enter skill title to proceed.
+                </Text>
+              ) : null }
+              <TextInput
+                style={styles.input}
+                placeholder="Skill"
+                placeholderTextColor="#9A989E"
+                onChangeText={(text) => { this.setState({ title: text }); }}
+              />
+              <TouchableOpacity style={styles.button} onPress={() => { this.add(); }}>
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
       </View>
+
+
+    // <View style={styles.container}>
+    //   <ImageBackground source={require('../assets/skillBackground.png')} style={{ width: '100%', height: '100%' }}>
+    //     <View style={styles.content}>
+    //       <Text style={styles.title}>Add Skill</Text>
+    //       { this.state.errorTitle === true ? (
+    //         <Text style={styles.error}>
+    //          Please enter skill title to proceed.
+    //         </Text>
+    //       ) : null }
+    //       <TextInput
+    //         style={styles.input}
+    //         placeholder="Skill"
+    //         onChangeText={(text) => { this.setState({ title: text }); }}
+    //       />
+    //       <View style={styles.buttonContainer}>
+    //         <View style={styles.buttonSave}><Button color={colors.white} onPress={() => { this.add(); }} title="Save" /></View>
+    //         <View style={styles.buttonCancel}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('ProfileSelf'); }} title="Cancel" /></View>
+    //       </View>
+    //     </View>
+    //   </ImageBackground>
+    // </View>
     );
   }
 }

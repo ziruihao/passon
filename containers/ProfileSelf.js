@@ -166,7 +166,7 @@ class ProfileSelf extends Component {
   }
 
   renderTeaches() {
-    if (this.props.self.teach != null) {
+    if (this.props.self.teach !== null) {
       return (
         <View>
           <Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
@@ -180,7 +180,7 @@ class ProfileSelf extends Component {
   }
 
   renderLearns() {
-    if (this.props.self.teach != null) {
+    if (this.props.self.learn !== null) {
       return (
         <View>
           <Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
@@ -292,7 +292,7 @@ class ProfileSelf extends Component {
                 </ScrollView>
               </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillTeach')} style={styles.addSkillButton}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillLearn')} style={styles.addSkillButton}>
                   <Text style={styles.addSkillButtonText}>Add Skill</Text>
                 </TouchableOpacity>
               </View>

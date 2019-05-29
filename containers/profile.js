@@ -233,7 +233,7 @@ class Profile extends React.Component {
   }
 
   renderLearns() {
-    if (this.props.user.teach !== null) {
+    if (this.props.user.learn !== null) {
       return (
         <View>
           <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
