@@ -177,7 +177,7 @@ class Messaging extends Component {
                 >
                   <View style={styles.chat}>
                     <View>
-                      <Image source={require('../assets/profile.png')} style={styles.profile_img} />
+                      <Image source={require('../assets/profileDark.png')} style={styles.profile_img} />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'column' }}>
