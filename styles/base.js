@@ -31,5 +31,4 @@ export const fonts = {
   p1: 18,
   p2: 12,
   p3: 10,
-  primary: 'Quicksand',
 };

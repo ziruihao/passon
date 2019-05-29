@@ -57,6 +57,14 @@ const styles = StyleSheet.create({
     fontSize: fonts.p1,
     margin: 5,
   },
+  buttonCancel: {
+    backgroundColor: '#A21F77',
+    borderRadius: 5,
+    width: 131,
+    height: 41,
+    fontSize: fonts.p1,
+    margin: 5,
+  },
   error: {
     color: '#505050',
   },

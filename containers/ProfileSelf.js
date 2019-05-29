@@ -118,7 +118,7 @@ class ProfileSelf extends Component {
     this.state = {
       teach: true,
     };
-    this.toggleTeach = this.toggleTeach.bind(this);
+    // this.toggleTeach = this.toggleTeach.bind(this);
   }
 
   componentDidUpdate(prevProps) {
