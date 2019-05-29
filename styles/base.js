@@ -1,14 +1,16 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export const dimensions = {
   fullHeight: Dimensions.get('window').height,
   fullWidth: Dimensions.get('window').width,
+  statusBarHeight: getStatusBarHeight(),
 };
 
 export const colors = {
   navIcons: '#4901EF',
-  posButton: '#620BC9',
-  negButton: '#A21F77',
+  primary: '#620BC9',
+  accent: '#A21F77',
   highlight: '#D764CB',
   descTxt: '#666666',
   editTxt: '#2D2A32',
