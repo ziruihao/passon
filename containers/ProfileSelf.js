@@ -2,7 +2,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView,
+  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
@@ -13,11 +13,11 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 
+const profileImage = require('../assets/profileLight.png');
+
 const styles = StyleSheet.create({
   appArea: {
     top: dimensions.statusBarHeight,
-    // justifyContent: 'space-around',
-    // alignItems: 'center',
   },
   bg: {
     resizeMode: 'cover',
@@ -71,12 +71,29 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   profileContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: 0.4026 * dimensions.fullWidth,
     borderWidth: 1,
+  },
+  profileContainerLeft: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  profileImage: {
+    width: 64,
+    height: 64,
+    marginBottom: 10,
+  },
+  profileContainerRight: {
+    flex: 0,
+    width: '30%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   signOut: {
     position: 'absolute',
@@ -118,7 +135,6 @@ class ProfileSelf extends Component {
     this.state = {
       teach: true,
     };
-    // this.toggleTeach = this.toggleTeach.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -167,10 +183,19 @@ class ProfileSelf extends Component {
               />
             </View>
             <View style={styles.profileContainer}>
-              <Text style={styles.name}>
-                {this.props.self.firstName} {this.props.self.lastName}
-              </Text>
-              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+              <View style={styles.right}>
+                <Image
+                  style={styles.profileImage}
+                  source={profileImage}
+                />
+              </View>
+              <View style={styles.left}>
+                <Text style={styles.name}>
+                  {this.props.self.firstName} {this.props.self.lastName}
+                </Text>
+                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+              </View>
+
             </View>
             <View style={styles.tabsContainer}>
               <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
@@ -239,7 +264,6 @@ class ProfileSelf extends Component {
                 />
               </View>
             </View>
-            {/* </View> */}
           </ImageBackground>
         </View>
       );
