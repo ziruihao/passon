@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     width: dimensions.fullWidth,
+    paddingBottom: 10,
   },
   sectionHeaderArea: {
     flex: 0,
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
   scrollView: {
     marginTop: 20,
     marginBottom: 20,
+    maxHeight: dimensions.fullHeight * 0.65,
   },
 });
 

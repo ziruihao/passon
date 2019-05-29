@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "YouTube App",
-    "slug": "youtube-app",
+    "name": "PassOn",
+    "slug": "PassOn-app",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
