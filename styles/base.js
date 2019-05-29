@@ -1,8 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export const dimensions = {
   fullHeight: Dimensions.get('window').height,
   fullWidth: Dimensions.get('window').width,
+  statusBarHeight: getStatusBarHeight(),
 };
 
 export const colors = {

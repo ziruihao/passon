@@ -53,10 +53,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FDFCFF',
     borderRadius: 10,
-    width: 350,
-    height: 100,
-    maxWidth: 300,
-    maxHeight: 100,
+    width: 0.9333 * dimensions.fullWidth,
+    height: 0.2667 * dimensions.fullWidth,
     margin: 5,
     alignItems: 'center',
   },
@@ -168,7 +166,7 @@ class Messaging extends Component {
             }
             if (chat.messages.length > 0) {
               return (
-                <TouchableOpacity
+                <TouchableOpacity key={chat.id}
                   onPress={() => {
                     const pass = {
                       messages: chat.messages, id: chat.id, userName, otherUserName,
@@ -178,7 +176,7 @@ class Messaging extends Component {
                 >
                   <View style={styles.chat}>
                     <View>
-                      <Image source={require('../assets/profile.png')} style={styles.profile_img} />
+                      <Image source={require('../assets/profileDark.png')} style={styles.profile_img} />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'column' }}>
