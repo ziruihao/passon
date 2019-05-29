@@ -129,6 +129,20 @@ class ProfileSelf extends Component {
     else return (sum / count).toFixed(1);
   };
 
+  renderRating = (element) => {
+    const avg_rating = this.calcRating(element);
+
+    if (avg_rating === -1) {
+      return (
+        <Text>No ratings</Text>
+      );
+    } else {
+      return (
+        <Text>Avg Rating: {avg_rating}</Text>
+      );
+    }
+  };
+
   // toggleTeach = () => {
   //   console.log('TOGGLED');
   //   this.setState((prevState) => {
@@ -201,7 +215,7 @@ class ProfileSelf extends Component {
               <Text style={styles.name}>
                 {this.props.self.firstName} {this.props.self.lastName}
               </Text>
-              <Text style={styles.rating}>Avg Rating: {this.calcRating(this.props.self)}</Text>
+              <Text style={styles.rating}>{this.renderRating(this.props.self)}</Text>
             </View>
             <View style={styles.tabsContainer}>
               {/* <View><Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} /></View>

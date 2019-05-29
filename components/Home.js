@@ -258,7 +258,7 @@ class Home extends Component {
   };
 
   renderRating = (element) => {
-    const avg_rating = this.calcRating(element.item);
+    const avg_rating = this.calcRating(element);
 
     if (avg_rating === -1) {
       return (
@@ -366,7 +366,7 @@ class Home extends Component {
                 {/* <Icon active name="star" /> */}
                 {
                   this.state.fontLoaded ? (
-                    <Text style={styles.rating}>{this.renderRating(element)} X stars</Text>
+                    <Text style={styles.rating}>{this.renderRating(element.item)} X stars</Text>
                   ) : null
                 }
               </View>
