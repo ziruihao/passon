@@ -3,7 +3,7 @@ import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-// import { fetchChats, createChat, fetchSelf } from '../actions';
+import { fetchChat } from '../actions';
 
 class Chat extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -27,15 +27,20 @@ class Chat extends React.Component {
       // });
       socket.on('received', (message) => {
         console.log('Incoming message:', message);
-        // const oldMessages = () => this.state.messages;
-        // this.setState({ messages: oldMessages.concat(message) });
+
+        if (this.props.chat !== undefined) {
+          const { chat } = this.props;
+          this.updateHistoryMsgs(chat.messages);
+        }
       });
+
       this.state = {
         socket,
         messages: [],
         counter: 1,
       };
       this.sendMessage = this.sendMessage.bind(this);
+      this.updateHistoryMsgs = this.updateHistoryMsgs.bind(this);
     }
 
     componentWillMount() {
@@ -44,6 +49,11 @@ class Chat extends React.Component {
       });
 
       const pastMsgs = this.props.navigation.getParam('messages', null); // is an array
+
+      this.updateHistoryMsgs(pastMsgs);
+    }
+
+    updateHistoryMsgs(pastMsgs) {
       if (pastMsgs !== undefined && pastMsgs !== null && pastMsgs.length > 0) {
         pastMsgs.forEach((msg) => {
           const who = (msg.userId === this.props.self.id)
@@ -118,11 +128,13 @@ class Chat extends React.Component {
 }
 const mapStateToProps = state => ({
   self: state.user.self,
+  chat: state.chat.curr,
 }
 );
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
   };
 };
 

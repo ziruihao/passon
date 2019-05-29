@@ -112,7 +112,7 @@ class Profile extends React.Component {
                   }
 
                   if (this.props.chat !== undefined) {
-                    const { chat } = this.props; // not sure why it's an array here
+                    const { chat } = this.props;
                     console.log(`chat in profile: ${JSON.stringify(chat)}`);
                     if (chat.userId[0].firstName === first
                   && chat.userId[0].lastName === last) {
