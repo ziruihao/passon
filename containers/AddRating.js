@@ -93,6 +93,9 @@ class AddRating extends React.Component {
       this.setState({ errorRating: false });
     }
     if (this.state.score !== '') {
+      console.log('RATING SPOT');
+      console.log(this.props);
+
       this.props.addRating({
         skill: {
           id: this.props.navigation.state.params.id,

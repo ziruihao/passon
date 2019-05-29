@@ -161,6 +161,39 @@ class ProfileSelf extends Component {
     }
   }
 
+  calcRating = (element) => {
+    let sum = 0;
+    let count = 0;
+
+    element.teach.forEach(skill => skill.ratings.forEach((rating) => {
+      sum += rating.score;
+      count += 1;
+    }));
+
+    if (count === 0) return -1;
+    else return (sum / count).toFixed(1);
+  };
+
+  renderRating = (element) => {
+    const avg_rating = this.calcRating(element);
+
+    if (avg_rating === -1) {
+      return (
+        <Text>No ratings</Text>
+      );
+    } else {
+      return (
+        <Text>Avg Rating: {avg_rating}</Text>
+      );
+    }
+  };
+
+  // toggleTeach = () => {
+  //   console.log('TOGGLED');
+  //   this.setState((prevState) => {
+  //     return { teach: !prevState.teach };
+  //   });
+  // }
   toggleTeach = (event) => {
     this.setState({ teach: event });
   }

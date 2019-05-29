@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     width: dimensions.fullWidth,
+    paddingBottom: 10,
   },
   sectionHeaderArea: {
     flex: 0,
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
   scrollView: {
     marginTop: 20,
     marginBottom: 20,
+    maxHeight: dimensions.fullHeight * 0.65,
   },
 });
 
@@ -259,14 +261,29 @@ class Home extends Component {
     this.focusListener.remove();
   }
 
+  calcRating = (element) => {
+    let sum = 0;
+    let count = 0;
+
+    element.teach.forEach(skill => skill.ratings.forEach((rating) => {
+      sum += rating.score;
+      count += 1;
+    }));
+
+    if (count === 0) return -1;
+    else return (sum / count).toFixed(1);
+  };
+
   renderRating = (element) => {
-    if (element.item.avg_rating === -1) {
+    const avg_rating = this.calcRating(element);
+
+    if (avg_rating === -1) {
       return (
         <Text>No ratings</Text>
       );
     } else {
       return (
-        <Text>{element.item.avg_rating}</Text>
+        <Text>Avg Rating: {avg_rating}</Text>
       );
     }
   };
@@ -345,25 +362,25 @@ class Home extends Component {
             <View style={styles.left}>
               {
                 this.state.fontLoaded ? (
-                  <Text style={styles.skillTitle}> {element.item.teach[0].title}</Text>
+                  <Text style={styles.skillTitle}>{element.item.teach[0].title}</Text>
                 ) : null
               }
               <View style={styles.ratingYears}>
                 {
                   this.state.fontLoaded ? (
-                    <Text style={styles.years}> {element.item.teach[0].years} yrs</Text>
+                    <Text style={styles.years}>{element.item.teach[0].years} yrs</Text>
                   ) : null
                 }
                 {/* <Icon active name="star" /> */}
                 {
                   this.state.fontLoaded ? (
-                    <Text style={styles.rating}>{this.renderRating(element)} X stars</Text>
+                    <Text style={styles.rating}> {this.renderRating(element.item)}</Text>
                   ) : null
                 }
               </View>
               {
                 this.state.fontLoaded ? (
-                  <Text style={styles.bio}> {element.item.teach[0].bio}</Text>
+                  <Text style={styles.bio}>{element.item.teach[0].bio}</Text>
                 ) : null
               }
             </View>

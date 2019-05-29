@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 80,
 
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-bold',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 28,
@@ -53,8 +53,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FDFCFF',
     borderRadius: 10,
-    width: 0.9333 * dimensions.fullWidth,
-    height: 0.2667 * dimensions.fullWidth,
+    width: 350,
+    height: 100,
+    maxWidth: 300,
+    maxHeight: 100,
     margin: 5,
     alignItems: 'center',
   },
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: '#620BC9',
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-bold',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 14,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   text: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-regular',
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: 14,
@@ -167,7 +169,7 @@ class Messaging extends Component {
             }
             if (chat.messages.length > 0) {
               return (
-                <TouchableOpacity key={chat.id}
+                <TouchableOpacity
                   onPress={() => {
                     const pass = {
                       messages: chat.messages, id: chat.id, userName, otherUserName,
