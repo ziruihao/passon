@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, Button,
+  StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import {
@@ -16,12 +16,11 @@ const styles = StyleSheet.create({
   // },
   teachCard: {
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: 300,
-    height: 130,
-    // marginBottom: 22,
-    borderColor: '#620BC9',
+    height: 120,
+    borderColor: colors.primary,
     borderRadius: 10,
     borderWidth: 1,
     backgroundColor: '#FFFFFF',
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   title: {
-    color: '#620BC9',
+    color: colors.primary,
     fontSize: fonts.p1,
     margin: 10,
     fontFamily: 'quicksand-regular',
@@ -54,6 +53,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
+  },
+  addRatingText: {
+    color: colors.accent,
+    fontSize: 14,
+    fontFamily: 'quicksand-regular',
+  },
+  buttonContainer: {
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -84,12 +93,26 @@ class Teach extends Component {
     } else {
       return (
         <View style={styles.teachCard}>
-          <Text style={styles.title}>{this.props.skill.title}</Text>
+          <View style={styles.top}>
+            <View><Text style={styles.title}>{this.props.skill.title}</Text></View>
+            <View style={styles.icon}><Ionicons
+              name="star"
+              size={16}
+              onPress={() => this.intoRating(this.props.skill)}
+            />
+            </View>
+          </View>
+          {/* <Text style={styles.title}>{this.props.skill.title}</Text> */}
           <Text style={styles.years}>{this.props.skill.years}</Text>
           <Text style={styles.bio}>{this.props.skill.bio}</Text>
-          <Button title="Add rating"
+          {/* <Button title="Add rating"
             onPress={() => this.intoRating(this.props.skill)}
-          />
+          /> */}
+          {/* <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => this.intoRating(this.props.skill)}>
+              <Text style={styles.addRatingText}>Add Rating</Text>
+            </TouchableOpacity>
+          </View> */}
         </View>
       );
     }

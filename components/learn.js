@@ -23,11 +23,10 @@ const styles = StyleSheet.create({
   // },
   learnCard: {
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: 300,
     height: 70,
-    // marginBottom: 22,
     borderColor: '#620BC9',
     borderRadius: 10,
     borderWidth: 1,

@@ -26,7 +26,7 @@ const profileImage = require('../assets/profileLight.png');
 
 const styles = StyleSheet.create({
   appArea: {
-    top: dimensions.statusBarHeight,
+    // top: dimensions.statusBarHeight,
   },
   bg: {
     resizeMode: 'cover',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     width: dimensions.fullWidth,
     paddingBottom: '5%',
   },
-  addSkillButton: {
+  buttonMessage: {
     backgroundColor: colors.primary,
     borderRadius: 5,
     width: 300,
@@ -262,9 +262,9 @@ class Profile extends React.Component {
               </View>
               <View style={styles.left}>
                 <Text style={styles.name}>
-                  {this.props.self.firstName} {this.props.self.lastName}
+                  {this.props.user.firstName} {this.props.user.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+                <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -304,9 +304,9 @@ class Profile extends React.Component {
               </View>
               <View style={styles.left}>
                 <Text style={styles.name}>
-                  {this.props.self.firstName} {this.props.self.lastName}
+                  {this.props.user.firstName} {this.props.user.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+                <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
