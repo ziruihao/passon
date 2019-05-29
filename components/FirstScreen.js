@@ -44,18 +44,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-
 const authTestUser = (props) => {
   props.signinUser({
     email: 'Passon',
     password: 'password',
   }, props.navigation);
 };
-
 class FirstScreen extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       fontLoaded: false,
     };
@@ -109,5 +106,4 @@ class FirstScreen extends Component {
     );
   }
 }
-
 export default connect(null, { signinUser })(FirstScreen);
