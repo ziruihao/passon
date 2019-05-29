@@ -19,9 +19,6 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import {
-  Icon,
-} from 'native-base';
 import { Font } from 'expo';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ActionViewColumn } from 'material-ui/svg-icons';
@@ -205,7 +202,6 @@ class Home extends Component {
       search_query: '',
       double_matches: [],
       single_matches: [],
-      fontLoaded: true,
     };
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
@@ -360,29 +356,13 @@ class Home extends Component {
         <TouchableOpacity key={element.item.id} onPress={() => this.intoProfile(element.item)} underlayColor="orange" style={styles.mb}>
           <View style={styles.card}>
             <View style={styles.left}>
-              {
-                this.state.fontLoaded ? (
-                  <Text style={styles.skillTitle}>{element.item.teach[0].title}</Text>
-                ) : null
-              }
+              <Text style={styles.skillTitle}>{element.item.teach[0].title}</Text>
               <View style={styles.ratingYears}>
-                {
-                  this.state.fontLoaded ? (
-                    <Text style={styles.years}>{element.item.teach[0].years} yrs</Text>
-                  ) : null
-                }
+                <Text style={styles.years}>{element.item.teach[0].years} yrs</Text>
                 {/* <Icon active name="star" /> */}
-                {
-                  this.state.fontLoaded ? (
-                    <Text style={styles.rating}> {this.renderRating(element.item)}</Text>
-                  ) : null
-                }
+                <Text style={styles.rating}> {this.renderRating(element.item)}</Text>
               </View>
-              {
-                this.state.fontLoaded ? (
-                  <Text style={styles.bio}>{element.item.teach[0].bio}</Text>
-                ) : null
-              }
+              <Text style={styles.bio}>{element.item.teach[0].bio}</Text>
             </View>
             <View style={styles.right}>
               <Image
@@ -390,11 +370,7 @@ class Home extends Component {
                 source={profileImage}
               />
               <View style={styles.nameContainer}>
-                {
-                  this.state.fontLoaded ? (
-                    <Text style={styles.name}>{element.item.firstName} {element.item.lastName}</Text>
-                  ) : null
-                }
+                <Text style={styles.name}>{element.item.firstName} {element.item.lastName}</Text>
               </View>
             </View>
           </View>
@@ -410,29 +386,13 @@ class Home extends Component {
     return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.sectionHeaderArea}>
-          {
-            this.state.fontLoaded ? (
-              <Text style={styles.sectionHeader}>Double Matches</Text>
-            ) : null
-          }
-          {
-            this.state.fontLoaded ? (
-              <Text style={styles.sectionDescription}>A perfect match! These members have a skill you want to learn and want to learn a skill you can teach.</Text>
-            ) : null
-          }
+          <Text style={styles.sectionHeader}>Double Matches</Text>
+          <Text style={styles.sectionDescription}>A perfect match! These members have a skill you want to learn and want to learn a skill you can teach.</Text>
         </View>
         {this.state.double_matches.map(user => this.renderUser({ item: user }))}
         <View style={styles.sectionHeaderArea}>
-          {
-            this.state.fontLoaded ? (
-              <Text style={styles.sectionHeader}>Single Matches</Text>
-            ) : null
-          }
-          {
-            this.state.fontLoaded ? (
-              <Text style={styles.sectionDescription}>These members have a skill you want to learn but haven’t expressed interest in learning a skill you are able to teach. However, they may be interested in learning something new!</Text>
-            ) : null
-          }
+          <Text style={styles.sectionHeader}>Single Matches</Text>
+          <Text style={styles.sectionDescription}>These members have a skill you want to learn but haven’t expressed interest in learning a skill you are able to teach. However, they may be interested in learning something new!</Text>
         </View>
         {this.state.single_matches.map(user => this.renderUser({ item: user }))}
       </ScrollView>
@@ -452,11 +412,7 @@ class Home extends Component {
         <View style={styles.appArea}>
           <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
             <View style={styles.appContainer}>
-              {
-                this.state.fontLoaded ? (
-                  <Text style={styles.title}>What would you like to learn?</Text>
-                ) : null
-              }
+              <Text style={styles.title}>What would you like to learn?</Text>
               <TextInput
                 value={this.state.search_query}
                 onChangeText={text => this.search(text)}

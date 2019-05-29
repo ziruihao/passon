@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     maxHeight: dimensions.fullHeight * 0.4,
   },
-  addSkillButtonText: {
+  buttonText: {
     color: colors.white,
     fontFamily: 'quicksand-bold',
     fontSize: 18,
@@ -180,7 +180,6 @@ class Profile extends React.Component {
       this.props.fetch_chat(this.props.navigation.getParam('_id', null));
     });
   }
-
 
   componentWillUnmount() {
     // Remove the event listener
@@ -300,7 +299,7 @@ class Profile extends React.Component {
                 <Text style={styles.name}>
                   {this.props.user.firstName} {this.props.user.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -320,7 +319,7 @@ class Profile extends React.Component {
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
-                  <Text style={styles.addSkillButtonText}>Message</Text>
+                  <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -342,7 +341,7 @@ class Profile extends React.Component {
                 <Text style={styles.name}>
                   {this.props.user.firstName} {this.props.user.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -362,7 +361,7 @@ class Profile extends React.Component {
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
-                  <Text style={styles.addSkillButtonText}>Message</Text>
+                  <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
             </View>

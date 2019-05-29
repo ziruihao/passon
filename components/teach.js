@@ -103,7 +103,7 @@ class Teach extends Component {
             </View>
           </View>
           {/* <Text style={styles.title}>{this.props.skill.title}</Text> */}
-          <Text style={styles.years}>{this.props.skill.years}</Text>
+          <Text style={styles.years}>{this.props.skill.years} yrs</Text>
           <Text style={styles.bio}>{this.props.skill.bio}</Text>
           {/* <Button title="Add rating"
             onPress={() => this.intoRating(this.props.skill)}

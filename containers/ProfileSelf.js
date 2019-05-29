@@ -188,12 +188,6 @@ class ProfileSelf extends Component {
     }
   };
 
-  // toggleTeach = () => {
-  //   console.log('TOGGLED');
-  //   this.setState((prevState) => {
-  //     return { teach: !prevState.teach };
-  //   });
-  // }
   toggleTeach = (event) => {
     this.setState({ teach: event });
   }
@@ -254,7 +248,7 @@ class ProfileSelf extends Component {
                 <Text style={styles.name}>
                   {this.props.self.firstName} {this.props.self.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.self)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -306,7 +300,7 @@ class ProfileSelf extends Component {
                 <Text style={styles.name}>
                   {this.props.self.firstName} {this.props.self.lastName}
                 </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.self)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
