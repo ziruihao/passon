@@ -15,7 +15,8 @@ class Chat extends React.Component {
       const room = this.props.navigation.getParam('id', null); // would be chat's objectID
 
       // Creating the socket-client instance will automatically connect to the server.
-      const socket = io('http://localhost:3000');
+      // const socket = io('http://localhost:9090');
+      const socket = io('https://passon.herokuapp.com');
       socket.on('connect', () => {
       // Connected, let's sign-up for to receive messages for this room
         socket.emit('room', room); // chatID passed in from props
@@ -24,11 +25,11 @@ class Chat extends React.Component {
       // socket.on('message', (data) => {
       //   console.log('Incoming message:', data);
       // });
-      // socket.on('received', (message) => {
-      //   console.log('Incoming message:', message);
-      //   const oldMessages = () => this.state.messages;
-      //   this.setState({ messages: oldMessages.concat(message) });
-      // });
+      socket.on('received', (message) => {
+        console.log('Incoming message:', message);
+        // const oldMessages = () => this.state.messages;
+        // this.setState({ messages: oldMessages.concat(message) });
+      });
       this.state = {
         socket,
         messages: [],
