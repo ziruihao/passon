@@ -19,33 +19,6 @@ const UserSchema = new Schema({
 });
 
 /**
- * Calculates the [avg_rating] virtual based on all the [rating]s of each [skill] the [user] has.
- */
-UserSchema.virtual('avg_rating').get(function calc() {
-  let sum = 0;
-  let count = 0;
-  for (let i = 0; i < this.teach.length; i += 1) {
-    const skill = this.teach[i];
-    for (let o = 0; o < skill.length; o += 1) {
-      const rating = skill[o];
-      count += 1;
-      sum += rating.score;
-    }
-  }
-
-  // this.teach.forEach((skill) => {
-  //   skill.ratings.forEach((rating) => {
-  //     count += 1;
-  //     sum += rating.score;
-  //   });
-  // });
-  // if (count === 0) return -1;
-  // else
-  return sum / count;
-});
-
-
-/**
  * Authentication
  */
 
