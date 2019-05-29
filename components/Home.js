@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable consistent-return */
@@ -12,8 +13,7 @@ import {
   View,
   Image,
   Text,
-  TouchableHighlight,
-  FlatList,
+  TouchableOpacity,
   ScrollView,
   StatusBar,
   TextInput,
@@ -32,7 +32,7 @@ import {
 } from '../actions';
 import DoubleMatchCard from './DoubleMatchCard';
 
-const cardImage = require('../assets/sunset.jpg');
+const cardImage = require('../assets/profile.png');
 
 const styles = StyleSheet.create({
   container: {
@@ -45,23 +45,36 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   searchBar: {
-    height: 50,
-    backgroundColor: 'white',
-    borderColor: 'purple',
+    width: 300,
+    height: 45,
+    backgroundColor: colors.white,
+    borderColor: '#D764CB',
     borderWidth: 1,
     borderRadius: 5,
+    padding: 10,
   },
   content: {
     alignItems: 'center',
-    width: '100%',
+    width: dimensions.fullWidth,
   },
   sectionHeaderArea: {
+    flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
   sectionHeader: {
-    fontSize: fonts.h1,
-    color: 'white',
+    fontSize: fonts.h3,
+    color: '#FFFFFF',
+    margin: 10,
+    marginTop: '10%',
+  },
+  sectionDescription: {
+    fontSize: fonts.p2,
+    color: '#FFFFFF',
+    marginBottom: '10%',
+    width: 300,
+    flex: 0,
+    flexWrap: 'wrap',
   },
   card: {
     backgroundColor: 'white',
@@ -71,9 +84,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 10,
+    padding: 20,
   },
   left: {
-
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   leftHead: {
     color: '#620BC9',
@@ -86,10 +103,19 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
   },
   right: {
-
+    flex: 0,
+    width: '30%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   name: {
-    fontSize: fonts.h3,
+    fontSize: 14,
+    color: '#620BC9',
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cards: {
     flex: 1,
@@ -105,9 +131,57 @@ const styles = StyleSheet.create({
   //   flex: 1,
   // },
   title: {
-    flex: 1,
     fontSize: fonts.h2,
+    color: '#FFFFFF',
+    margin: 20,
+    marginTop: '10%',
+  },
+  searchContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    padding: 5,
+    color: '#D764CB',
+  },
+  appContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  skillTitle: {
     color: '#620BC9',
+    fontSize: fonts.p1,
+    marginBottom: 10,
+  },
+  years: {
+    color: '#505050',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  bio: {
+    color: '#505050',
+    fontSize: 14,
+  },
+  ratingYears: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginBottom: 10,
+  },
+  profileImage: {
+    width: 64,
+    height: 64,
+    marginBottom: 10,
+  },
+  nameContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -244,28 +318,26 @@ class Home extends Component {
   renderUser = (element) => {
     if (element.item.id !== this.props.self.id) {
       return (
-        <TouchableHighlight key={element.item.id} onPress={() => this.intoProfile(element.item)} underlayColor="orange" style={styles.mb}>
+        <TouchableOpacity key={element.item.id} onPress={() => this.intoProfile(element.item)} underlayColor="orange" style={styles.mb}>
           <View style={styles.card}>
             <View style={styles.left}>
-              <Text style={styles.leftHead}> {element.item.teach[0].title}</Text>
-              <Icon active name="star" />
-              <Text>{this.renderRating(element)}</Text>
-              <Text style={styles.leftBio}> {element.item.teach[0].bio}</Text>
+              <Text style={styles.skillTitle}> {element.item.teach[0].title}</Text>
+              <View style={styles.ratingYears}>
+                <Text style={styles.years}> {element.item.teach[0].years} yrs</Text>
+                {/* <Icon active name="star" /> */}
+                <Text>{this.renderRating(element)} X stars</Text>
+              </View>
+              <Text style={styles.bio}> {element.item.teach[0].bio}</Text>
             </View>
             <View style={styles.right}>
               <Image
-                style={{
-                  resizeMode: 'cover',
-                  width: null,
-                  height: 200,
-                  flex: 1,
-                }}
+                style={styles.profileImage}
                 source={cardImage}
               />
-              <Text style={styles.name}>{element.item.firstName} {element.item.lastName}</Text>
+              <View style={styles.nameContainer}><Text style={styles.name}>{element.item.firstName} {element.item.lastName}</Text></View>
             </View>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       );
     } else return null;
   };
@@ -284,21 +356,13 @@ class Home extends Component {
       <ScrollView>
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Double Matches</Text>
-          {/* <FlatList
-          data={this.state.double_matches}
-          renderItem={this.renderUser}
-          keyExtractor={item => item.id}
-        /> */}
+          <Text style={styles.sectionDescription}>A perfect match! These members have a skill you want to learn and want to learn a skill you can teach.</Text>
         </View>
         {this.state.double_matches.map(user => this.renderUser({ item: user }))}
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Single Matches</Text>
+          <Text style={styles.sectionDescription}>These members have a skill you want to learn but haven’t expressed interest in learning a skill you are able to teach. However, they may be interested in learning something new!</Text>
         </View>
-        {/* <FlatList
-          data={this.state.single_matches}
-          renderItem={this.renderUser}
-          keyExtractor={item => item.id}
-        /> */}
         {this.state.single_matches.map(user => this.renderUser({ item: user }))}
       </ScrollView>
     );
@@ -317,10 +381,26 @@ class Home extends Component {
         <View style={styles.appArea}>
           <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
             {/* <Image source={require('gradient-background.svg')} style={{ width: '100%', height: '100%' }} /> */}
-            <Icon name="ios-search" />
-            <TextInput value={this.state.search_query} onChangeText={text => this.search(text)} style={styles.searchBar} />
-            <View style={styles.content}>
-              {this.renderMatches()}
+            <View style={styles.appContainer}>
+              <Text style={styles.title}>What would you like to learn?</Text>
+              {/* <View style={styles.searchContainer}>
+                <Icon style={styles.icon} name="ios-search" />
+                <TextInput
+                  value={this.state.search_query}
+                  onChangeText={text => this.search(text)}
+                  style={styles.searchBar}
+                  placeholder="Search for skills"
+                />
+              </View> */}
+              <TextInput
+                value={this.state.search_query}
+                onChangeText={text => this.search(text)}
+                style={styles.searchBar}
+                placeholder="Search for skills"
+              />
+              <View style={styles.content}>
+                {this.renderMatches()}
+              </View>
             </View>
           </ImageBackground>
         </View>
