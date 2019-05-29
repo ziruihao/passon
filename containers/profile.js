@@ -57,23 +57,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     top: 40,
   },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    width: dimensions.fullWidth,
-    paddingBottom: '5%',
-  },
-  button: {
-    backgroundColor: '#620BC9',
-    borderRadius: 5,
-    color: '#FFFFFF',
-    width: '75%',
-    height: 41,
-    zIndex: 0,
-  },
   cardContainer: {
     flex: 3,
     flexDirection: 'column',
@@ -102,6 +85,23 @@ const styles = StyleSheet.create({
   },
   svg: {
     width: '100%',
+  },
+  buttonMessage: {
+    backgroundColor: '#620BC9',
+    borderRadius: 5,
+    color: '#FFFFFF',
+    width: '75%',
+    height: 41,
+    zIndex: 0,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    width: dimensions.fullWidth,
+    paddingBottom: '5%',
   },
 });
 
@@ -134,6 +134,40 @@ class Profile extends React.Component {
     });
   }
 
+  goToChat = () => {
+    let first, last, userName, otherUserName;
+    if (this.props.self != null) {
+      first = this.props.self.firstName;
+      last = this.props.self.lastName;
+    }
+    if (this.props.chat !== undefined) {
+      const { chat } = this.props; // not sure why it's an array here
+      console.log(`chat in profile: ${JSON.stringify(chat)}`);
+      if (chat.userId[0].firstName === first
+      && chat.userId[0].lastName === last) {
+        userName = `${first} ${last}`;
+        otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
+        console.log(`${userName} other: ${otherUserName}`);
+      } else if (chat.userId[1].firstName === first
+      && chat.userId[1].lastName === last) {
+        userName = `${first} ${last}`;
+        otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
+        console.log(`${userName} other: ${otherUserName}`);
+      } else {
+        console.log('names no match');
+        return null;
+      }
+
+      const pass = {
+        messages: chat.messages,
+        id: chat.id,
+        userName,
+        otherUserName,
+      };
+      this.props.navigation.navigate('Chat', pass);
+    }
+  }
+
   renderTeaches() {
     if (this.props.self.teach != null) {
       return (
@@ -153,60 +187,10 @@ class Profile extends React.Component {
   }
 
   render() {
-    if (this.props.self === null) {
+    if (this.props.user === null) {
       return (<Text>Loading</Text>);
     } else if (this.state.teach === true) {
       return (
-      // <View>
-      //   <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
-      //     <View>
-      //       <View style={styles.nameContainer}>
-      //         <Text style={styles.name}>{this.props.user.firstName} {this.props.userlastName}</Text>
-      //       </View>
-      //       <View><Text>Teach:</Text></View>
-      //       <View><Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
-      //       <View><Text>Learn:</Text></View>
-      //       <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
-      //     </View>
-      //     <Button title="Go to Chat"
-      //       onPress={() => {
-      //         // this.setState({ btn: true });
-      //         let first, last, userName, otherUserName;
-      //         if (this.props.self != null) {
-      //           first = this.props.self.firstName;
-      //           last = this.props.self.lastName;
-      //         }
-
-      //         if (this.props.chat !== undefined) {
-      //           const { chat } = this.props; // not sure why it's an array here
-      //           console.log(`chat in profile: ${JSON.stringify(chat)}`);
-      //           if (chat.userId[0].firstName === first
-      //           && chat.userId[0].lastName === last) {
-      //             userName = `${first} ${last}`;
-      //             otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-      //             console.log(`${userName} other: ${otherUserName}`);
-      //           } else if (chat.userId[1].firstName === first
-      //           && chat.userId[1].lastName === last) {
-      //             userName = `${first} ${last}`;
-      //             otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-      //             console.log(`${userName} other: ${otherUserName}`);
-      //           } else {
-      //             console.log('names no match');
-      //             return null;
-      //           }
-
-        //           const pass = {
-        //             messages: chat.messages,
-        //             id: chat.id,
-        //             userName,
-        //             otherUserName,
-        //           };
-        //           this.props.navigation.navigate('Chat', pass);
-        //         }
-        //       }}
-        //     />
-        //   </ImageBackground>
-        // </View>
         <View style={styles.container}>
           <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
             <View style={styles.profileContainer}>
@@ -229,6 +213,14 @@ class Profile extends React.Component {
               <ScrollView>
                 {this.renderTeaches()}
               </ScrollView>
+            </View>
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonMessage}>
+                <Button color={colors.white}
+                  title="Go to Chat"
+                  onPress={() => { this.goToChat(); }}
+                />
+              </View>
             </View>
           </ImageBackground>
         </View>
@@ -258,7 +250,14 @@ class Profile extends React.Component {
                 {this.renderLearns()}
               </ScrollView>
             </View>
-            {/* </View> */}
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonMessage}>
+                <Button color={colors.white}
+                  title="Go to Chat"
+                  onPress={() => { this.goToChat(); }}
+                />
+              </View>
+            </View>
           </ImageBackground>
         </View>
       );
