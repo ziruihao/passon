@@ -33,7 +33,7 @@ import {
 } from '../actions';
 import DoubleMatchCard from './DoubleMatchCard';
 
-const cardImage = require('../assets/profile.png');
+const profileImage = require('../assets/profileDark.png');
 
 
 const styles = StyleSheet.create({
@@ -199,7 +199,7 @@ class Home extends Component {
       search_query: '',
       double_matches: [],
       single_matches: [],
-      fontLoaded: false,
+      fontLoaded: true,
     };
     // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
@@ -218,17 +218,24 @@ class Home extends Component {
   //   });
   // }
 
+  // async componentWillMount() {
+  //   await Font.loadAsync({
+  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+  //     'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
+  //   });
+  // }
+
   // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   async componentDidMount() {
-    await Font.loadAsync({
-      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-      'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-    }).then((response) => {
-      this.setState({ fontLoaded: true });
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    // await Font.loadAsync({
+    //   'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+    //   'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
+    // }).then((response) => {
+    //   this.setState({ fontLoaded: true });
+    // })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
 
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
@@ -359,7 +366,7 @@ class Home extends Component {
             <View style={styles.right}>
               <Image
                 style={styles.profileImage}
-                source={cardImage}
+                source={profileImage}
               />
               <View style={styles.nameContainer}>
                 {
