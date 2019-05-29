@@ -310,7 +310,7 @@ io.on('connection', (socket) => {
   });
   socket.on('message', (message) => {
     console.log(`message received: ${JSON.stringify(message)} on socket ${socket.id}`);
-    socket.broadcast.emit('received', { message });
+    socket.broadcast.emit('received', message);
     const chatMessage = new Message({
       text: message.body.text,
       createdAt: new Date(),
