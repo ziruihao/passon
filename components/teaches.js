@@ -10,9 +10,7 @@ class Teaches extends Component {
   render() {
     const teachSkills = this.props.teaches.map((item) => {
       return (
-        <View>
-          <Teach key={item.id} nav={this.props.nav} skill={item} user={this.props.user} self={this.props.self} />
-        </View>
+        <Teach key={item.id} nav={this.props.nav} skill={item} user={this.props.user} self={this.props.self} />
       );
     });
 

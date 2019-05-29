@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   teachLearnButton: {
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
@@ -46,24 +47,34 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.primary,
   },
+  teachlearnButtonTextActiveUnderline: {
+    backgroundColor: colors.primary,
+    width: 0.1707 * dimensions.fullWidth,
+    height: 4,
+    marginTop: 8,
+  },
   teachLearnButtonTextInactive: {
     fontSize: 0.0587 * dimensions.fullWidth,
     fontWeight: '600',
     color: colors.white,
   },
   cardContainer: {
+    width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    borderWidth: 1,
   },
   name: {
-    fontSize: fonts.h3,
+    fontSize: 0.0747 * dimensions.fullWidth,
+    fontWeight: '800',
     color: '#FFFFFF',
   },
   profileContainer: {
-    justifyContent: 'center',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     height: 0.4026 * dimensions.fullWidth,
     borderWidth: 1,
   },
@@ -164,6 +175,7 @@ class ProfileSelf extends Component {
             <View style={styles.tabsContainer}>
               <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
                 <Text style={styles.teachLearnButtonTextActive}>Teach</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
                 <Text style={styles.teachLearnButtonTextInactive}>Learn</Text>
@@ -211,15 +223,10 @@ class ProfileSelf extends Component {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
                 <Text style={styles.teachLearnButtonTextActive}>Learn</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
               </TouchableOpacity>
             </View>
-            {/* <View style={styles.body}> */}
             <View style={styles.cardContainer}>
-              {/* <FlatList
-                data={this.props.self.learns}
-                renderItem={this.renderLearns}
-                keyExtractor={item => item.id}
-              /> */}
               <ScrollView>
                 {this.renderLearns()}
               </ScrollView>
