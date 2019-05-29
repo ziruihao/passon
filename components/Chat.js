@@ -26,14 +26,15 @@ class Chat extends React.Component {
       //   console.log('Incoming message:', data);
       // });
       socket.on('received', (message) => {
-        console.log('Incoming message:', message);
+        console.log('Incoming message:', JSON.stringify(message));
+        const m = message;
 
         const msg = {
           _id: this.state.counter,
-          text: message.body.text,
-          createdAt: message.body.createdAt,
+          text: m.body.text,
+          createdAt: m.body.createdAt,
           user: {
-            _id: message.body.userId, // //////
+            _id: m.body.userId, // //////
             name: this.props.navigation.getParam('otherUserName', 'theirName'),
             // avatar: 'https://placeimg.com/140/140/any',
           },
