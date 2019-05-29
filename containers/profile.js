@@ -28,10 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    // paddingHorizontal: padding.sm,
-    // paddingVertical: padding.lg,
-    // width: dimensions.fullWidth,
-    // fontFamily: fonts.primary,
   },
   image: {
     width: 400,
@@ -294,6 +290,46 @@ class Profile extends React.Component {
                   onPress={() => { this.goToChat(); }}
                 />
               </View>
+            </View>
+            <View style={styles.button}>
+              <Button title="Go to Chat"
+                color="white"
+                onPress={() => {
+                // this.setState({ btn: true });
+                  let first, last, userName, otherUserName;
+                  if (this.props.self != null) {
+                    first = this.props.self.firstName;
+                    last = this.props.self.lastName;
+                  }
+
+                  if (this.props.chat !== undefined) {
+                    const { chat } = this.props; // not sure why it's an array here
+                    console.log(`chat in profile: ${JSON.stringify(chat)}`);
+                    if (chat.userId[0].firstName === first
+                  && chat.userId[0].lastName === last) {
+                      userName = `${first} ${last}`;
+                      otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
+                      console.log(`${userName} other: ${otherUserName}`);
+                    } else if (chat.userId[1].firstName === first
+                  && chat.userId[1].lastName === last) {
+                      userName = `${first} ${last}`;
+                      otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
+                      console.log(`${userName} other: ${otherUserName}`);
+                    } else {
+                      console.log('names no match');
+                      return null;
+                    }
+
+                    const pass = {
+                      messages: chat.messages,
+                      id: chat.id,
+                      userName,
+                      otherUserName,
+                    };
+                    this.props.navigation.navigate('Chat', pass);
+                  }
+                }}
+              />
             </View>
           </ImageBackground>
         </View>
