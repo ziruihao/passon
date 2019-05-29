@@ -147,6 +147,25 @@ class ProfileSelf extends Component {
     }
   }
 
+  calcRating = (element) => {
+    let sum = 0;
+    let count = 0;
+
+    element.teach.forEach(skill => skill.ratings.forEach((rating) => {
+      sum += rating.score;
+      count += 1;
+    }));
+
+    if (count === 0) return -1;
+    else return (sum / count).toFixed(1);
+  };
+
+  // toggleTeach = () => {
+  //   console.log('TOGGLED');
+  //   this.setState((prevState) => {
+  //     return { teach: !prevState.teach };
+  //   });
+  // }
   toggleTeach = (event) => {
     this.setState({ teach: event });
   }
@@ -187,19 +206,10 @@ class ProfileSelf extends Component {
               />
             </View>
             <View style={styles.profileContainer}>
-              <View style={styles.right}>
-                <Image
-                  style={styles.profileImage}
-                  source={profileImage}
-                />
-              </View>
-              <View style={styles.left}>
-                <Text style={styles.name}>
-                  {this.props.self.firstName} {this.props.self.lastName}
-                </Text>
-                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
-              </View>
-
+              <Text style={styles.name}>
+                {this.props.self.firstName} {this.props.self.lastName}
+              </Text>
+              <Text style={styles.rating}>Avg Rating: {this.calcRating(this.props.self)}</Text>
             </View>
             <View style={styles.tabsContainer}>
               <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>

@@ -261,14 +261,29 @@ class Home extends Component {
     this.focusListener.remove();
   }
 
+  calcRating = (element) => {
+    let sum = 0;
+    let count = 0;
+
+    element.teach.forEach(skill => skill.ratings.forEach((rating) => {
+      sum += rating.score;
+      count += 1;
+    }));
+
+    if (count === 0) return -1;
+    else return (sum / count).toFixed(1);
+  };
+
   renderRating = (element) => {
-    if (element.item.avg_rating === -1) {
+    const avg_rating = this.calcRating(element.item);
+
+    if (avg_rating === -1) {
       return (
         <Text>No ratings</Text>
       );
     } else {
       return (
-        <Text>{element.item.avg_rating}</Text>
+        <Text>Avg Rating: {avg_rating}</Text>
       );
     }
   };
