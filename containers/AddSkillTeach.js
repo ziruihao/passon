@@ -187,7 +187,8 @@ class AddSkillTeach extends Component {
                 style={styles.input}
                 placeholderTextColor="#9A989E"
                 placeholder="Years of experience"
-                onChangeText={(text) => { this.setState({ years: text }); }}
+                keyboardType="numeric"
+                onChangeText={(text) => { this.setState({ years: Number(text) }); }}
               />
               { this.state.errorBio === true ? (
                 <Text style={styles.error}>

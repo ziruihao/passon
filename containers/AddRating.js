@@ -119,7 +119,8 @@ class AddRating extends React.Component {
                 style={styles.input}
                 placeholder="Rating"
                 placeholderTextColor="#9A989E"
-                onChangeText={(text) => { this.setState({ score: text }); }}
+                keyboardType="numeric"
+                onChangeText={(text) => { this.setState({ score: Number(text) }); }}
               />
               <TouchableOpacity style={styles.button} onPress={() => { this.add(); }}>
                 <Text style={styles.buttonText}>Save</Text>

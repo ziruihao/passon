@@ -183,6 +183,7 @@ class EditSkillTeach extends Component {
                 style={styles.input}
                 placeholderTextColor="#9A989E"
                 placeholder="Years of experience"
+                keyboardType="numeric"
                 onChangeText={(text) => { this.setState({ years: Number(text) }); }}
                 defaultValue={this.state.years.toString()}
               />
