@@ -299,7 +299,7 @@ const socketio = require('socket.io');
 
 const server = http.Server(app);
 const io = socketio(server); // .listen(3000, () => console.log('listening on *:3000'));
-server.listen(9090, () => console.log('listening on *:9090'));
+server.listen(port);
 
 // The event will be called when a client is connected.
 io.on('connection', (socket) => {
