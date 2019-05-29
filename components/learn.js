@@ -23,11 +23,10 @@ const styles = StyleSheet.create({
   // },
   learnCard: {
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: 300,
-    height: 70,
-    // marginBottom: 22,
+    height: 'auto',
     borderColor: '#620BC9',
     borderRadius: 10,
     borderWidth: 1,
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     color: '#620BC9',
     fontSize: fonts.p1,
     margin: 10,
+    fontFamily: 'quicksand-regular',
   },
   years: {
     color: '#505050',

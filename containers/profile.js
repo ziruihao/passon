@@ -8,8 +8,7 @@ import {
   View,
   Image,
   Text,
-  ListView,
-  TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
   Button,
   ImageBackground,
@@ -23,82 +22,136 @@ import {
 import Learns from '../components/learns';
 import Teaches from '../components/teaches';
 
+const profileImage = require('../assets/profileLight.png');
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  image: {
-    width: 400,
-    height: 300,
+  appArea: {
+    // top: dimensions.statusBarHeight,
   },
   bg: {
-    flex: -1,
     resizeMode: 'cover',
-    width: '100%',
-    height: '100%',
+    width: dimensions.fullWidth,
+    height: 2.1653 * dimensions.fullWidth,
     zIndex: -1,
-    position: 'absolute',
-    top: '0%',
+    top: 0,
   },
   tabsContainer: {
-    flex: 1,
     justifyContent: 'space-around',
     flexDirection: 'row',
-    // flexWrap: 'nowrap',
     alignItems: 'center',
+    width: dimensions.fullWidth,
+    height: 0.2560 * dimensions.fullWidth,
   },
-  tabs: {
-    marginLeft: 50,
-    marginRight: 50,
-    width: 120,
-    height: 50,
-    resizeMode: 'contain',
-    top: 40,
+  teachLearnButton: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '40%',
+    fontFamily: 'quicksand-bold',
+  },
+  teachLearnButtonTextActive: {
+    fontSize: 0.0587 * dimensions.fullWidth,
+    fontWeight: '600',
+    color: colors.primary,
+    fontFamily: 'quicksand-bold',
+  },
+  teachlearnButtonTextActiveUnderline: {
+    backgroundColor: colors.primary,
+    width: 0.1707 * dimensions.fullWidth,
+    height: 4,
+    marginTop: 8,
+    fontFamily: 'quicksand-bold',
+  },
+  teachLearnButtonTextInactive: {
+    fontSize: 0.0587 * dimensions.fullWidth,
+    fontWeight: '600',
+    color: colors.white,
+    fontFamily: 'quicksand-bold',
   },
   cardContainer: {
-    flex: 3,
+    width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   name: {
-    fontSize: fonts.h3,
+    fontSize: 0.0747 * dimensions.fullWidth,
+    fontWeight: '800',
     color: '#FFFFFF',
+    fontFamily: 'quicksand-bold',
   },
   profileContainer: {
-    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: 0.4026 * dimensions.fullWidth,
+    marginTop: 10,
+  },
+  profileContainerLeft: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  profileImage: {
+    width: 64,
+    height: 64,
+    margin: 20,
+  },
+  profileContainerRight: {
+    flex: 0,
+    width: '30%',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   signOut: {
     position: 'absolute',
     top: 0,
     right: 0,
     zIndex: 1,
+    margin: 5,
   },
   rating: {
     fontSize: fonts.p1,
     color: '#FFFFFF',
-  },
-  buttonMessage: {
-    backgroundColor: '#620BC9',
-    borderRadius: 5,
-    color: '#FFFFFF',
-    width: '75%',
-    height: 41,
-    zIndex: 0,
+    fontFamily: 'quicksand-regular',
   },
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: dimensions.fullWidth,
     paddingBottom: '5%',
+  },
+  buttonMessage: {
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+    width: 300,
+    height: 41,
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollView: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  contentContainer: {
+    maxHeight: dimensions.fullHeight * 0.4,
+  },
+  buttonText: {
+    color: colors.white,
+    fontFamily: 'quicksand-bold',
+    fontSize: 18,
+  },
+  signOutText: {
+    color: colors.white,
+    fontFamily: 'quicksand-regular',
+    fontSize: 14,
   },
 });
 
@@ -127,7 +180,6 @@ class Profile extends React.Component {
       this.props.fetch_chat(this.props.navigation.getParam('_id', null));
     });
   }
-
 
   componentWillUnmount() {
     // Remove the event listener
@@ -202,7 +254,7 @@ class Profile extends React.Component {
   }
 
   renderTeaches() {
-    if (this.props.self.teach != null) {
+    if (this.props.user.teach !== null) {
       return (
         <View>
           <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
@@ -216,43 +268,59 @@ class Profile extends React.Component {
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>;
+    if (this.props.user.learn !== null) {
+      return (
+        <View>
+          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+        </View>
+      );
+    } else {
+      return (
+        <View />
+      );
+    }
   }
 
   render() {
     if (this.props.user === null) {
       return (<Text>Loading</Text>);
-    } else if (this.state.teach === true) {
+    } else if (this.state.teach) {
       return (
-        <View style={styles.container}>
-          <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
+        <View style={styles.appArea}>
+          <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
             <View style={styles.profileContainer}>
-              <Text style={styles.name}>
-                {this.props.user.firstName} {this.props.user.lastName}
-              </Text>
-              <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
+              <View style={styles.right}>
+                <Image
+                  style={styles.profileImage}
+                  source={profileImage}
+                />
+              </View>
+              <View style={styles.left}>
+                <Text style={styles.name}>
+                  {this.props.user.firstName} {this.props.user.lastName}
+                </Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
+              </View>
             </View>
             <View style={styles.tabsContainer}>
-              <Button onPress={() => { this.toggleTeach(true); }}
-                title="Teach"
-                color="#620BC9"
-              />
-              <Button onPress={() => { this.toggleTeach(false); }}
-                title="Learn"
-                color="#FFFFFF"
-              />
+              <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextActive}>Teach</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextInactive}>Learn</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.cardContainer}>
-              <ScrollView>
-                {this.renderTeaches()}
-              </ScrollView>
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonMessage}>
-                <Button color={colors.white}
-                  title="Go to Chat"
-                  onPress={() => { this.goToChat(); }}
-                />
+            <View style={styles.contentContainer}>
+              <View style={styles.cardContainer}>
+                <ScrollView style={styles.scrollView}>
+                  {this.renderTeaches()}
+                </ScrollView>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
+                  <Text style={styles.buttonText}>Message</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </ImageBackground>
@@ -260,76 +328,42 @@ class Profile extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          <ImageBackground source={require('../assets/learnBackground.png')} style={{ width: '100%', height: '100%' }}>
+        <View style={styles.appArea}>
+          <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
             <View style={styles.profileContainer}>
-              <Text style={styles.name}>
-                {this.props.user.firstName} {this.props.user.lastName}
-              </Text>
-              <Text style={styles.rating}>Avg Rating: {this.props.user.avg_rating}</Text>
-            </View>
-            <View style={styles.tabsContainer}>
-              <Button onPress={() => { this.toggleTeach(true); }}
-                title="Teach"
-                color="#FFFFFF"
-              />
-              <Button onPress={() => { this.toggleTeach(false); }}
-                title="Learn"
-                color="#620BC9"
-              />
-            </View>
-            <View style={styles.cardContainer}>
-              <ScrollView>
-                {this.renderLearns()}
-              </ScrollView>
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonMessage}>
-                <Button color={colors.white}
-                  title="Go to Chat"
-                  onPress={() => { this.goToChat(); }}
+              <View style={styles.right}>
+                <Image
+                  style={styles.profileImage}
+                  source={profileImage}
                 />
               </View>
+              <View style={styles.left}>
+                <Text style={styles.name}>
+                  {this.props.user.firstName} {this.props.user.lastName}
+                </Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
+              </View>
             </View>
-            <View style={styles.button}>
-              <Button title="Go to Chat"
-                color="white"
-                onPress={() => {
-                // this.setState({ btn: true });
-                  let first, last, userName, otherUserName;
-                  if (this.props.self != null) {
-                    first = this.props.self.firstName;
-                    last = this.props.self.lastName;
-                  }
-
-                  if (this.props.chat !== undefined) {
-                    const { chat } = this.props; // not sure why it's an array here
-                    console.log(`chat in profile: ${JSON.stringify(chat)}`);
-                    if (chat.userId[0].firstName === first
-                  && chat.userId[0].lastName === last) {
-                      userName = `${first} ${last}`;
-                      otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-                      console.log(`${userName} other: ${otherUserName}`);
-                    } else if (chat.userId[1].firstName === first
-                  && chat.userId[1].lastName === last) {
-                      userName = `${first} ${last}`;
-                      otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-                      console.log(`${userName} other: ${otherUserName}`);
-                    } else {
-                      console.log('names no match');
-                      return null;
-                    }
-
-                    const pass = {
-                      messages: chat.messages,
-                      id: chat.id,
-                      userName,
-                      otherUserName,
-                    };
-                    this.props.navigation.navigate('Chat', pass);
-                  }
-                }}
-              />
+            <View style={styles.tabsContainer}>
+              <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextInactive}>Teach</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextActive}>Learn</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.contentContainer}>
+              <View style={styles.cardContainer}>
+                <ScrollView style={styles.scrollView}>
+                  {this.renderLearns()}
+                </ScrollView>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
+                  <Text style={styles.buttonText}>Message</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </ImageBackground>
         </View>

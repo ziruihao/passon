@@ -87,19 +87,7 @@ class SignUp extends Component {
       errorEmail: false,
       errorPassword: false,
       errorUniversity: false,
-      fontLoaded: false,
     };
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    }).then((response) => {
-      this.setState({ fontLoaded: true });
-    })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   signUp = async () => { // Check that there are no bad or empty values that the user is attempting to signup
@@ -140,11 +128,6 @@ class SignUp extends Component {
         password: this.state.password,
         university: this.state.university,
       }, this.props.navigation); // we don't need the below code, because the [actionCreator] will navigate for us
-      // if (this.props.authenticated) {
-      //   this.props.navigation.navigate('Main');
-      // } else if (this.props.authError !== '') {
-      //   alert('Sign In Failed');
-      // }
     }
   };
 
@@ -155,15 +138,11 @@ class SignUp extends Component {
           <View style={styles.between}>
             <View style={styles.content}>
               <View style={styles.titleContainer}>
-                {
-                  this.state.fontLoaded ? (
-                    <Text style={styles.title}>Create an Account</Text>
-                  ) : null
-                }
+                <Text style={styles.title}>Create an Account</Text>
               </View>
               { this.state.errorFirstName === true ? (
                 <Text style={styles.errorText}>
-              Please enter first name to proceed.
+                  Please enter first name to proceed.
                 </Text>
               ) : null }
               <TextInput
@@ -183,7 +162,7 @@ class SignUp extends Component {
               />
               { this.state.errorEmail === true ? (
                 <Text style={styles.errorText}>
-                Please enter email to proceed.
+                  Please enter email to proceed.
                 </Text>
               ) : null }
               <TextInput
@@ -212,13 +191,9 @@ class SignUp extends Component {
                 placeholder="University"
                 onChangeText={(text) => { this.setState({ university: text }); }}
               />
-              {
-                this.state.fontLoaded ? (
-                  <TouchableOpacity style={styles.button} onPress={() => { this.signUp(); }}>
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                  </TouchableOpacity>
-                ) : null
-              }
+              <TouchableOpacity style={styles.button} onPress={() => { this.signUp(); }}>
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." /></View>
           </View>
