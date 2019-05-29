@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, TextInput, ImageBackground,
+  StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableOpacity,
 } from 'react-native';
+import { Font } from 'expo';
 import { signupUser } from '../actions';
 import {
   colors, fonts, padding, dimensions,
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     fontSize: fonts.h1,
     color: '#FFFFFF',
     margin: 30,
+    fontFamily: 'quicksand-bold',
   },
   input: {
     width: 276,
@@ -40,13 +42,16 @@ const styles = StyleSheet.create({
     color: '#2D2A32',
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 50,
     width: 213,
     height: 53,
     fontSize: fonts.h1,
-    justifyContent: 'center',
     margin: 10,
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   smallText: {
     fontSize: fonts.p3,
@@ -54,6 +59,16 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#FFFFFF',
+  },
+  buttonText: {
+    fontFamily: 'quicksand-bold',
+    color: colors.accent,
+    fontSize: 20,
+  },
+  titleContainer: {
+    flex: 0,
+    justifyContent: 'center',
+    textAlign: 'center',
   },
 });
 
@@ -72,7 +87,19 @@ class SignUp extends Component {
       errorEmail: false,
       errorPassword: false,
       errorUniversity: false,
+      fontLoaded: false,
     };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+    }).then((response) => {
+      this.setState({ fontLoaded: true });
+    })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   signUp = async () => { // Check that there are no bad or empty values that the user is attempting to signup
@@ -127,7 +154,13 @@ class SignUp extends Component {
         <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
-              <Text style={styles.title}>Create an Account</Text>
+              <View style={styles.titleContainer}>
+                {
+                  this.state.fontLoaded ? (
+                    <Text style={styles.title}>Create an Account</Text>
+                  ) : null
+                }
+              </View>
               { this.state.errorFirstName === true ? (
                 <Text style={styles.errorText}>
               Please enter first name to proceed.
@@ -179,8 +212,13 @@ class SignUp extends Component {
                 placeholder="University"
                 onChangeText={(text) => { this.setState({ university: text }); }}
               />
-
-              <View style={styles.button}><Button color={colors.posButton} onPress={() => { this.signUp(); }} title="Sign Up" /></View>
+              {
+                this.state.fontLoaded ? (
+                  <TouchableOpacity style={styles.button} onPress={() => { this.signUp(); }}>
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                  </TouchableOpacity>
+                ) : null
+              }
             </View>
             <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignIn'); }} title="I already have an account." /></View>
           </View>

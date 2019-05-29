@@ -1,15 +1,14 @@
 /* eslint-disable global-require */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import {
-  StyleSheet, View, Button, Text, ImageBackground,
+  StyleSheet, View, Text, ImageBackground, TouchableOpacity,
 } from 'react-native';
+import { Font } from 'expo';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import { signinUser } from '../actions';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -22,18 +21,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    fontFamily: 'quicksand-bold',
     fontSize: fonts.h1,
     color: '#FFFFFF',
     margin: 20,
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 50,
     width: 213,
     height: 53,
     fontSize: fonts.h1,
-    justifyContent: 'center',
     margin: 10,
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontFamily: 'quicksand-bold',
+    color: colors.accent,
+    fontSize: 20,
   },
 });
 
@@ -44,19 +52,62 @@ const authTestUser = (props) => {
   }, props.navigation);
 };
 
-const FirstScreen = (props) => {
-  return (
-    <View style={styles.container}>
-      <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
-        <View style={styles.content}>
-          <Text style={styles.title}>PassOn</Text>
-          <View style={styles.button}><Button color={colors.posButton} onPress={() => { authTestUser(props); }} title="Test User: Passon" /></View>
-          <View style={styles.button}><Button color={colors.posButton} onPress={() => { props.navigation.navigate('SignIn'); }} title="Sign In" /></View>
-          <View style={styles.button}><Button color={colors.posButton} onPress={() => { props.navigation.navigate('SignUp'); }} title="Sign Up" /></View>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-};
+class FirstScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fontLoaded: false,
+    };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+    }).then((response) => {
+      this.setState({ fontLoaded: true });
+    })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.content}>
+            {
+              this.state.fontLoaded ? (
+                <Text style={styles.title}>PassOn</Text>
+              ) : null
+            }
+            {
+              this.state.fontLoaded ? (
+                <TouchableOpacity style={styles.button} onPress={() => { authTestUser(this.props); }}>
+                  <Text style={styles.buttonText}>Test User: Passon</Text>
+                </TouchableOpacity>
+              ) : null
+            }
+            {
+              this.state.fontLoaded ? (
+                <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('SignIn'); }}>
+                  <Text style={styles.buttonText}>Sign In</Text>
+                </TouchableOpacity>
+              ) : null
+            }
+            {
+              this.state.fontLoaded ? (
+                <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('SignUp'); }}>
+                  <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+              ) : null
+            }
+          </View>
+        </ImageBackground>
+      </View>
+    );
+  }
+}
 
 export default connect(null, { signinUser })(FirstScreen);
