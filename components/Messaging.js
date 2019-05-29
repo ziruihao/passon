@@ -159,8 +159,7 @@ class Messaging extends Component {
               otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
               displayName = (
                 <View>
-                  <Text style={styles.userName}>{chat.userId[0].firstName}
-                    {' '} {chat.userId[0].lastName}
+                  <Text style={styles.userName}>{chat.userId[0].firstName}{' '}{chat.userId[0].lastName}
                   </Text>
                 </View>
               );
