@@ -362,25 +362,25 @@ class Home extends Component {
             <View style={styles.left}>
               {
                 this.state.fontLoaded ? (
-                  <Text style={styles.skillTitle}> {element.item.teach[0].title}</Text>
+                  <Text style={styles.skillTitle}>{element.item.teach[0].title}</Text>
                 ) : null
               }
               <View style={styles.ratingYears}>
                 {
                   this.state.fontLoaded ? (
-                    <Text style={styles.years}> {element.item.teach[0].years} yrs</Text>
+                    <Text style={styles.years}>{element.item.teach[0].years} yrs</Text>
                   ) : null
                 }
                 {/* <Icon active name="star" /> */}
                 {
                   this.state.fontLoaded ? (
-                    <Text style={styles.rating}>{this.renderRating(element)} X stars</Text>
+                    <Text style={styles.rating}> {this.renderRating(element)}</Text>
                   ) : null
                 }
               </View>
               {
                 this.state.fontLoaded ? (
-                  <Text style={styles.bio}> {element.item.teach[0].bio}</Text>
+                  <Text style={styles.bio}>{element.item.teach[0].bio}</Text>
                 ) : null
               }
             </View>
