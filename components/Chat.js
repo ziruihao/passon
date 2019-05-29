@@ -3,7 +3,7 @@ import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-// import { fetchChats, createChat, fetchSelf } from '../actions';
+import { fetchChat } from '../actions';
 
 class Chat extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -12,7 +12,7 @@ class Chat extends React.Component {
 
     constructor(props) {
       super(props);
-      const room = this.props.navigation.getParam('id', null); // would be chat's objectID
+      const room = this.props.navigation.getParam('id', null); //
 
       // Creating the socket-client instance will automatically connect to the server.
       // const socket = io('http://localhost:9090');
@@ -26,16 +26,37 @@ class Chat extends React.Component {
       //   console.log('Incoming message:', data);
       // });
       socket.on('received', (message) => {
-        console.log('Incoming message:', message);
-        // const oldMessages = () => this.state.messages;
-        // this.setState({ messages: oldMessages.concat(message) });
+        console.log('Incoming message:', JSON.stringify(message));
+        const m = message;
+
+        const msg = {
+          _id: this.state.counter,
+          text: m.body.text,
+          createdAt: m.body.createdAt,
+          user: {
+            _id: m.body.userId, // //////
+            name: this.props.navigation.getParam('otherUserName', 'theirName'),
+            // avatar: 'https://placeimg.com/140/140/any',
+          },
+        };
+        this.setState((previousState) => {
+          return {
+            messages: GiftedChat.append(previousState.messages, msg),
+          };
+        }, () => {
+          this.setState(prevState => ({
+            counter: prevState.counter + 1,
+          }));
+        });
       });
+
       this.state = {
         socket,
         messages: [],
         counter: 1,
       };
       this.sendMessage = this.sendMessage.bind(this);
+      this.updateHistoryMsgs = this.updateHistoryMsgs.bind(this);
     }
 
     componentWillMount() {
@@ -44,6 +65,11 @@ class Chat extends React.Component {
       });
 
       const pastMsgs = this.props.navigation.getParam('messages', null); // is an array
+
+      this.updateHistoryMsgs(pastMsgs);
+    }
+
+    updateHistoryMsgs(pastMsgs) {
       if (pastMsgs !== undefined && pastMsgs !== null && pastMsgs.length > 0) {
         pastMsgs.forEach((msg) => {
           const who = (msg.userId === this.props.self.id)
