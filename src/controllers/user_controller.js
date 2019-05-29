@@ -113,7 +113,20 @@ export const getUsers = (req, res) => { // why do we need both req and res? why 
  * @param {*} res
  */
 export const getUser = (req, res) => {
-  User.findById(req.params.id).populate('teach').populate('learn')
+  User.findById(req.params.id).populate('teach').populate('learn').populate({
+    path: 'teach',
+    populate: {
+      path: 'ratings',
+      model: 'Rating',
+    },
+  })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .then((result) => {
       const removePersonalInfo = Object.assign({}, result);
 
