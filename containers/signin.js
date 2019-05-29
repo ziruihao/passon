@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, TextInput, ImageBackground,
+  StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableOpacity,
 } from 'react-native';
+import { Font } from 'expo';
 import { signinUser } from '../actions';
 import {
   colors, fonts, padding, dimensions,
@@ -27,33 +28,42 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fonts.h1,
-    color: '#FFFFFF',
+    color: colors.white,
     margin: 30,
+    fontFamily: 'quicksand-bold',
   },
   input: {
     width: 276,
     height: 45,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
     color: '#2D2A32',
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 50,
     width: 213,
     height: 53,
     fontSize: fonts.h1,
-    justifyContent: 'center',
     margin: 10,
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   smallText: {
     fontSize: fonts.p3,
     margin: 10,
   },
   errorText: {
-    color: '#FFFFFF',
+    color: colors.white,
+  },
+  buttonText: {
+    fontFamily: 'quicksand-bold',
+    color: colors.accent,
+    fontSize: 20,
   },
 });
 
@@ -66,7 +76,31 @@ class SignIn extends Component {
       password: '',
       errorEmail: false,
       errorPassword: false,
+      fontLoaded: false,
     };
+  }
+
+  // componentDidMount() {
+  //   Font.loadAsync({
+  //     // eslint-disable-next-line quote-props
+  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+  //   }).then((response) => {
+  //     this.setState({ fontLoaded: true });
+  //   })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+    }).then((response) => {
+      this.setState({ fontLoaded: true });
+    })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   signIn = async () => { // Check that there are no bad or empty values that the user is attempting to signin
@@ -101,7 +135,13 @@ class SignIn extends Component {
         <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
-              <Text style={styles.title}>Sign In</Text>
+              <View>
+                {
+                  this.state.fontLoaded ? (
+                    <Text style={styles.title}>Sign In</Text>
+                  ) : null
+                }
+              </View>
               { this.state.errorEmail === true ? (
                 <Text style={styles.errorText}>
                     Please enter email to proceed.
@@ -125,8 +165,13 @@ class SignIn extends Component {
                 secureTextEntry
                 onChangeText={(text) => { this.setState({ password: text }); }}
               />
-
-              <View style={styles.button}><Button color={colors.posButton} onPress={() => { this.signIn(); }} title="Sign In" /></View>
+              {
+                this.state.fontLoaded ? (
+                  <TouchableOpacity style={styles.button} onPress={() => { this.signIn(); }}>
+                    <Text style={styles.buttonText}>Sign In</Text>
+                  </TouchableOpacity>
+                ) : null
+              }
             </View>
             <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." /></View>
           </View>
