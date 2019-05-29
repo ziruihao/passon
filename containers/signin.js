@@ -76,31 +76,7 @@ class SignIn extends Component {
       password: '',
       errorEmail: false,
       errorPassword: false,
-      fontLoaded: false,
     };
-  }
-
-  // componentDidMount() {
-  //   Font.loadAsync({
-  //     // eslint-disable-next-line quote-props
-  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-  //   }).then((response) => {
-  //     this.setState({ fontLoaded: true });
-  //   })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    }).then((response) => {
-      this.setState({ fontLoaded: true });
-    })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   signIn = async () => { // Check that there are no bad or empty values that the user is attempting to signin
@@ -135,13 +111,7 @@ class SignIn extends Component {
         <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
-              <View>
-                {
-                  this.state.fontLoaded ? (
-                    <Text style={styles.title}>Sign In</Text>
-                  ) : null
-                }
-              </View>
+              <Text style={styles.title}>Sign In</Text>
               { this.state.errorEmail === true ? (
                 <Text style={styles.errorText}>
                     Please enter email to proceed.
@@ -165,13 +135,9 @@ class SignIn extends Component {
                 secureTextEntry
                 onChangeText={(text) => { this.setState({ password: text }); }}
               />
-              {
-                this.state.fontLoaded ? (
-                  <TouchableOpacity style={styles.button} onPress={() => { this.signIn(); }}>
-                    <Text style={styles.buttonText}>Sign In</Text>
-                  </TouchableOpacity>
-                ) : null
-              }
+              <TouchableOpacity style={styles.button} onPress={() => { this.signIn(); }}>
+                <Text style={styles.buttonText}>Sign In</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.smallText}><Button color={colors.white} onPress={() => { this.props.navigation.navigate('SignUp'); }} title="I don't have an account yet." /></View>
           </View>
