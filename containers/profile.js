@@ -24,10 +24,12 @@ import Teaches from '../components/teaches';
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: padding.sm,
-    paddingVertical: padding.lg,
-    width: dimensions.fullWidth,
-    fontFamily: fonts.primary,
+    // paddingHorizontal: padding.sm,
+    // paddingVertical: padding.lg,
+    // width: dimensions.fullWidth,
+    // fontFamily: fonts.primary,
+    flex: 1,
+    justifyContent: 'center',
   },
   profileBox: {
     backgroundColor: 'blue',
@@ -43,6 +45,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#620BC9',
+    borderRadius: 5,
+    color: '#FFFFFF',
+    width: '75%',
+    height: 41,
+    zIndex: 0,
   },
 });
 
@@ -79,7 +89,7 @@ class Profile extends React.Component {
       return (<Text>Loading</Text>);
     } else {
       return (
-        <View>
+        <View style={styles.container}>
           <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
             <View>
               <View style={styles.nameContainer}>
@@ -90,43 +100,46 @@ class Profile extends React.Component {
               <View><Text>Learn:</Text></View>
               <View><Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} /></View>
             </View>
-            <Button title="Go to Chat"
-              onPress={() => {
+            <View style={styles.button}>
+              <Button title="Go to Chat"
+                color="white"
+                onPress={() => {
                 // this.setState({ btn: true });
-                let first, last, userName, otherUserName;
-                if (this.props.self != null) {
-                  first = this.props.self.firstName;
-                  last = this.props.self.lastName;
-                }
-
-                if (this.props.chat !== undefined) {
-                  const { chat } = this.props; // not sure why it's an array here
-                  console.log(`chat in profile: ${JSON.stringify(chat)}`);
-                  if (chat.userId[0].firstName === first
-                  && chat.userId[0].lastName === last) {
-                    userName = `${first} ${last}`;
-                    otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-                    console.log(`${userName} other: ${otherUserName}`);
-                  } else if (chat.userId[1].firstName === first
-                  && chat.userId[1].lastName === last) {
-                    userName = `${first} ${last}`;
-                    otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-                    console.log(`${userName} other: ${otherUserName}`);
-                  } else {
-                    console.log('names no match');
-                    return null;
+                  let first, last, userName, otherUserName;
+                  if (this.props.self != null) {
+                    first = this.props.self.firstName;
+                    last = this.props.self.lastName;
                   }
 
-                  const pass = {
-                    messages: chat.messages,
-                    id: chat.id,
-                    userName,
-                    otherUserName,
-                  };
-                  this.props.navigation.navigate('Chat', pass);
-                }
-              }}
-            />
+                  if (this.props.chat !== undefined) {
+                    const { chat } = this.props; // not sure why it's an array here
+                    console.log(`chat in profile: ${JSON.stringify(chat)}`);
+                    if (chat.userId[0].firstName === first
+                  && chat.userId[0].lastName === last) {
+                      userName = `${first} ${last}`;
+                      otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
+                      console.log(`${userName} other: ${otherUserName}`);
+                    } else if (chat.userId[1].firstName === first
+                  && chat.userId[1].lastName === last) {
+                      userName = `${first} ${last}`;
+                      otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
+                      console.log(`${userName} other: ${otherUserName}`);
+                    } else {
+                      console.log('names no match');
+                      return null;
+                    }
+
+                    const pass = {
+                      messages: chat.messages,
+                      id: chat.id,
+                      userName,
+                      otherUserName,
+                    };
+                    this.props.navigation.navigate('Chat', pass);
+                  }
+                }}
+              />
+            </View>
           </ImageBackground>
         </View>
       );
