@@ -32,15 +32,17 @@ const styles = StyleSheet.create({
     color: '#620BC9',
     fontSize: fonts.p1,
     margin: 10,
+    fontFamily: 'quicksand-regular',
   },
   years: {
     color: '#505050',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'quicksand-bold',
   },
   bio: {
     color: '#505050',
     fontSize: 14,
+    fontFamily: 'quicksand-regular',
   },
   top: {
     flex: 0,

@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: dimensions.fullWidth,
     height: 0.2560 * dimensions.fullWidth,
-    borderWidth: 1,
   },
   teachLearnButton: {
     flexDirection: 'column',
@@ -40,37 +39,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '40%',
-    borderWidth: 1,
+    fontFamily: 'quicksand-bold',
   },
   teachLearnButtonTextActive: {
     fontSize: 0.0587 * dimensions.fullWidth,
     fontWeight: '600',
     color: colors.primary,
+    fontFamily: 'quicksand-bold',
   },
   teachlearnButtonTextActiveUnderline: {
     backgroundColor: colors.primary,
     width: 0.1707 * dimensions.fullWidth,
     height: 4,
     marginTop: 8,
+    fontFamily: 'quicksand-bold',
   },
   teachLearnButtonTextInactive: {
     fontSize: 0.0587 * dimensions.fullWidth,
     fontWeight: '600',
     color: colors.white,
+    fontFamily: 'quicksand-bold',
   },
   cardContainer: {
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderWidth: 1,
-    marginTop: 10,
-    marginBottom: 10,
   },
   name: {
     fontSize: 0.0747 * dimensions.fullWidth,
     fontWeight: '800',
     color: '#FFFFFF',
+    fontFamily: 'quicksand-bold',
   },
   profileContainer: {
     flexDirection: 'row',
@@ -78,17 +78,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 0.4026 * dimensions.fullWidth,
-    borderWidth: 1,
+    marginTop: 10,
   },
   profileContainerLeft: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   profileImage: {
     width: 64,
     height: 64,
-    marginBottom: 10,
+    margin: 20,
   },
   profileContainerRight: {
     flex: 0,
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: fonts.p1,
     color: '#FFFFFF',
+    fontFamily: 'quicksand-regular',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -115,20 +117,32 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     width: dimensions.fullWidth,
     paddingBottom: '5%',
-    borderWidth: 1,
-
   },
   addSkillButton: {
-    backgroundColor: '#620BC9',
+    backgroundColor: colors.primary,
     borderRadius: 5,
-    color: '#FFFFFF',
-    width: '75%',
+    width: 300,
     height: 41,
-    zIndex: 0,
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollView: {
     marginTop: 20,
     marginBottom: 20,
+  },
+  contentContainer: {
+    maxHeight: dimensions.fullHeight * 0.4,
+  },
+  addSkillButtonText: {
+    color: colors.white,
+    fontFamily: 'quicksand-bold',
+    fontSize: 18,
+  },
+  signOutText: {
+    color: colors.white,
+    fontFamily: 'quicksand-regular',
+    fontSize: 14,
   },
 });
 
@@ -166,7 +180,17 @@ class ProfileSelf extends Component {
   }
 
   renderLearns() {
-    return <View><Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} /></View>;
+    if (this.props.self.teach != null) {
+      return (
+        <View>
+          <Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
+        </View>
+      );
+    } else {
+      return (
+        <View />
+      );
+    }
   }
 
   render() {
@@ -177,14 +201,14 @@ class ProfileSelf extends Component {
         <View style={styles.appArea}>
           <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
-              <Button
-                color={colors.white}
-                onPress={() => {
-                  AsyncStorage.removeItem('token');
-                  this.props.signoutUser();
-                }}
-                title="Sign Out"
-              />
+              <TouchableOpacity onPress={() => {
+                AsyncStorage.removeItem('token');
+                this.props.signoutUser();
+              }}
+                style={styles.signOut}
+              >
+                <Text style={styles.signOutText}>Sign Out</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.profileContainer}>
               <View style={styles.right}>
@@ -199,7 +223,6 @@ class ProfileSelf extends Component {
                 </Text>
                 <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
               </View>
-
             </View>
             <View style={styles.tabsContainer}>
               <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
@@ -210,17 +233,16 @@ class ProfileSelf extends Component {
                 <Text style={styles.teachLearnButtonTextInactive}>Learn</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.cardContainer}>
-              <ScrollView style={styles.scrollView}>
-                {this.renderTeaches()}
-              </ScrollView>
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button onPress={() => this.props.navigation.navigate('AddSkillTeach')}
-                  title="Add Skill"
-                  color="#FFFFFF"
-                />
+            <View style={styles.contentContainer}>
+              <View style={styles.cardContainer}>
+                <ScrollView style={styles.scrollView}>
+                  {this.renderTeaches()}
+                </ScrollView>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillTeach')} style={styles.addSkillButton}>
+                  <Text style={styles.addSkillButtonText}>Add Skill</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </ImageBackground>
@@ -231,20 +253,28 @@ class ProfileSelf extends Component {
         <View style={styles.appArea}>
           <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
-              <Button
-                color={colors.white}
-                onPress={() => {
-                  AsyncStorage.removeItem('token');
-                  this.props.signoutUser();
-                }}
-                title="Sign Out"
-              />
+              <TouchableOpacity onPress={() => {
+                AsyncStorage.removeItem('token');
+                this.props.signoutUser();
+              }}
+                style={styles.signOut}
+              >
+                <Text style={styles.signOutText}>Sign Out</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.profileContainer}>
-              <Text style={styles.name}>
-                {this.props.self.firstName} {this.props.self.lastName}
-              </Text>
-              <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+              <View style={styles.right}>
+                <Image
+                  style={styles.profileImage}
+                  source={profileImage}
+                />
+              </View>
+              <View style={styles.left}>
+                <Text style={styles.name}>
+                  {this.props.self.firstName} {this.props.self.lastName}
+                </Text>
+                <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
+              </View>
             </View>
             <View style={styles.tabsContainer}>
               <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
@@ -255,17 +285,16 @@ class ProfileSelf extends Component {
                 <View style={styles.teachlearnButtonTextActiveUnderline} />
               </TouchableOpacity>
             </View>
-            <View style={styles.cardContainer}>
-              <ScrollView style={styles.scrollView}>
-                {this.renderLearns()}
-              </ScrollView>
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.addSkillButton}>
-                <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
-                  title="Add Skill"
-                  color="#FFFFFF"
-                />
+            <View style={styles.contentContainer}>
+              <View style={styles.cardContainer}>
+                <ScrollView style={styles.scrollView}>
+                  {this.renderLearns()}
+                </ScrollView>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillTeach')} style={styles.addSkillButton}>
+                  <Text style={styles.addSkillButtonText}>Add Skill</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </ImageBackground>

@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     color: '#620BC9',
     fontSize: fonts.p1,
     margin: 10,
+    fontFamily: 'quicksand-regular',
   },
   years: {
     color: '#505050',
