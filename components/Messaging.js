@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 80,
 
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-bold',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 28,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: '#620BC9',
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-bold',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 14,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   text: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'quicksand-regular',
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: 14,
@@ -179,7 +179,7 @@ class Messaging extends Component {
                 >
                   <View style={styles.chat}>
                     <View>
-                      <Image source={require('../assets/profile.png')} style={styles.profile_img} />
+                      <Image source={require('../assets/profileDark.png')} style={styles.profile_img} />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'column' }}>

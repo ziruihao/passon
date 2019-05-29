@@ -2,7 +2,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, Image, TouchableHighlight, ScrollView,
+  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
@@ -13,50 +13,112 @@ import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 
+const profileImage = require('../assets/profileLight.png');
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  image: {
-    width: 400,
-    height: 300,
+  appArea: {
+    top: dimensions.statusBarHeight,
   },
   bg: {
-    flex: -1,
     resizeMode: 'cover',
-    width: '100%',
-    height: '100%',
+    width: dimensions.fullWidth,
+    height: 2.1653 * dimensions.fullWidth,
     zIndex: -1,
-    position: 'absolute',
-    top: '0%',
+    top: 0,
   },
   tabsContainer: {
-    flex: 1,
     justifyContent: 'space-around',
     flexDirection: 'row',
-    // flexWrap: 'nowrap',
     alignItems: 'center',
+    width: dimensions.fullWidth,
+    height: 0.2560 * dimensions.fullWidth,
+    borderWidth: 1,
   },
-  tabs: {
-    marginLeft: 50,
-    marginRight: 50,
-    width: 120,
-    height: 50,
-    resizeMode: 'contain',
-    top: 40,
+  teachLearnButton: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '40%',
+    borderWidth: 1,
+  },
+  teachLearnButtonTextActive: {
+    fontSize: 0.0587 * dimensions.fullWidth,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  teachlearnButtonTextActiveUnderline: {
+    backgroundColor: colors.primary,
+    width: 0.1707 * dimensions.fullWidth,
+    height: 4,
+    marginTop: 8,
+  },
+  teachLearnButtonTextInactive: {
+    fontSize: 0.0587 * dimensions.fullWidth,
+    fontWeight: '600',
+    color: colors.white,
+  },
+  cardContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderWidth: 1,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  name: {
+    fontSize: 0.0747 * dimensions.fullWidth,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: 0.4026 * dimensions.fullWidth,
+    borderWidth: 1,
+  },
+  profileContainerLeft: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  profileImage: {
+    width: 64,
+    height: 64,
+    marginBottom: 10,
+  },
+  profileContainerRight: {
+    flex: 0,
+    width: '30%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  signOut: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1,
+    margin: 5,
+  },
+  rating: {
+    fontSize: fonts.p1,
+    color: '#FFFFFF',
   },
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: dimensions.fullWidth,
     paddingBottom: '5%',
+    borderWidth: 1,
+
   },
-  button: {
+  addSkillButton: {
     backgroundColor: '#620BC9',
     borderRadius: 5,
     color: '#FFFFFF',
@@ -64,34 +126,9 @@ const styles = StyleSheet.create({
     height: 41,
     zIndex: 0,
   },
-  cardContainer: {
-    flex: 3,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  name: {
-    fontSize: fonts.h3,
-    color: '#FFFFFF',
-  },
-  profileContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  signOut: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    zIndex: 1,
-  },
-  rating: {
-    fontSize: fonts.p1,
-    color: '#FFFFFF',
-  },
-  svg: {
-    width: '100%',
+  scrollView: {
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 
@@ -102,14 +139,8 @@ class ProfileSelf extends Component {
     this.state = {
       teach: true,
     };
-    // this.toggleTeach = this.toggleTeach.bind(this);
   }
 
-  // renderText = () => {
-  //   return (
-  //     <div>{this.props.currentUser.}</div>
-  //   );
-  // };
   componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       this.props.fetchSelf();
@@ -136,9 +167,7 @@ class ProfileSelf extends Component {
   //   });
   // }
   toggleTeach = (event) => {
-    this.setState((prevState) => {
-      return { teach: event };
-    });
+    this.setState({ teach: event });
   }
 
   renderTeaches() {
@@ -148,19 +177,6 @@ class ProfileSelf extends Component {
           <Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
         </View>
       );
-
-      // const teaches = this.props.self.teach.map((element) => {
-      //   return (
-      //     <View style={styles.teachCard}>
-      //       <Teaches teaches={element.teach} nav={this.props.navigation} user={element} self={element} />
-      //     </View>
-      //   );
-      // });
-      // return (
-      //   <View>
-      //     { teaches }
-      //   </View>
-      // );
     } else {
       return (
         <View />
@@ -175,12 +191,10 @@ class ProfileSelf extends Component {
   render() {
     if (this.props.self === null) {
       return (<Text>Loading</Text>);
-    } else if (this.state.teach === true) {
+    } else if (this.state.teach) {
       return (
-        <View style={styles.container}>
-          {/* <Image source={require('../assets/teach.svg')} style={styles.svg} /> */}
-          <ImageBackground source={require('../assets/teachBackground.png')} style={{ width: '100%', height: '100%' }}>
-            {/* <ImageBackground source={require('../assets/teachBackground.svg')} style={{ width: '100%' }}> */}
+        <View style={styles.appArea}>
+          <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
               <Button
                 color={colors.white}
@@ -191,12 +205,6 @@ class ProfileSelf extends Component {
                 title="Sign Out"
               />
             </View>
-            {/* <View style={styles.tabsContainer}>
-              <Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} />
-              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
-              </TouchableHighlight>
-            </View> */}
             <View style={styles.profileContainer}>
               <Text style={styles.name}>
                 {this.props.self.firstName} {this.props.self.lastName}
@@ -204,23 +212,16 @@ class ProfileSelf extends Component {
               <Text style={styles.rating}>Avg Rating: {this.calcRating(this.props.self)}</Text>
             </View>
             <View style={styles.tabsContainer}>
-              {/* <View><Image source={require('../assets/teachTitleBlank.jpg')} style={styles.tabs} /></View>
-            <View>
-              <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                <Image source={require('../assets/learnTitleColor.png')} style={styles.tabs} />
-              </TouchableHighlight>
-            </View> */}
-              <Button onPress={() => { this.toggleTeach(true); }}
-                title="Teach"
-                color="#620BC9"
-              />
-              <Button onPress={() => { this.toggleTeach(false); }}
-                title="Learn"
-                color="#FFFFFF"
-              />
+              <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextActive}>Teach</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextInactive}>Learn</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.cardContainer}>
-              <ScrollView>
+              <ScrollView style={styles.scrollView}>
                 {this.renderTeaches()}
               </ScrollView>
             </View>
@@ -237,10 +238,8 @@ class ProfileSelf extends Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {/* <Image source={require('../assets/learnBg.jpg')} style={styles.bg} />
-          <Image /> */}
-          <ImageBackground source={require('../assets/learnBackground.png')} style={{ width: '100%', height: '100%' }}>
+        <View style={styles.appArea}>
+          <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
               <Button
                 color={colors.white}
@@ -258,43 +257,27 @@ class ProfileSelf extends Component {
               <Text style={styles.rating}>Avg Rating: {this.props.self.avg_rating}</Text>
             </View>
             <View style={styles.tabsContainer}>
-              {/* <View style={styles.tabs}> */}
-              {/* <View> */}
-              {/* <TouchableHighlight onPress={this.toggleTeach} underlayColor="orange">
-                <Image source={require('../assets/teachTitleColor.png')} style={styles.tabs} />
-              </TouchableHighlight>
+              <TouchableOpacity onPress={() => { this.toggleTeach(true); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextInactive}>Teach</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { this.toggleTeach(false); }} style={styles.teachLearnButton}>
+                <Text style={styles.teachLearnButtonTextActive}>Learn</Text>
+                <View style={styles.teachlearnButtonTextActiveUnderline} />
+              </TouchableOpacity>
             </View>
-            <View><Image source={require('../assets/learnTitleBlank.jpg')} style={styles.tabs} /></View> */}
-              {/* </View> */}
-              <Button onPress={() => { this.toggleTeach(true); }}
-                title="Teach"
-                color="#FFFFFF"
-              />
-              <Button onPress={() => { this.toggleTeach(false); }}
-                title="Learn"
-                color="#620BC9"
-              />
-            </View>
-            {/* <View style={styles.body}> */}
             <View style={styles.cardContainer}>
-              {/* <FlatList
-                data={this.props.self.learns}
-                renderItem={this.renderLearns}
-                keyExtractor={item => item.id}
-              /> */}
-              <ScrollView>
+              <ScrollView style={styles.scrollView}>
                 {this.renderLearns()}
               </ScrollView>
             </View>
             <View style={styles.buttonContainer}>
-              <View style={styles.button}>
+              <View style={styles.addSkillButton}>
                 <Button onPress={() => this.props.navigation.navigate('AddSkillLearn')}
                   title="Add Skill"
                   color="#FFFFFF"
                 />
               </View>
             </View>
-            {/* </View> */}
           </ImageBackground>
         </View>
       );
