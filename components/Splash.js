@@ -81,18 +81,6 @@ class Splash extends Component {
         <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.content}>
             <Image source={require('../assets/logo.png')} style={styles.logo} />
-            {/* { */}
-            {/*  this.state.fontLoaded ? ( */}
-            {/*    <Text style={styles.title}>PassOn</Text> */}
-            {/*  ) : null */}
-            {/* } */}
-            {/* { */}
-            {/*  this.state.fontLoaded ? ( */}
-            {/*    <TouchableOpacity style={styles.button} onPress={() => { authTestUser(this.props); }}> */}
-            {/*      <Text style={styles.buttonText}>Test User: Passon</Text> */}
-            {/*    </TouchableOpacity> */}
-            {/*  ) : null */}
-            {/* } */}
             {
               this.state.fontLoaded ? (
                 <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('SignIn'); }}>

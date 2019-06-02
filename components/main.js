@@ -19,7 +19,6 @@ class Main extends Component {
   }
 
   render() {
-    // return (<FirstScreenNav />);
     if (this.props.authenticated) {
       return (<MainTabBar onNavigationStateChange={null} />);
     } else {

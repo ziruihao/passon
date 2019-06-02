@@ -14,9 +14,6 @@ firebase.initializeApp(config);
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-// // modular functions from firebase wrapper
-// import * as db from './services/datastore';
-
 /**
  * Logs the user in via firebase.
  */
