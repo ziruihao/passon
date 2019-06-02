@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { addRating } from '../../../actions';
 import {
   colors, fonts, padding, dimensions,
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   between: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
@@ -66,6 +67,16 @@ const styles = StyleSheet.create({
     color: colors.accent,
     fontSize: 20,
   },
+  stars: {
+    flex: 0,
+    flexDirection: 'row',
+  },
+  star: {
+    color: 'white',
+    marginLeft: 4,
+    marginRight: 4,
+    marginBottom: 30,
+  },
 });
 
 class AddRating extends React.Component {
@@ -86,20 +97,12 @@ class AddRating extends React.Component {
     };
   }
 
-  add = () => {
-    if (this.state.score === '') {
-      this.setState({ errorRating: true });
-    } else {
-      this.setState({ errorRating: false });
-    }
-    if (this.state.score !== '') {
-      console.log('RATING SPOT');
-      console.log(this.props);
-
+  updateScore = (score) => {
+    if ((this.state.score >= 0) && (this.state.score <= 5)) {
       this.props.addRating({
         skill: {
           id: this.props.navigation.state.params.id,
-          score: this.state.score,
+          score,
         },
       });
       this.props.navigation.navigate('Profile');
@@ -118,16 +121,38 @@ class AddRating extends React.Component {
                   Please enter rating score to proceed.
                 </Text>
               ) : null }
-              <TextInput
-                style={styles.input}
-                placeholder="Rating"
-                placeholderTextColor="#9A989E"
-                keyboardType="numeric"
-                onChangeText={(text) => { this.setState({ score: Number(text) }); }}
-              />
-              <TouchableOpacity style={styles.button} onPress={() => { this.add(); }}>
-                <Text style={styles.buttonText}>Save</Text>
-              </TouchableOpacity>
+              <View style={styles.stars}>
+                <Ionicons
+                  name="star"
+                  size={25}
+                  style={styles.star}
+                  onPress={() => this.updateScore(1)}
+                />
+                <Ionicons
+                  name="star"
+                  size={25}
+                  style={styles.star}
+                  onPress={() => this.updateScore(2)}
+                />
+                <Ionicons
+                  name="star"
+                  size={25}
+                  style={styles.star}
+                  onPress={() => this.updateScore(3)}
+                />
+                <Ionicons
+                  name="star"
+                  size={25}
+                  style={styles.star}
+                  onPress={() => this.updateScore(4)}
+                />
+                <Ionicons
+                  name="star"
+                  size={25}
+                  style={styles.star}
+                  onPress={() => this.updateScore(5)}
+                />
+              </View>
               <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('Profile'); }}>
                 <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>

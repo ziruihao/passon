@@ -19,16 +19,12 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import { Font } from 'expo';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
+  fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
-import DoubleMatchCard from '../components/DoubleMatchCard';
 
 const profileImage = require('../assets/profileDark.png');
 
@@ -404,5 +400,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSelf,
+  fetchLearners, fetchTeachers, fetchSelf,
 })(Home);
