@@ -203,42 +203,9 @@ class Home extends Component {
       double_matches: [],
       single_matches: [],
     };
-    // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
-  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
-  // componentDidMount() {
-  //   const { navigation } = this.props;
-  //   this.focusListener = navigation.addListener('didFocus', () => {
-  //     this.props.fetchSelf().then(() => {
-  //       this.fetchUsers([]).then(() => { // we need to pass in that empty array
-  //         this.combineUsers();
-  //       }).catch((error) => {
-  //         console.log(error);
-  //       });
-  //     });
-  //   });
-  // }
-
-  // async componentWillMount() {
-  //   await Font.loadAsync({
-  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-  //     'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-  //   });
-  // }
-
-  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   async componentDidMount() {
-    // await Font.loadAsync({
-    //   'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    //   'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-    // }).then((response) => {
-    //   this.setState({ fontLoaded: true });
-    // })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
       this.props.fetchSelf().then(() => {
@@ -404,10 +371,6 @@ class Home extends Component {
       <View>
         <View>
           <StatusBar translucent barStyle="dark-content" />
-          {/* <Item>
-              <Icon name="ios-search" />
-              <Input placeholder="Search" onChangeText={text => this.search(text)} />
-            </Item> */}
         </View>
         <View style={styles.appArea}>
           <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>

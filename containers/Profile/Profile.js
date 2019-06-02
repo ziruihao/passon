@@ -23,9 +23,6 @@ import Teaches from '../Skill/Teaches';
 const profileImage = require('../../assets/profileLight.png');
 
 const styles = StyleSheet.create({
-  appArea: {
-    // top: dimensions.statusBarHeight,
-  },
   bg: {
     resizeMode: 'cover',
     width: dimensions.fullWidth,

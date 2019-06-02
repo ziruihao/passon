@@ -70,8 +70,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
     lineHeight: 17,
-    /* identical to box height */
-    // textAlign: 'center',
     letterSpacing: 0.208576,
   },
   profile_img: {
@@ -86,7 +84,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: 14,
     lineHeight: 20,
-    /* identical to box height, or 143% */
     letterSpacing: 0.25,
     color: 'rgba(0, 0, 0, 0.6)',
   },

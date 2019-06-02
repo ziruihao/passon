@@ -114,7 +114,6 @@ class Chat extends React.Component {
         user: {
           _id: this.props.self.id,
           name: `${this.props.self.firstName} ${this.props.self.lastName}`,
-          // avatar: 'https://placeimg.com/140/140/any',
         },
       };
       this.setState((previousState) => {
