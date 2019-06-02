@@ -45,7 +45,7 @@ Tools & Libraries:
 
 ## Setup
 
-To get the project dev environment up and running, run `yarn install`.
+Git clone this repository locally. To get the project dev environment up and running, run `yarn install`. Frontend is currently connected to a Heroku hosted mongoDB database, so we wouldn't need to run backend locally. Simply run `expo start` to start an xcode simulator of iphone in order to run the app. If you ever want to make some test changes to backend, git clone `git@github.com:dartmouth-cs52-19S/project-api-passon.git` locally, and change the frontend code in Actions/index.js and Chat.js to localhost accordingly. Run `yarn start` in the api repository to start the server, then run `expo start` to start frontend.
 
 ## Deployment
 
