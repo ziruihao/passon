@@ -15,11 +15,9 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
   TextInput,
   ImageBackground,
 } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   colors, fonts, dimensions,
 } from '../styles/base';
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
 class Home extends Component {
   static navigationOptions = {
     header: null,
-  }
+  };
 
   constructor(props) {
     super(props);
