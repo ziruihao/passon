@@ -31,13 +31,13 @@ const setUpDB = () => {
   skill.save().then((saved) => {
     self.teach.push(saved);
     skill = new Skill();
-    skill.title = 'Drinking';
-    skill.bio = 'I want to learn drinking.';
+    skill.title = 'Painting';
+    skill.bio = 'I want to learn how to oil paint!';
     skill.save().then((saved2) => {
       self.learn.push(saved2);
       skill = new Skill();
-      skill.title = 'Golf';
-      skill.bio = 'I want to learn baseball.';
+      skill.title = 'Coding';
+      skill.bio = 'I want to learn how to code.';
       skill.save().then((saved3) => {
         self.learn.push(saved3);
         self.save();
@@ -55,16 +55,16 @@ const setUpDB = () => {
   zirui.teach = [];
   skill = new Skill();
   skill.title = 'Coding';
-  skill.years = 5;
+  skill.years = 30;
   skill.ratings = [];
-  skill.bio = 'I can teach coding.';
+  skill.bio = 'I can teach full-stack! HTML, CSS, JS, React, Express, MongoDB.';
   skill.save().then((saved) => {
     zirui.teach.push(saved);
     skill = new Skill();
-    skill.title = 'Drinking';
+    skill.title = 'Painting';
     skill.years = 5;
     skill.ratings = [];
-    skill.bio = 'I can teach excessive drinking.';
+    skill.bio = 'I have painted as a hobby for over 5 years.';
     skill.save().then((saved2) => {
       zirui.teach.push(saved2);
       skill = new Skill();
@@ -78,9 +78,9 @@ const setUpDB = () => {
   });
 
   const zirui2 = new User();
-  zirui2.firstName = 'Zirui2';
-  zirui2.lastName = 'Hao';
-  zirui2.email = 'zirui2';
+  zirui2.firstName = 'Vincent van';
+  zirui2.lastName = 'Gogh';
+  zirui2.email = 'vvg';
   zirui2.password = 'password';
   zirui2.university = 'Dartmouth';
   zirui2.learn = [];
@@ -93,10 +93,10 @@ const setUpDB = () => {
   skill.save().then((saved) => {
     zirui2.teach.push(saved);
     skill = new Skill();
-    skill.title = 'Drinking';
-    skill.years = 5;
+    skill.title = 'Painting';
+    skill.years = 8;
     skill.ratings = [];
-    skill.bio = 'I can teach excessive drinking.';
+    skill.bio = 'I am an award-winning artist that loves to teach painting.';
     skill.save().then((saved2) => {
       zirui2.teach.push(saved2);
       skill = new Skill();
@@ -105,38 +105,6 @@ const setUpDB = () => {
       skill.save().then((saved3) => {
         zirui2.learn.push(saved3);
         zirui2.save();
-      });
-    });
-  });
-
-  const zirui3 = new User();
-  zirui3.firstName = 'Zirui3';
-  zirui3.lastName = 'Hao';
-  zirui3.email = 'zirui3';
-  zirui3.password = 'password';
-  zirui3.university = 'Dartmouth';
-  zirui3.learn = [];
-  zirui3.teach = [];
-  skill = new Skill();
-  skill.title = 'Coding';
-  skill.years = 5;
-  skill.ratings = [];
-  skill.bio = 'I can teach coding.';
-  skill.save().then((saved) => {
-    zirui3.teach.push(saved);
-    skill = new Skill();
-    skill.title = 'Drinking';
-    skill.years = 5;
-    skill.ratings = [];
-    skill.bio = 'I can teach excessive drinking.';
-    skill.save().then((saved2) => {
-      zirui3.teach.push(saved2);
-      skill = new Skill();
-      skill.title = 'Baseball';
-      skill.bio = 'I want to learn baseball.';
-      skill.save().then((saved3) => {
-        zirui3.learn.push(saved3);
-        zirui3.save();
       });
     });
   });
@@ -158,12 +126,12 @@ const setUpDB = () => {
     skill.title = 'Golf';
     skill.years = 5;
     skill.ratings = [];
-    skill.bio = 'I can teach mad golf.';
+    skill.bio = 'I can teach golf.';
     skill.save().then((saved2) => {
       john.teach.push(saved2);
       skill = new Skill();
-      skill.title = 'Drinking';
-      skill.bio = 'I want to learn how to binge drink.';
+      skill.title = 'Painting';
+      skill.bio = 'I want to learn how to paint people.';
       skill.save().then((saved3) => {
         john.learn.push(saved3);
         john.save();
@@ -178,10 +146,10 @@ const setUpDB = () => {
   cat.password = 'password';
   cat.university = 'Dartmouth';
   skill = new Skill();
-  skill.title = 'Drinking';
-  skill.years = 5;
+  skill.title = 'Painting';
+  skill.years = 2;
   skill.ratings = [];
-  skill.bio = 'I can teach drinking.';
+  skill.bio = 'I paint everyday, usually landscape paintings.';
   skill.save().then((saved) => {
     cat.teach.push(saved);
     skill = new Skill();
