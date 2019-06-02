@@ -68,4 +68,7 @@ router.route('/learners')
 router.route('/test/:id')
   .post(User.addSkillRating);
 
+router.route('/skills')
+  .get(User.getSkills);
+
 export default router;

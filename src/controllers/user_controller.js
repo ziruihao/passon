@@ -93,12 +93,9 @@ export const getUsers = (req, res) => { // why do we need both req and res? why 
       },
     })
     .then((results) => {
-      const removePersonalInfoArray = [];
       results.forEach((result) => {
         const removePersonalInfo = Object.assign({}, result);
         delete removePersonalInfo._doc.password;
-        // delete removePersonalInfo._doc.email;
-        removePersonalInfoArray.push(removePersonalInfo._doc);
       });
       res.send(results);
     })
@@ -130,8 +127,6 @@ export const getUser = (req, res) => {
     .then((result) => {
       const removePersonalInfo = Object.assign({}, result);
 
-      console.log(removePersonalInfo._doc);
-
       delete removePersonalInfo._doc.password;
       delete removePersonalInfo._doc.email;
 
@@ -148,7 +143,6 @@ export const getUser = (req, res) => {
  * @param {*} res
  */
 export const getSelf = (req, res) => {
-  console.log(req.headers);
   User.findById(req.user.id).populate('teach').populate('learn').populate({
     path: 'teach',
     populate: {
@@ -219,11 +213,8 @@ export const addLearn = (req, res) => {
         skill.title = req.body.skill.title;
         skill.bio = req.body.skill.bio;
         skill.save().then((result2) => {
-          console.log(result2);
           result.learn.push(result2);
-          console.log(result);
           result.save().then((response) => {
-            console.log(response);
             res.json(response);
           }).catch((error) => {
             res.status(500).json({ msg: error.message });
@@ -242,8 +233,6 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
-  console.log('REQ BODY ====');
-  console.log(req.body);
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const alreadyHas = false;
@@ -444,32 +433,64 @@ export const getLearners = (req, res) => {
     });
 };
 
+// API to get the listing of the skills
+export const getSkills = (req, res) => {
+  Skill.find({})
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((error) => {
+      res.status(404).json({ msg: error.message });
+    });
+};
 
-// testing: do not remove yet
+// API to update add rating and update if it does not exit
 export const addSkillRating = (req, res) => {
-  Skill.findById(req.body.skill.id).populate('ratings')
-    .then((result) => {
-      console.log(result);
-      const rating = new Rating();
-      rating.score = req.body.skill.score;
+  User.findById(req.user.id)
+    .then((result1) => {
+      Skill.findById(req.body.skill.id).populate('ratings').populate({
+        path: 'ratings',
+        populate: {
+          path: 'user',
+          model: 'User',
+        },
+      })
+        .then((result2) => {
+          let rating;
+          let found = false;
 
-      // console.log(rating);
-      rating.save().then((skill) => {
-        console.log(rating.score);
-        result.ratings.push(skill);
+          for (let i = 0; i < result2.ratings.length && !found; i += 1) {
+            if (result2.ratings[i].user._id.equals(req.user.id)) {
+              rating = result2.ratings[i];
+              found = true;
+            }
+          }
+          if (!found) {
+            rating = new Rating();
+            rating.user = result1;
+          }
 
-        result.save().then(() => {
-          result.save().then((response) => {
-            res.json(response);
+          rating.score = req.body.skill.score;
+
+          rating.save().then((skill) => {
+            if (!found) result2.ratings.push(skill);
+
+            result2.save().then(() => {
+              result2.save().then((response) => {
+                res.json(response);
+              }).catch(() => {
+                res.send({ msg: 'error saving' });
+              });
+            });
           }).catch(() => {
-            res.send({ msg: 'error saving' });
+            res.send({ msg: 'error making rating' });
           });
+        })
+        .catch(() => {
+          res.send({ msg: 'error getting skill' });
         });
-      }).catch(() => {
-        res.send({ msg: 'error making rating' });
-      });
     })
     .catch(() => {
-      res.send({ msg: 'error getting skill' });
+      res.send({ msg: 'error getting user' });
     });
 };
