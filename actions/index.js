@@ -10,7 +10,7 @@ export const ActionTypes = {
 
   // getting users
   FETCH_USER: 'FETCH_USER',
-  FETCH_USERS: 'FETCH_USERS',
+  // FETCH_USERS: 'FETCH_USERS',
 
   // chats
   GET_CHATS: 'GET_CHATS',
@@ -24,71 +24,91 @@ export const ActionTypes = {
 // export const ROOT_URL = 'http://localhost:9090/api';
 export const ROOT_URL = 'https://passon.herokuapp.com/api';
 
+/**
+ * Sends request to PassOn API to add a Learnable Skill to the [user]'s own profile.
+ * @param {*} skill
+ */
 export function addLearn(skill) {
-  return async (dispatch) => {
-    axios.post(`${ROOT_URL}/learn`, skill).then((response) => {
-      console.log(response.data);
-    })
+  return async () => {
+    axios.post(`${ROOT_URL}/learn`, skill)
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 }
 
+/**
+ * Sends request to PassOn API to add a Teachable Skill to the [user]'s own profile.
+ * @param {*} skill
+ */
 export function addTeach(skill) {
-  return async (dispatch) => {
-    axios.post(`${ROOT_URL}/teach`, skill).then((response) => {
-      console.log(response.data);
-    })
+  return async () => {
+    axios.post(`${ROOT_URL}/teach`, skill)
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 }
 
+/**
+ * Updates a [user]'s own Learnable Skill via the PassOn API
+ * @param {*} skill
+ */
 export function updateLearn(skill) {
   return async (dispatch) => {
     axios.put(`${ROOT_URL}/learn`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 }
 
+/**
+ * Updates a [user]'s own Learnable Skill via the PassOn API
+ * @param {*} skill
+ */
 export function updateTeach(skill) {
-  return async (dispatch) => {
+  return async () => {
     axios.put(`${ROOT_URL}/teach`, skill).then((response) => {
       console.log(response.data);
     })
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 }
 
+/**
+ * Deletes a user's own Learnable Skill via the PassOn API.
+ * @param {String} id
+ */
 export function deleteLearn(id) {
-  return async (dispatch) => {
-    axios.delete(`${ROOT_URL}/learn`, { data: { id } }).then((response) => {
-      console.log(response.data);
-    })
+  return async () => {
+    axios.delete(`${ROOT_URL}/learn`, { data: { id } })
       .catch((error) => {
-        console.log(error);
+        console.log(error.message);
       });
   };
 }
 
+/**
+ * Deletes a [user]'s own Teachable Skill via the PassOn API.
+ * @param {String} id
+ */
 export function deleteTeach(id) {
-  return async (dispatch) => {
-    axios.delete(`${ROOT_URL}/teach`, { data: { id } }).then((response) => {
-      console.log(response.data);
-    }).catch((error) => {
+  return async () => {
+    axios.delete(`${ROOT_URL}/teach`, { data: { id } }).catch((error) => {
       console.log(error.message);
     });
   };
 }
 
+/**
+ * Fetches the public data of a specific [user] from the PassOn API.
+ * @param {String} id
+ */
 export function fetchUser(id) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.get(`${ROOT_URL}/users/${id}`)
@@ -102,21 +122,28 @@ export function fetchUser(id) {
   }));
 }
 
-export function fetchUsers(id) {
-  return dispatch => new Promise(((resolve, reject) => {
-    axios.get(`${ROOT_URL}/users`)
-      .then((response) => {
-        dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
-        resolve(response.data);
-      })
-      .catch((error) => {
-        reject(error.message);
-      });
-  }));
-}
+// /**
+//  * Fetches every user's public data from the PassOn API.
+//  * THIS IS ONLY USED FOR TESTING.
+//  * @param {String} id
+//  */
+// export function fetchUsers(id) {
+//   return dispatch => new Promise(((resolve, reject) => {
+//     axios.get(`${ROOT_URL}/users`)
+//       .then((response) => {
+//         dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
+//         resolve(response.data);
+//       })
+//       .catch((error) => {
+//         reject(error.message);
+//       });
+//   }));
+// }
 
+/**
+ * Grabs a [user]'s personal private information from the PassOn API.
+ */
 export function fetchSelf() {
-  console.log(axios.defaults.headers.common);
   return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/self`)
       .then((response) => {
@@ -129,35 +156,13 @@ export function fetchSelf() {
   }));
 }
 
-export function updateUser(id, post) {
-  return async (dispatch) => {
-    axios.put(`${ROOT_URL}/posts/${id}`, post)
-      .then((response) => {
-        dispatch({ type: ActionTypes.UPDATE_POST, payload: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-}
-
-export function deleteUser(id, history) {
-  return async (dispatch) => {
-    axios.delete(`${ROOT_URL}/posts/${id}`)
-      .then(() => {
-        dispatch({ type: ActionTypes.UPDATE_POST, payload: null });
-        history.push('/');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-}
-
+/**
+ * Queries the PassOn API for all [user]s that can teach a set of [skills].
+ * @param {Array<String>} skills
+ */
 export function fetchTeachers(skills) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/teachers`, skills).then((response) => {
-      // console.log('aaa');
       dispatch({ type: ActionTypes.SAVE_TEACHERS, payload: response.data });
       resolve(response.data);
     }).catch((error) => {
@@ -166,10 +171,13 @@ export function fetchTeachers(skills) {
   }));
 }
 
+/**
+ * Queries the PassOn API for all [user]s that want to learn a set of [skills].
+ * @param {Array<String>} skills
+ */
 export function fetchLearners(skills) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.post(`${ROOT_URL}/learners`, skills).then((response) => {
-      // console.log('bbb');
       dispatch({ type: ActionTypes.SAVE_LEARNERS, payload: response.data });
       resolve(response.data);
     }).catch((error) => {
@@ -178,9 +186,10 @@ export function fetchLearners(skills) {
   }));
 }
 
-
-// trigger to deauth if there is error
-// can also use in your error reducer if you have one to display an error message
+/**
+ * Handles an error in authentication.
+ * @param {String} error
+ */
 export function authError(error) {
   return {
     type: ActionTypes.AUTH_ERROR,
@@ -188,10 +197,16 @@ export function authError(error) {
   };
 }
 
+/**
+ * Manages sign in.
+ * @param {*} credentials
+ * @param {Navigator} navigation
+ */
 export function signinUser({ email, password }, navigation) {
   return async (dispatch) => {
     const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
     await AsyncStorage.setItem('token', response.data.token);
+    // await AsyncStorage.setItem('user', response.data.user);
     axios.defaults.headers.common = await { authorization: response.data.token };
     await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
     await navigation.navigate('Main');
@@ -199,6 +214,11 @@ export function signinUser({ email, password }, navigation) {
   };
 }
 
+/**
+ * Handles sign up.
+ * @param {*} Credentials
+ * @param {Navigator} navigation
+ */
 export function signupUser({
   firstName, lastName, email, password, university,
 }, navigation) {
@@ -208,6 +228,7 @@ export function signupUser({
     })
       .then(async (response) => {
         await AsyncStorage.setItem('token', response.data.token);
+        // await AsyncStorage.setItem('user', response.data.user);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
         await navigation.navigate('Main');
@@ -220,16 +241,17 @@ export function signupUser({
 }
 
 
-// deletes token from localstorage
-// and deauths
-export function signoutUser(navigation) {
+/**
+ * Handles sign out.
+ */
+export function signoutUser() {
   return async (dispatch) => {
     await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('user');
+    // await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
-    navigation.navigate('FirstScreen');
   };
 }
+
 
 export function fetchChats() {
   return async (dispatch) => {

@@ -4,7 +4,6 @@ import SignUp from '../containers/Auth/Signup';
 import Splash from '../components/Splash';
 import MainTabBar from './main_tab_bar';
 
-// nest stack navigator to handle two internal views
 const AuthNav = createStackNavigator({
   Splash: { screen: Splash },
   SignIn: { screen: SignIn },
