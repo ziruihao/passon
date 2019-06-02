@@ -5,10 +5,10 @@ import {
   StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableOpacity,
 } from 'react-native';
 import { Font } from 'expo';
-import { signupUser } from '../actions';
+import { signupUser } from '../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../styles/base';
 
 const styles = StyleSheet.create({
   container: {

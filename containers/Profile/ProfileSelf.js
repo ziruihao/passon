@@ -6,12 +6,12 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
-import { fetchUser, fetchSelf, signoutUser } from '../actions';
-import Learns from '../components/learns';
-import Teaches from '../components/teaches';
+import { fetchUser, fetchSelf, signoutUser } from '../../actions';
+import Learns from '../Skill/learns';
+import Teaches from '../Skill/teaches';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../styles/base';
 
 const profileImage = require('../assets/profileLight.png');
 

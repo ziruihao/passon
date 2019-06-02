@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { addRating } from '../actions';
+import { addRating } from '../../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../../styles/base';
 
 const styles = StyleSheet.create({
   container: {

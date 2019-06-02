@@ -15,12 +15,12 @@ import {
 } from 'react-native';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../styles/base';
 import {
   fetchUser, fetchChat, fetchSelf, createChat,
-} from '../actions';
-import Learns from '../components/learns';
-import Teaches from '../components/teaches';
+} from '../../actions';
+import Learns from '../Skill/learns';
+import Teaches from '../Skill/teaches';
 
 const profileImage = require('../assets/profileLight.png');
 

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground,
 } from 'react-native';
-import { addTeach } from '../actions';
+import { addTeach } from '../../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../../styles/base';
 
 const styles = StyleSheet.create({
   container: {
