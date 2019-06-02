@@ -14,8 +14,8 @@ class Chat extends React.Component {
       const room = this.props.navigation.getParam('id', null); //
 
       // Creating the socket-client instance will automatically connect to the server.
-      const socket = io('http://localhost:9090');
-      // const socket = io('https://passon.herokuapp.com');
+      // const socket = io('http://localhost:9090');
+      const socket = io('https://passon.herokuapp.com');
       socket.on('connect', () => {
       // Connected, let's sign-up for to receive messages for this room
         socket.emit('room', room); // chatID passed in from props
@@ -125,12 +125,12 @@ class Chat extends React.Component {
     render() {
       return (
         <GiftedChat
-          messages={this.state.messages
-          }
+          messages={this.state.messages}
           onSend={messages => this.sendMessage(messages)}
           user={{
             _id: this.props.self.id,
           }}
+          alignTop={false}
         />
       );
     }

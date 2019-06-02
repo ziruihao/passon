@@ -20,8 +20,8 @@ export const ActionTypes = {
   GET_CHAT: 'GET_CHAT',
 };
 
-export const ROOT_URL = 'http://localhost:9090/api';
-// export const ROOT_URL = 'https://passon.herokuapp.com/api';
+// export const ROOT_URL = 'http://localhost:9090/api';
+export const ROOT_URL = 'https://passon.herokuapp.com/api';
 
 /**
  * Sends request to PassOn API to add a Learnable Skill to the [user]'s own profile.
@@ -54,7 +54,7 @@ export function addTeach(skill) {
  * @param {*} skill
  */
 export function updateLearn(skill) {
-  return async (dispatch) => {
+  return async () => {
     axios.put(`${ROOT_URL}/learn`, skill).then((response) => {
       console.log(response.data);
     })
@@ -268,8 +268,8 @@ export function createChat(chat) {
 }
 
 export function addRating(skill) {
-  return async (dispatch) => {
-    axios.post(`${ROOT_URL}/addRating`, skill).then((response) => {
+  return async () => {
+    axios.post(`${ROOT_URL}/addRating`, skill).then(() => {
     })
       .catch((error) => {
         console.log(error);
