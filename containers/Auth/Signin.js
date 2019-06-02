@@ -5,10 +5,10 @@ import {
   StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableOpacity,
 } from 'react-native';
 import { Font } from 'expo';
-import { signinUser } from '../actions';
+import { signinUser } from '../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../styles/base';
 
 const styles = StyleSheet.create({
   container: {
@@ -108,7 +108,7 @@ class SignIn extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={require('../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
               <Text style={styles.title}>Sign In</Text>

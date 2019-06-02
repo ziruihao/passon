@@ -56,7 +56,7 @@ const authTestUser = (props) => {
     password: 'password',
   }, props.navigation);
 };
-class FirstScreen extends Component {
+class Splash extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -113,4 +113,4 @@ class FirstScreen extends Component {
     );
   }
 }
-export default connect(null, { signinUser })(FirstScreen);
+export default connect(null, { signinUser })(Splash);

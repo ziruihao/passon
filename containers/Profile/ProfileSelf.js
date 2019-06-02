@@ -1,32 +1,23 @@
 /* eslint-disable global-require */
-/* eslint-disable consistent-return */
-import React from 'react';
-import { connect } from 'react-redux';
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Button,
-  ImageBackground,
+  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { withNavigationFocus } from 'react-navigation';
+import { fetchUser, fetchSelf, signoutUser } from '../../actions';
+import Learns from '../Skill/Learns';
+import Teaches from '../Skill/Teaches';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
-import {
-  fetchUser, fetchChat, fetchSelf, createChat,
-} from '../actions';
-import Learns from '../components/learns';
-import Teaches from '../components/teaches';
+} from '../../styles/base';
 
-const profileImage = require('../assets/profileLight.png');
+const profileImage = require('../../assets/profileLight.png');
 
 const styles = StyleSheet.create({
   appArea: {
-    // top: dimensions.statusBarHeight,
+    top: dimensions.statusBarHeight,
   },
   bg: {
     resizeMode: 'cover',
@@ -127,7 +118,7 @@ const styles = StyleSheet.create({
     width: dimensions.fullWidth,
     paddingBottom: '5%',
   },
-  buttonMessage: {
+  addSkillButton: {
     backgroundColor: colors.primary,
     borderRadius: 5,
     width: 300,
@@ -143,7 +134,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     maxHeight: dimensions.fullHeight * 0.4,
   },
-  buttonText: {
+  addSkillButtonText: {
     color: colors.white,
     fontFamily: 'quicksand-bold',
     fontSize: 18,
@@ -155,15 +146,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class Profile extends React.Component {
-  static navigationOptions = {
-    title: 'Home',
-    headerStyle: {
-      backgroundColor: 'white',
-    },
-    headerTintColor: 'black',
-  }
-
+class ProfileSelf extends Component {
   constructor(props) {
     super(props);
 
@@ -172,18 +155,10 @@ class Profile extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener('didFocus', () => {
-      this.props.fetch_user(this.props.navigation.getParam('_id', null));
-      this.props.fetch_self();
-      this.props.fetch_chat(this.props.navigation.getParam('_id', null));
-    });
-  }
-
-  componentWillUnmount() {
-    // Remove the event listener
-    this.focusListener.remove();
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.props.fetchSelf();
+    }
   }
 
   calcRating = (element) => {
@@ -214,50 +189,14 @@ class Profile extends React.Component {
   };
 
   toggleTeach = (event) => {
-    this.setState((prevState) => {
-      return { teach: event };
-    });
-  }
-
-  goToChat = () => {
-    let first, last, userName, otherUserName;
-    if (this.props.self != null) {
-      first = this.props.self.firstName;
-      last = this.props.self.lastName;
-    }
-    if (this.props.chat !== undefined) {
-      const { chat } = this.props; // not sure why it's an array here
-      console.log(`chat in profile: ${JSON.stringify(chat)}`);
-      if (chat.userId[0].firstName === first
-      && chat.userId[0].lastName === last) {
-        userName = `${first} ${last}`;
-        otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
-      } else if (chat.userId[1].firstName === first
-      && chat.userId[1].lastName === last) {
-        userName = `${first} ${last}`;
-        otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
-      } else {
-        console.log('names no match');
-        return null;
-      }
-
-      const pass = {
-        messages: chat.messages,
-        id: chat.id,
-        userName,
-        otherUserName,
-      };
-      this.props.navigation.navigate('Chat', pass);
-    }
+    this.setState({ teach: event });
   }
 
   renderTeaches() {
-    if (this.props.user.teach !== null) {
+    if (this.props.self.teach !== null) {
       return (
         <View>
-          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Teaches teaches={this.props.self.teach} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
         </View>
       );
     } else {
@@ -268,10 +207,10 @@ class Profile extends React.Component {
   }
 
   renderLearns() {
-    if (this.props.user.learn !== null) {
+    if (this.props.self.learn !== null) {
       return (
         <View>
-          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Learns learns={this.props.self.learn} nav={this.props.navigation} user={this.props.self} self={this.props.self} />
         </View>
       );
     } else {
@@ -282,12 +221,20 @@ class Profile extends React.Component {
   }
 
   render() {
-    if (this.props.user === null) {
+    if (this.props.self === null) {
       return (<Text>Loading</Text>);
     } else if (this.state.teach) {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/teachBackground.png')} style={styles.bg}>
+
+            <View style={styles.signOut}>
+              <TouchableOpacity onPress={this.props.signoutUser}
+                style={styles.signOut}
+              >
+                <Text style={styles.signOutText}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.profileContainer}>
               <View style={styles.right}>
                 <Image
@@ -297,9 +244,9 @@ class Profile extends React.Component {
               </View>
               <View style={styles.left}>
                 <Text style={styles.name}>
-                  {this.props.user.firstName} {this.props.user.lastName}
+                  {this.props.self.firstName} {this.props.self.lastName}
                 </Text>
-                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.self)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -318,8 +265,8 @@ class Profile extends React.Component {
                 </ScrollView>
               </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
-                  <Text style={styles.buttonText}>Message</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillTeach')} style={styles.addSkillButton}>
+                  <Text style={styles.addSkillButtonText}>Add Skill</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -329,7 +276,18 @@ class Profile extends React.Component {
     } else {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/learnBackground.png')} style={styles.bg}>
+
+            <View style={styles.signOut}>
+              <TouchableOpacity onPress={() => {
+                AsyncStorage.removeItem('token');
+                this.props.signoutUser();
+              }}
+                style={styles.signOut}
+              >
+                <Text style={styles.signOutText}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.profileContainer}>
               <View style={styles.right}>
                 <Image
@@ -339,9 +297,9 @@ class Profile extends React.Component {
               </View>
               <View style={styles.left}>
                 <Text style={styles.name}>
-                  {this.props.user.firstName} {this.props.user.lastName}
+                  {this.props.self.firstName} {this.props.self.lastName}
                 </Text>
-                <Text style={styles.rating}>{this.renderRating(this.props.user)}</Text>
+                <Text style={styles.rating}>{this.renderRating(this.props.self)}</Text>
               </View>
             </View>
             <View style={styles.tabsContainer}>
@@ -360,8 +318,8 @@ class Profile extends React.Component {
                 </ScrollView>
               </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => { this.goToChat(); }} style={styles.buttonMessage}>
-                  <Text style={styles.buttonText}>Message</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddSkillLearn')} style={styles.addSkillButton}>
+                  <Text style={styles.addSkillButtonText}>Add Skill</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -372,20 +330,11 @@ class Profile extends React.Component {
   }
 }
 
+
 function mapReduxStateToProps(reduxState) {
   return {
-    chat: reduxState.chat.curr,
-    user: reduxState.user.current,
     self: reduxState.user.self,
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
-    fetch_self: () => { dispatch(fetchSelf()); },
-    fetch_user: (id) => { dispatch(fetchUser(id)); },
-  };
-};
-
-export default connect(mapReduxStateToProps, mapDispatchToProps)(Profile);
+export default withNavigationFocus(connect(mapReduxStateToProps, { fetchUser, fetchSelf, signoutUser })(ProfileSelf));

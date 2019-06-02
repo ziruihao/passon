@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { addRating } from '../actions';
+import { addRating } from '../../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../../styles/base';
 
 const styles = StyleSheet.create({
   container: {
@@ -109,7 +109,7 @@ class AddRating extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={require('../../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
               <Text style={styles.title}>Add Rating</Text>

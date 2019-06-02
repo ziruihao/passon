@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground,
 } from 'react-native';
-import { updateTeach, deleteTeach } from '../actions';
+import { updateTeach, deleteTeach } from '../../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../../styles/base';
 
 const styles = StyleSheet.create({
   container: {
@@ -170,7 +170,7 @@ class EditSkillTeach extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={require('../../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
               <Text style={styles.title}>Edit Skill: {this.state.title}</Text>

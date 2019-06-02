@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Font } from 'expo';
-import FirstScreenNav from '../navigation/first_screen_nav';
+import AuthNav from '../navigation/auth_nav';
 import MainTabBar from '../navigation/main_tab_bar';
 
 class Main extends Component {
@@ -23,7 +23,7 @@ class Main extends Component {
     if (this.props.authenticated) {
       return (<MainTabBar onNavigationStateChange={null} />);
     } else {
-      return (<FirstScreenNav />); // don't change, we can't load [<MainTabBar>] because [axios.defaults.headers] may not be set yet.
+      return (<AuthNav />); // don't change, we can't load [<MainTabBar>] because [axios.defaults.headers] may not be set yet.
     }
   }
 }

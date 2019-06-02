@@ -3,7 +3,6 @@ import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import { fetchChat } from '../actions';
 
 class Chat extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -144,12 +143,6 @@ class Chat extends React.Component {
 }
 const mapStateToProps = state => ({
   self: state.user.self,
-}
-);
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, null)(Chat);

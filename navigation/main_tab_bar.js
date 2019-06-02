@@ -1,11 +1,10 @@
 import React from 'react';
 import {
   createAppContainer, createBottomTabNavigator,
-  createStackNavigator,
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import HomeTab from './home_tab';
-import MessagingTab from './messaging';
+import MessagingTab from './messaging_tab';
 import ProfileNav from './profile_nav';
 
 const MainTabBar = createBottomTabNavigator(

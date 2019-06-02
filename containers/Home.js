@@ -28,7 +28,7 @@ import {
 import {
   fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
-import DoubleMatchCard from './DoubleMatchCard';
+import DoubleMatchCard from '../components/DoubleMatchCard';
 
 const profileImage = require('../assets/profileDark.png');
 

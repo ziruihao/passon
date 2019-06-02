@@ -9,10 +9,10 @@ import {
   StyleSheet, View, TouchableOpacity, Text, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchChats, createChat, fetchSelf } from '../actions';
+import { fetchChats, createChat, fetchSelf } from '../../actions';
 import {
   colors, fonts, padding, dimensions,
-} from '../styles/base';
+} from '../../styles/base';
 
 
 const styles = StyleSheet.create({
@@ -62,9 +62,6 @@ const styles = StyleSheet.create({
   },
   chatContainer: {
     marginTop: 30,
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'flex-start',
   },
   userName: {
     color: '#620BC9',
@@ -126,7 +123,6 @@ class Messaging extends Component {
   }
 
   render() {
-    // console.log(`CHATTTTT: ${JSON.stringify(this.props.chats)}+`);
     let first, last;
     if (this.props.self != null) {
       first = this.props.self.firstName;
@@ -135,10 +131,10 @@ class Messaging extends Component {
     return (
 
       <View style={styles.container}>
-        <Image source={require('../assets/background.png')} style={styles.bg} />
+        <Image source={require('../../assets/background.png')} style={styles.bg} />
         <Text style={styles.title}>Chats</Text>
         <View style={styles.chatContainer}>
-          { // (this.props.chats[0] === undefined) ? <Text> nothing </Text> : (
+          {
           this.props.chats.map((chat) => {
             let displayName, userName, otherUserName;
             if (chat.userId[0].firstName === first
@@ -169,7 +165,7 @@ class Messaging extends Component {
             }
             if (chat.messages.length > 0) {
               return (
-                <TouchableOpacity
+                <TouchableOpacity key={chat.id}
                   onPress={() => {
                     const pass = {
                       messages: chat.messages, id: chat.id, userName, otherUserName,
@@ -179,7 +175,7 @@ class Messaging extends Component {
                 >
                   <View style={styles.chat}>
                     <View>
-                      <Image source={require('../assets/profileDark.png')} style={styles.profile_img} />
+                      <Image source={require('../../assets/profileDark.png')} style={styles.profile_img} />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -205,21 +201,6 @@ class Messaging extends Component {
         }
 
         </View>
-        {/* <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => this.setState({ otherUser: text })}
-          value={this.state.otherUser}
-        />
-        <Button title="create Chat"
-          onPress={() => {
-            console.log('create chat pressed');
-            const chat = {
-              email: this.state.otherUser, // email of the target message user
-              messages: [],
-            };
-            this.props.create_chat(chat);
-          }}
-        >Create New Chat
-        </Button> */}
       </View>
     );
   }
