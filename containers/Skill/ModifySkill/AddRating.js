@@ -6,14 +6,13 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { addRating } from '../../../actions';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts,
 } from '../../../styles/base';
 
 const styles = StyleSheet.create({
@@ -115,7 +114,7 @@ class AddRating extends React.Component {
         <ImageBackground source={require('../../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
-              <Text style={styles.title}>Add Rating</Text>
+              <Text style={styles.title}>Add/Update Rating</Text>
               { this.state.errorRating === true ? (
                 <Text>
                   Please enter rating score to proceed.
