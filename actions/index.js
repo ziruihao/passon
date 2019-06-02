@@ -20,8 +20,8 @@ export const ActionTypes = {
   GET_CHAT: 'GET_CHAT',
 };
 
-// export const ROOT_URL = 'http://localhost:9090/api';
-export const ROOT_URL = 'https://passon.herokuapp.com/api';
+export const ROOT_URL = 'http://localhost:9090/api';
+// export const ROOT_URL = 'https://passon.herokuapp.com/api';
 
 /**
  * Sends request to PassOn API to add a Learnable Skill to the [user]'s own profile.
