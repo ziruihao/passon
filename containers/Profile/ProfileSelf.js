@@ -7,13 +7,13 @@ import {
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
 import { fetchUser, fetchSelf, signoutUser } from '../../actions';
-import Learns from '../Skill/learns';
-import Teaches from '../Skill/teaches';
+import Learns from '../Skill/Learns';
+import Teaches from '../Skill/Teaches';
 import {
   colors, fonts, padding, dimensions,
 } from '../../styles/base';
 
-const profileImage = require('../assets/profileLight.png');
+const profileImage = require('../../assets/profileLight.png');
 
 const styles = StyleSheet.create({
   appArea: {
@@ -226,7 +226,7 @@ class ProfileSelf extends Component {
     } else if (this.state.teach) {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/teachBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
               <TouchableOpacity onPress={() => {
                 AsyncStorage.removeItem('token');
@@ -278,7 +278,7 @@ class ProfileSelf extends Component {
     } else {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/learnBackground.png')} style={styles.bg}>
             <View style={styles.signOut}>
               <TouchableOpacity onPress={() => {
                 AsyncStorage.removeItem('token');

@@ -134,7 +134,7 @@ class SignUp extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={require('../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.between}>
             <View style={styles.content}>
               <View style={styles.titleContainer}>

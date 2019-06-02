@@ -19,10 +19,10 @@ import {
 import {
   fetchUser, fetchChat, fetchSelf, createChat,
 } from '../../actions';
-import Learns from '../Skill/learns';
-import Teaches from '../Skill/teaches';
+import Learns from '../Skill/Learns';
+import Teaches from '../Skill/Teaches';
 
-const profileImage = require('../assets/profileLight.png');
+const profileImage = require('../../assets/profileLight.png');
 
 const styles = StyleSheet.create({
   appArea: {
@@ -287,7 +287,7 @@ class Profile extends React.Component {
     } else if (this.state.teach) {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/teachBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/teachBackground.png')} style={styles.bg}>
             <View style={styles.profileContainer}>
               <View style={styles.right}>
                 <Image
@@ -329,7 +329,7 @@ class Profile extends React.Component {
     } else {
       return (
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/learnBackground.png')} style={styles.bg}>
+          <ImageBackground source={require('../../assets/learnBackground.png')} style={styles.bg}>
             <View style={styles.profileContainer}>
               <View style={styles.right}>
                 <Image
