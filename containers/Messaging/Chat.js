@@ -125,12 +125,12 @@ class Chat extends React.Component {
     render() {
       return (
         <GiftedChat
-          messages={this.state.messages
-          }
+          messages={this.state.messages}
           onSend={messages => this.sendMessage(messages)}
           user={{
             _id: this.props.self.id,
           }}
+          alignTop={false}
         />
       );
     }

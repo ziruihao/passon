@@ -101,8 +101,6 @@ class EditSkillTeach extends Component {
   };
 
   delete = () => {
-    console.log('IDDDDDD');
-    console.log(this.state.id);
     this.props.deleteTeach(this.state.id);
     this.props.navigation.navigate('ProfileSelf');
   };

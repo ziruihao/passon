@@ -29,15 +29,6 @@ YellowBox.ignoreWarnings([
   'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
 ]);
 
-// const token = AsyncStorage.getItem('token');
-// const user = JSON.parse(AsyncStorage.getItem('user'));
-// if (token && user !== null) {
-//   // console.log(token);
-//   axios.defaults.headers.common = { Authorization: AsyncStorage.getItem('token') };
-//   Store.dispatch({ type: ActionTypes.AUTH_USER, payload: user });
-// }
-
-
 const App = () => {
   return (
     <Provider store={Store}>

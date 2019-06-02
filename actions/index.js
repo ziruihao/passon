@@ -54,7 +54,7 @@ export function addTeach(skill) {
  * @param {*} skill
  */
 export function updateLearn(skill) {
-  return async (dispatch) => {
+  return async () => {
     axios.put(`${ROOT_URL}/learn`, skill).then((response) => {
       console.log(response.data);
     })
@@ -268,8 +268,8 @@ export function createChat(chat) {
 }
 
 export function addRating(skill) {
-  return async (dispatch) => {
-    axios.post(`${ROOT_URL}/addRating`, skill).then((response) => {
+  return async () => {
+    axios.post(`${ROOT_URL}/addRating`, skill).then(() => {
     })
       .catch((error) => {
         console.log(error);
