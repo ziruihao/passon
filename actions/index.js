@@ -1,6 +1,6 @@
 import axios from 'axios/index';
 import { AsyncStorage } from 'react-native';
-// From assignment page
+
 export const ActionTypes = {
   // signin or signup
   AUTH_USER: 'AUTH_USER',
@@ -19,16 +19,10 @@ export const ActionTypes = {
   SAVE_TEACHERS: 'SAVE_TEACHERS',
   SAVE_LEARNERS: 'SAVE_LEARNERS',
   GET_CHAT: 'GET_CHAT',
-  FETCH_LEARNS: 'FETCH_LEARNS',
-  FETCH_TEACHES: 'FETCH_TEACHES',
-  FETCH_LEARN: 'FETCH_LEARN',
-  FETCH_TEACH: 'FETCH_TEACH',
 };
 
-// From assignment page
-// const ROOT_URL = 'http://localhost:9090/api';
-const ROOT_URL = 'https://passon.herokuapp.com/api';
-// const API_KEY = '?key=j_sullivan';
+// export const ROOT_URL = 'http://localhost:9090/api';
+export const ROOT_URL = 'https://passon.herokuapp.com/api';
 
 export function addLearn(skill) {
   return async (dispatch) => {
