@@ -270,7 +270,6 @@ export function createChat(chat) {
 export function addRating(skill) {
   return async (dispatch) => {
     axios.post(`${ROOT_URL}/addRating`, skill).then((response) => {
-      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);

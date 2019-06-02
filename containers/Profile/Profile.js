@@ -222,19 +222,15 @@ class Profile extends React.Component {
     }
     if (this.props.chat !== undefined) {
       const { chat } = this.props;
-      console.log(`chat in profile: ${JSON.stringify(chat)}`);
       if (chat.userId[0].firstName === first
       && chat.userId[0].lastName === last) {
         userName = `${first} ${last}`;
         otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
       } else if (chat.userId[1].firstName === first
       && chat.userId[1].lastName === last) {
         userName = `${first} ${last}`;
         otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
       } else {
-        console.log('names no match');
         return null;
       }
 

@@ -14,10 +14,6 @@ class Main extends Component {
     });
   }
 
-  componentWillUnmount() {
-    console.log('MAIN UNMOUNTED FUCK');
-  }
-
   render() {
     if (this.props.authenticated) {
       return (<MainTabBar onNavigationStateChange={null} />);
