@@ -221,9 +221,9 @@ class SignUp extends Component {
                   placeholder="University"
                   onChangeText={(text) => { this.setState({ university: text }); }}
                 />
-                {/* <TouchableOpacity style={styles.button} onPress={() => { this.pickProfileImage(); }}>
+                <TouchableOpacity style={styles.button} onPress={() => { this.pickProfileImage(); }}>
                   <Text style={styles.buttonText}>Pick Profile Image</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={this.signUp}>
                   <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
