@@ -209,14 +209,14 @@ const setUpDB = () => {
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/passon';
 mongoose.connect(mongoURI, () => { // this code clears the database on every server run
-  // mongoose.connection.db.dropDatabase(() => {
-  //   mongoose.connection.close(() => {
-  //     mongoose.connect(mongoURI);
-  //     console.log('reconnected');
-  //     setUpDB();
-  //     console.log('default db set up');
-  //   });
-  // });
+  mongoose.connection.db.dropDatabase(() => {
+    mongoose.connection.close(() => {
+      mongoose.connect(mongoURI);
+      console.log('reconnected');
+      setUpDB();
+      console.log('default db set up');
+    });
+  });
 });
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
@@ -285,7 +285,7 @@ io.on('connection', (socket) => {
       userId: message.body.userId,
       chatId: message.body.chatId,
     });
-    chatMessage.save().then((result) => {
+    chatMessage.save().then(() => {
       console.log('chat message saved');
 
       Chat.findById(message.body.chatId).then((chat) => {
@@ -300,7 +300,7 @@ io.on('connection', (socket) => {
           console.log(error);
         });
     })
-      .catch((error) => {
+      .catch(() => {
         console.log('chat message save failed');
       });
   });

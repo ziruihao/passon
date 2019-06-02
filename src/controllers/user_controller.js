@@ -93,12 +93,9 @@ export const getUsers = (req, res) => { // why do we need both req and res? why 
       },
     })
     .then((results) => {
-      const removePersonalInfoArray = [];
       results.forEach((result) => {
         const removePersonalInfo = Object.assign({}, result);
         delete removePersonalInfo._doc.password;
-        // delete removePersonalInfo._doc.email;
-        removePersonalInfoArray.push(removePersonalInfo._doc);
       });
       res.send(results);
     })
@@ -436,6 +433,7 @@ export const getLearners = (req, res) => {
     });
 };
 
+// API to get the listing of the skills
 export const getSkills = (req, res) => {
   Skill.find({})
     .then((resp) => {
@@ -446,13 +444,10 @@ export const getSkills = (req, res) => {
     });
 };
 
-// testing: do not remove yet
+// API to update add rating and update if it does not exit
 export const addSkillRating = (req, res) => {
   User.findById(req.user.id)
     .then((result1) => {
-      // console.log(req.body.skill.id);
-      console.log('here1');
-
       Skill.findById(req.body.skill.id).populate('ratings').populate({
         path: 'ratings',
         populate: {
@@ -461,22 +456,13 @@ export const addSkillRating = (req, res) => {
         },
       })
         .then((result2) => {
-          // console.log(result2);
           let rating;
           let found = false;
 
-          // console.log(result2);
-          // console.log(result2.ratings.length);
           for (let i = 0; i < result2.ratings.length && !found; i += 1) {
-            // console.log(i);
-            console.log(result2.ratings[i].user._id);
-            console.log(req.user.id);
-
             if (result2.ratings[i].user._id.equals(req.user.id)) {
               rating = result2.ratings[i];
               found = true;
-
-              console.log('FOUNDDDD!!');
             }
           }
           if (!found) {
@@ -487,8 +473,6 @@ export const addSkillRating = (req, res) => {
           rating.score = req.body.skill.score;
 
           rating.save().then((skill) => {
-            // console.log(rating.score);
-
             if (!found) result2.ratings.push(skill);
 
             result2.save().then(() => {
