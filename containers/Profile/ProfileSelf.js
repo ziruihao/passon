@@ -227,11 +227,9 @@ class ProfileSelf extends Component {
       return (
         <View style={styles.appArea}>
           <ImageBackground source={require('../../assets/teachBackground.png')} style={styles.bg}>
+
             <View style={styles.signOut}>
-              <TouchableOpacity onPress={() => {
-                AsyncStorage.removeItem('token');
-                this.props.signoutUser();
-              }}
+              <TouchableOpacity onPress={this.props.signoutUser}
                 style={styles.signOut}
               >
                 <Text style={styles.signOutText}>Sign Out</Text>
@@ -279,6 +277,7 @@ class ProfileSelf extends Component {
       return (
         <View style={styles.appArea}>
           <ImageBackground source={require('../../assets/learnBackground.png')} style={styles.bg}>
+
             <View style={styles.signOut}>
               <TouchableOpacity onPress={() => {
                 AsyncStorage.removeItem('token');

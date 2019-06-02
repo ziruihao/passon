@@ -3,14 +3,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   Image,
   Text,
   TouchableOpacity,
   ScrollView,
-  Button,
   ImageBackground,
 } from 'react-native';
 import {

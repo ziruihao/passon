@@ -206,7 +206,7 @@ export function signinUser({ email, password }, navigation) {
   return async (dispatch) => {
     const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
     await AsyncStorage.setItem('token', response.data.token);
-    await AsyncStorage.setItem('user', response.data.user);
+    // await AsyncStorage.setItem('user', response.data.user);
     axios.defaults.headers.common = await { authorization: response.data.token };
     await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
     await navigation.navigate('Main');
@@ -228,7 +228,7 @@ export function signupUser({
     })
       .then(async (response) => {
         await AsyncStorage.setItem('token', response.data.token);
-        await AsyncStorage.setItem('user', response.data.user);
+        // await AsyncStorage.setItem('user', response.data.user);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
         await navigation.navigate('Main');
@@ -243,14 +243,12 @@ export function signupUser({
 
 /**
  * Handles sign out.
- * @param {Navigator} navigation
  */
-export function signoutUser(navigation) {
+export function signoutUser() {
   return async (dispatch) => {
     await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('user');
+    // await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
-    navigation.navigate('FirstScreen');
   };
 }
 
