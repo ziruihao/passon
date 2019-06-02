@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Font } from 'expo';
@@ -18,7 +17,7 @@ class Main extends Component {
     if (this.props.authenticated) {
       return (<MainTabBar onNavigationStateChange={null} />);
     } else {
-      return (<AuthNav />); // don't change, we can't load [<MainTabBar>] because [axios.defaults.headers] may not be set yet.
+      return (<AuthNav />);
     }
   }
 }
