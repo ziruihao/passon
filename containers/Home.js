@@ -19,19 +19,15 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import { Font } from 'expo';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { ActionViewColumn } from 'material-ui/svg-icons';
 import {
   colors, fonts, padding, dimensions,
 } from '../styles/base';
 import {
-  fetchUsers, fetchTeachers, fetchLearners, fetchSelf,
+  fetchTeachers, fetchLearners, fetchSelf,
 } from '../actions';
-import DoubleMatchCard from '../components/DoubleMatchCard';
 
 const profileImage = require('../assets/profileDark.png');
-
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +38,12 @@ const styles = StyleSheet.create({
   appArea: {
     top: dimensions.statusBarHeight,
     width: '100%',
+  },
+  bg: {
+    resizeMode: 'cover',
+    width: dimensions.fullWidth,
+    zIndex: -1,
+    top: 0,
   },
   searchBar: {
     width: 300,
@@ -179,21 +181,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  scrollView: {
+  matches: {
     marginTop: 20,
     marginBottom: 20,
-    maxHeight: dimensions.fullHeight * 0.65,
+    // maxHeight: dimensions.fullHeight * 0.65,
   },
 });
 
 class Home extends Component {
   static navigationOptions = {
     header: null,
-    // title: 'Home',
-    // headerStyle: {
-    //   backgroundColor: 'white',
-    // },
-    // headerTintColor: 'black',
   }
 
   constructor(props) {
@@ -359,7 +356,6 @@ class Home extends Component {
               <Text style={styles.skillTitle}>{element.item.teach[0].title}</Text>
               <View style={styles.ratingYears}>
                 <Text style={styles.years}>{element.item.teach[0].years} yrs</Text>
-                {/* <Icon active name="star" /> */}
                 <Text style={styles.rating}> {this.renderRating(element.item)}</Text>
               </View>
               <Text style={styles.bio}>{element.item.teach[0].bio}</Text>
@@ -384,7 +380,7 @@ class Home extends Component {
    */
   renderMatches = () => {
     return (
-      <ScrollView style={styles.scrollView}>
+      <View style={styles.matches}>
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Double Matches</Text>
           <Text style={styles.sectionDescription}>A perfect match! These members have a skill you want to learn and want to learn a skill you can teach.</Text>
@@ -392,37 +388,32 @@ class Home extends Component {
         {this.state.double_matches.map(user => this.renderUser({ item: user }))}
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Single Matches</Text>
-          <Text style={styles.sectionDescription}>These members have a skill you want to learn but haven’t expressed interest in learning a skill you are able to teach. However, they may be interested in learning something new!</Text>
+          <Text style={styles.sectionDescription}>These members can teach a skill you want to learn.</Text>
         </View>
         {this.state.single_matches.map(user => this.renderUser({ item: user }))}
-      </ScrollView>
+      </View>
     );
   };
 
   render() {
     return (
       <View>
-        <View>
-          <StatusBar translucent barStyle="dark-content" />
-          {/* <Item>
-              <Icon name="ios-search" />
-              <Input placeholder="Search" onChangeText={text => this.search(text)} />
-            </Item> */}
-        </View>
         <View style={styles.appArea}>
-          <ImageBackground source={require('../assets/background.png')} style={{ width: '100%', height: '100%' }}>
-            <View style={styles.appContainer}>
-              <Text style={styles.title}>What would you like to learn?</Text>
-              <TextInput
-                value={this.state.search_query}
-                onChangeText={text => this.search(text)}
-                style={styles.searchBar}
-                placeholder="Search for skills"
-              />
-              <View style={styles.content}>
-                {this.renderMatches()}
+          <ImageBackground source={require('../assets/background.png')} style={styles.bg}>
+            <ScrollView style={{ width: dimensions.fullWidth, height: 0.85 * dimensions.fullHeight }}>
+              <View style={styles.appContainer}>
+                <Text style={styles.title}>What would you like to learn?</Text>
+                <TextInput
+                  value={this.state.search_query}
+                  onChangeText={text => this.search(text)}
+                  style={styles.searchBar}
+                  placeholder="Search for skills"
+                />
+                <View style={styles.content}>
+                  {this.renderMatches()}
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </ImageBackground>
         </View>
       </View>
@@ -441,5 +432,5 @@ function mapReduxStateToProps(reduxState) {
 }
 
 export default connect(mapReduxStateToProps, {
-  fetchUsers, fetchLearners, fetchTeachers, fetchSelf,
+  fetchLearners, fetchTeachers, fetchSelf,
 })(Home);
