@@ -200,42 +200,9 @@ class Home extends Component {
       double_matches: [],
       single_matches: [],
     };
-    // this.intoProfile = this.intoProfile.bind(this); binding didnt help
   }
 
-  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
-  // componentDidMount() {
-  //   const { navigation } = this.props;
-  //   this.focusListener = navigation.addListener('didFocus', () => {
-  //     this.props.fetchSelf().then(() => {
-  //       this.fetchUsers([]).then(() => { // we need to pass in that empty array
-  //         this.combineUsers();
-  //       }).catch((error) => {
-  //         console.log(error);
-  //       });
-  //     });
-  //   });
-  // }
-
-  // async componentWillMount() {
-  //   await Font.loadAsync({
-  //     'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-  //     'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-  //   });
-  // }
-
-  // Source: https://reactnavigation.org/docs/en/function-after-focusing-screen.html
   async componentDidMount() {
-    // await Font.loadAsync({
-    //   'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    //   'quicksand-regular': require('../assets/fonts/Quicksand-Regular.ttf'),
-    // }).then((response) => {
-    //   this.setState({ fontLoaded: true });
-    // })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
       this.props.fetchSelf().then(() => {

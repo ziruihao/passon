@@ -10,7 +10,6 @@ export const ActionTypes = {
 
   // getting users
   FETCH_USER: 'FETCH_USER',
-  // FETCH_USERS: 'FETCH_USERS',
 
   // chats
   GET_CHATS: 'GET_CHATS',
@@ -122,24 +121,6 @@ export function fetchUser(id) {
   }));
 }
 
-// /**
-//  * Fetches every user's public data from the PassOn API.
-//  * THIS IS ONLY USED FOR TESTING.
-//  * @param {String} id
-//  */
-// export function fetchUsers(id) {
-//   return dispatch => new Promise(((resolve, reject) => {
-//     axios.get(`${ROOT_URL}/users`)
-//       .then((response) => {
-//         dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
-//         resolve(response.data);
-//       })
-//       .catch((error) => {
-//         reject(error.message);
-//       });
-//   }));
-// }
-
 /**
  * Grabs a [user]'s personal private information from the PassOn API.
  */
@@ -206,7 +187,6 @@ export function signinUser({ email, password }, navigation) {
   return async (dispatch) => {
     const response = await axios.post(`${ROOT_URL}/signin`, { email, password });
     await AsyncStorage.setItem('token', response.data.token);
-    // await AsyncStorage.setItem('user', response.data.user);
     axios.defaults.headers.common = await { authorization: response.data.token };
     await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
     await navigation.navigate('Main');
@@ -228,7 +208,6 @@ export function signupUser({
     })
       .then(async (response) => {
         await AsyncStorage.setItem('token', response.data.token);
-        // await AsyncStorage.setItem('user', response.data.user);
         axios.defaults.headers.common = { authorization: response.data.token };
         await dispatch({ type: ActionTypes.SAVE_USER, payload: response.data.user });
         await navigation.navigate('Main');
@@ -247,7 +226,6 @@ export function signupUser({
 export function signoutUser() {
   return async (dispatch) => {
     await AsyncStorage.removeItem('token');
-    // await AsyncStorage.removeItem('user');
     dispatch({ type: ActionTypes.DEAUTH_USER });
   };
 }
@@ -292,23 +270,9 @@ export function createChat(chat) {
 export function addRating(skill) {
   return async (dispatch) => {
     axios.post(`${ROOT_URL}/addRating`, skill).then((response) => {
-      console.log(response.data);
     })
       .catch((error) => {
         console.log(error);
       });
   };
 }
-
-// export function saveMessage(message) {
-//   return async (dispatch) => {
-//     const value = await AsyncStorage.getItem('token');
-//     axios.post(`${ROOT_URL}/messaging`, chat, { headers: { authorization: value } })
-//       .then((response) => {
-//         dispatch({ type: ActionTypes.CREATE_CHAT, payload: response.data });
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
-// }

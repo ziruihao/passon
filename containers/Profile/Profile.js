@@ -23,9 +23,6 @@ import Teaches from '../Skill/Teaches';
 const profileImage = require('../../assets/profileLight.png');
 
 const styles = StyleSheet.create({
-  appArea: {
-    // top: dimensions.statusBarHeight,
-  },
   bg: {
     resizeMode: 'cover',
     width: dimensions.fullWidth,
@@ -224,20 +221,16 @@ class Profile extends React.Component {
       last = this.props.self.lastName;
     }
     if (this.props.chat !== undefined) {
-      const { chat } = this.props; // not sure why it's an array here
-      console.log(`chat in profile: ${JSON.stringify(chat)}`);
+      const { chat } = this.props;
       if (chat.userId[0].firstName === first
       && chat.userId[0].lastName === last) {
         userName = `${first} ${last}`;
         otherUserName = `${chat.userId[1].firstName} ${chat.userId[1].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
       } else if (chat.userId[1].firstName === first
       && chat.userId[1].lastName === last) {
         userName = `${first} ${last}`;
         otherUserName = `${chat.userId[0].firstName} ${chat.userId[0].lastName}`;
-        console.log(`${userName} other: ${otherUserName}`);
       } else {
-        console.log('names no match');
         return null;
       }
 

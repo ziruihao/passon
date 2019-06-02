@@ -14,9 +14,6 @@ firebase.initializeApp(config);
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-// // modular functions from firebase wrapper
-// import * as db from './services/datastore';
-
 /**
  * Logs the user in via firebase.
  */
@@ -26,9 +23,8 @@ export function auth(uidCallback) {
     const { displayName } = result.user;
     const { photoURL } = result.user;
     uidCallback(uid, displayName, photoURL);
-    console.log(`user ${displayName} logged in`);
   }).catch((error) => {
-    console.log(`error in authentication: ${error}`);
+    console.log(error);
   });
 }
 

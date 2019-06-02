@@ -21,13 +21,8 @@ class Chat extends React.Component {
         socket.emit('room', room); // chatID passed in from props
       });
 
-      // socket.on('message', (data) => {
-      //   console.log('Incoming message:', data);
-      // });
       socket.on('received', (message) => {
-        console.log('Incoming message:', JSON.stringify(message));
         const m = message;
-
         const msg = {
           _id: this.state.counter,
           text: m.body.text,
@@ -114,7 +109,6 @@ class Chat extends React.Component {
         user: {
           _id: this.props.self.id,
           name: `${this.props.self.firstName} ${this.props.self.lastName}`,
-          // avatar: 'https://placeimg.com/140/140/any',
         },
       };
       this.setState((previousState) => {
