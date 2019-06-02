@@ -209,14 +209,14 @@ const setUpDB = () => {
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/passon';
 mongoose.connect(mongoURI, () => { // this code clears the database on every server run
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => {
-      mongoose.connect(mongoURI);
-      console.log('reconnected');
-      setUpDB();
-      console.log('default db set up');
-    });
-  });
+  // mongoose.connection.db.dropDatabase(() => {
+  //   mongoose.connection.close(() => {
+  //     mongoose.connect(mongoURI);
+  //     console.log('reconnected');
+  //     setUpDB();
+  //     console.log('default db set up');
+  //   });
+  // });
 });
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;

@@ -130,8 +130,6 @@ export const getUser = (req, res) => {
     .then((result) => {
       const removePersonalInfo = Object.assign({}, result);
 
-      console.log(removePersonalInfo._doc);
-
       delete removePersonalInfo._doc.password;
       delete removePersonalInfo._doc.email;
 
@@ -148,7 +146,6 @@ export const getUser = (req, res) => {
  * @param {*} res
  */
 export const getSelf = (req, res) => {
-  console.log(req.headers);
   User.findById(req.user.id).populate('teach').populate('learn').populate({
     path: 'teach',
     populate: {
@@ -219,11 +216,8 @@ export const addLearn = (req, res) => {
         skill.title = req.body.skill.title;
         skill.bio = req.body.skill.bio;
         skill.save().then((result2) => {
-          console.log(result2);
           result.learn.push(result2);
-          console.log(result);
           result.save().then((response) => {
-            console.log(response);
             res.json(response);
           }).catch((error) => {
             res.status(500).json({ msg: error.message });
@@ -242,8 +236,6 @@ export const addLearn = (req, res) => {
  * @param {*} res
  */
 export const addTeach = (req, res) => {
-  console.log('REQ BODY ====');
-  console.log(req.body);
   User.findById(req.user.id).populate('teach').populate('learn')
     .then((result) => {
       const alreadyHas = false;
@@ -444,32 +436,77 @@ export const getLearners = (req, res) => {
     });
 };
 
+export const getSkills = (req, res) => {
+  Skill.find({})
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((error) => {
+      res.status(404).json({ msg: error.message });
+    });
+};
 
 // testing: do not remove yet
 export const addSkillRating = (req, res) => {
-  Skill.findById(req.body.skill.id).populate('ratings')
-    .then((result) => {
-      console.log(result);
-      const rating = new Rating();
-      rating.score = req.body.skill.score;
+  User.findById(req.user.id)
+    .then((result1) => {
+      // console.log(req.body.skill.id);
+      console.log('here1');
 
-      // console.log(rating);
-      rating.save().then((skill) => {
-        console.log(rating.score);
-        result.ratings.push(skill);
+      Skill.findById(req.body.skill.id).populate('ratings').populate({
+        path: 'ratings',
+        populate: {
+          path: 'user',
+          model: 'User',
+        },
+      })
+        .then((result2) => {
+          // console.log(result2);
+          let rating;
+          let found = false;
 
-        result.save().then(() => {
-          result.save().then((response) => {
-            res.json(response);
+          // console.log(result2);
+          // console.log(result2.ratings.length);
+          for (let i = 0; i < result2.ratings.length && !found; i += 1) {
+            // console.log(i);
+            console.log(result2.ratings[i].user._id);
+            console.log(req.user.id);
+
+            if (result2.ratings[i].user._id.equals(req.user.id)) {
+              rating = result2.ratings[i];
+              found = true;
+
+              console.log('FOUNDDDD!!');
+            }
+          }
+          if (!found) {
+            rating = new Rating();
+            rating.user = result1;
+          }
+
+          rating.score = req.body.skill.score;
+
+          rating.save().then((skill) => {
+            // console.log(rating.score);
+
+            if (!found) result2.ratings.push(skill);
+
+            result2.save().then(() => {
+              result2.save().then((response) => {
+                res.json(response);
+              }).catch(() => {
+                res.send({ msg: 'error saving' });
+              });
+            });
           }).catch(() => {
-            res.send({ msg: 'error saving' });
+            res.send({ msg: 'error making rating' });
           });
+        })
+        .catch(() => {
+          res.send({ msg: 'error getting skill' });
         });
-      }).catch(() => {
-        res.send({ msg: 'error making rating' });
-      });
     })
     .catch(() => {
-      res.send({ msg: 'error getting skill' });
+      res.send({ msg: 'error getting user' });
     });
 };
