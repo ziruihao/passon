@@ -56,6 +56,12 @@ Git clone this repository locally. To get the project dev environment up and run
 (Adapted from https://instabug.com/blog/react-native-app-ios-android/.)
 To deploy the project, first run `expo publish`. Then, you have a choice of building an Android app or an iOS app. To build an Android app, run `expo build:android`. To build an iOS app, run `expo build:ios`. 
 
+To run th server locally, you need to add a .env file with the following line to the root of the API files before running ```yarn dev```:
+
+ ```
+ AUTH_SECRET="hello world"
+ ```
+
 ## Authors
 
 Created by Julian Grunauer, Zirui Hao, John Sullivan, Gillian Yue, and Catherine Zhao.
