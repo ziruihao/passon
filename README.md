@@ -34,8 +34,8 @@ Tools & Libraries:
     * Backend
 * Web Sockets
     * Messaging
-          * Socket IO 
-          * Gifted Chat (http://gifted.chat)
+     * Socket IO 
+     * Gifted Chat (http://gifted.chat)
 
 For the future:
 * Firebase and Faceboook API
