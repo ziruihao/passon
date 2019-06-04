@@ -34,6 +34,10 @@ Tools & Libraries:
     * Backend
 * Web Sockets
     * Messaging
+          * Socket IO 
+          * Gifted Chat (http://gifted.chat)
+
+For the future:
 * Firebase and Faceboook API
     * Signing in via Google or Facebook
 * Video Player API
@@ -45,7 +49,7 @@ Tools & Libraries:
 
 ## Setup
 
-To get the project dev environment up and running, run `yarn install`.
+Frontend is currently connected to a Heroku hosted mongoDB database, so we wouldn't need to run backend locally. If you ever want to make some test changes to backend, git clone this repository locally. Also, git clone `git@github.com:dartmouth-cs52-19S/project-passon.git` locally, and change the frontend code in Actions/index.js and Chat.js to localhost accordingly. To get the project dev environment up and running, run `yarn install` for both the frontend and backend. Run `yarn start` in the api repository to start the server, then run `expo start` to start frontend to start an xcode simulator of iphone in order to run the app.  
 
 ## Deployment
 
