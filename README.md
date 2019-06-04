@@ -54,7 +54,13 @@ Frontend is currently connected to a Heroku hosted mongoDB database, so we would
 ## Deployment
 
 (Adapted from https://instabug.com/blog/react-native-app-ios-android/.)
-To deploy the project, first run `expo publish`. Then, you have a choice of building an Android app or an iOS app. To build an Android app, run `expo build:android`. To build an iOS app, run `expo build:ios`. 
+To deploy the project, first run `expo publish`. Then, you have a choice of building an Android app or an iOS app. To build an Android app, run `expo build:android`. To build an iOS app, run `expo build:ios`.
+
+To run locally, you need to add a .env file with the following line to the root of the API files:
+
+ ```
+ AUTH_SECRET="hello world"
+ ```
 
 ## Authors
 
