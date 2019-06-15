@@ -93,11 +93,15 @@ class AddRating extends React.Component {
     this.state = {
       score: '',
       errorRating: false,
+      my_match: false,
+      tgt_match: false,
     };
   }
 
   componentDidMount() {
-    console.log(this.props.navigation);
+    this.setState({ my_match: this.props.navigation.state.params.prev_state.my_match });
+    this.setState({ tgt_match: this.props.navigation.state.params.prev_state.tgt_match });
+
     this.props.fetchSelf().then(() => {
       console.log('here');
       console.log(this.props.navigation.state.params);
@@ -123,53 +127,63 @@ class AddRating extends React.Component {
   };
 
   renderRating = () => {
-    return (
-      <View style={styles.between}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Add/Update Rating</Text>
-          { this.state.errorRating === true ? (
-            <Text>
-              Please enter rating score to proceed.
-            </Text>
-          ) : null }
-          <View style={styles.stars}>
-            <Ionicons
-              name="star"
-              size={25}
-              style={styles.star}
-              onPress={() => this.updateScore(1)}
-            />
-            <Ionicons
-              name="star"
-              size={25}
-              style={styles.star}
-              onPress={() => this.updateScore(2)}
-            />
-            <Ionicons
-              name="star"
-              size={25}
-              style={styles.star}
-              onPress={() => this.updateScore(3)}
-            />
-            <Ionicons
-              name="star"
-              size={25}
-              style={styles.star}
-              onPress={() => this.updateScore(4)}
-            />
-            <Ionicons
-              name="star"
-              size={25}
-              style={styles.star}
-              onPress={() => this.updateScore(5)}
-            />
+    if ((this.state.my_match !== true) || (this.state.tgt_match !== true)) {
+      return (
+        <View style={styles.between}>
+          <View style={styles.content}>
+            <Text style={styles.title}>Not connected!</Text>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('Profile'); }}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.between}>
+          <View style={styles.content}>
+            <Text style={styles.title}>Add/Update Rating</Text>
+            { this.state.errorRating === true ? (
+              <Text>
+                Please enter rating score to proceed.
+              </Text>
+            ) : null }
+            <View style={styles.stars}>
+              <Ionicons
+                name="star"
+                size={25}
+                style={styles.star}
+                onPress={() => this.updateScore(1)}
+              />
+              <Ionicons
+                name="star"
+                size={25}
+                style={styles.star}
+                onPress={() => this.updateScore(2)}
+              />
+              <Ionicons
+                name="star"
+                size={25}
+                style={styles.star}
+                onPress={() => this.updateScore(3)}
+              />
+              <Ionicons
+                name="star"
+                size={25}
+                style={styles.star}
+                onPress={() => this.updateScore(4)}
+              />
+              <Ionicons
+                name="star"
+                size={25}
+                style={styles.star}
+                onPress={() => this.updateScore(5)}
+              />
+            </View>
+            <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('Profile'); }}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
   };
 
   renderResponse = () => {

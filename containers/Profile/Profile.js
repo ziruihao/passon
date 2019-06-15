@@ -286,7 +286,7 @@ class Profile extends React.Component {
     if (this.props.user.teach !== null) {
       return (
         <View>
-          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
         </View>
       );
     } else {
