@@ -18,10 +18,13 @@ export const ActionTypes = {
   SAVE_TEACHERS: 'SAVE_TEACHERS',
   SAVE_LEARNERS: 'SAVE_LEARNERS',
   GET_CHAT: 'GET_CHAT',
+
+  // match
+  ADD_MATCH: 'ADD_MATCH',
 };
 
-// export const ROOT_URL = 'http://localhost:9090/api';
-export const ROOT_URL = 'https://passon.herokuapp.com/api';
+export const ROOT_URL = 'http://localhost:9090/api';
+// export const ROOT_URL = 'https://passon.herokuapp.com/api';
 
 /**
  * Sends request to PassOn API to add a Learnable Skill to the [user]'s own profile.
@@ -112,10 +115,13 @@ export function fetchUser(id) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
+        console.log('resolving');
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
+        console.log('resolving2');
         resolve(response.data);
       })
       .catch((error) => {
+        console.log('erroring');
         reject(error.message);
       });
   }));
@@ -275,4 +281,16 @@ export function addRating(skill) {
         console.log(error);
       });
   };
+}
+
+export function addMatch(id) {
+  return () => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/addMatch/${id}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  }));
 }

@@ -15,7 +15,7 @@ import {
   colors, fonts, padding, dimensions,
 } from '../../styles/base';
 import {
-  fetchUser, fetchChat, fetchSelf, createChat,
+  fetchUser, fetchChat, fetchSelf, addMatch,
 } from '../../actions';
 import Learns from '../Skill/Learns';
 import Teaches from '../Skill/Teaches';
@@ -157,13 +157,15 @@ class Profile extends React.Component {
       backgroundColor: 'white',
     },
     headerTintColor: 'black',
-  }
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       teach: true,
+      my_match: false,
+      tgt_match: false,
     };
   }
 
@@ -212,7 +214,7 @@ class Profile extends React.Component {
     this.setState((prevState) => {
       return { teach: event };
     });
-  }
+  };
 
   goToChat = () => {
     let first, last, userName, otherUserName;
@@ -242,13 +244,13 @@ class Profile extends React.Component {
       };
       this.props.navigation.navigate('Chat', pass);
     }
-  }
+  };
 
   renderTeaches() {
     if (this.props.user.teach !== null) {
       return (
         <View>
-          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
         </View>
       );
     } else {
@@ -256,13 +258,13 @@ class Profile extends React.Component {
         <View />
       );
     }
-  }
+  };
 
   renderLearns() {
     if (this.props.user.learn !== null) {
       return (
         <View>
-          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
         </View>
       );
     } else {
@@ -270,7 +272,25 @@ class Profile extends React.Component {
         <View />
       );
     }
-  }
+  };
+
+  addConnection = () => {
+    console.log(this.props.user);
+    this.props.add_match(this.props.user._id);
+    this.setState({ my_match: true });
+  };
+
+  renderConnection = () => {
+    if (!this.state.my_match) {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => { this.addConnection(); }} style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Add Connection</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   render() {
     if (this.props.user === null) {
@@ -313,6 +333,7 @@ class Profile extends React.Component {
                   <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderConnection()}
             </View>
           </ImageBackground>
         </View>
@@ -376,6 +397,7 @@ const mapDispatchToProps = (dispatch) => {
     fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
     fetch_self: () => { dispatch(fetchSelf()); },
     fetch_user: (id) => { dispatch(fetchUser(id)); },
+    add_match: (id) => { dispatch(addMatch(id)); },
   };
 };
 

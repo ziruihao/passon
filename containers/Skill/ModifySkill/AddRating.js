@@ -10,7 +10,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-import { addRating } from '../../../actions';
+import { addRating, fetchSelf, fetchUser } from '../../../actions';
 import {
   colors, fonts,
 } from '../../../styles/base';
@@ -96,6 +96,20 @@ class AddRating extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log('here');
+    this.props.fetchSelf().then(() => {
+      console.log('here');
+      console.log(this.props.navigation.state.params);
+      this.props.fetchUser(this.props.navigation.state.params.id).then(() => {
+        console.log('self');
+        console.log(this.props.self);
+        console.log('target');
+        console.log(this.props.current);
+      });
+    });
+  }
+
   updateScore = (score) => {
     if ((this.state.score >= 0) && (this.state.score <= 5)) {
       this.props.addRating({
@@ -108,59 +122,76 @@ class AddRating extends React.Component {
     }
   };
 
+  renderRating = () => {
+    return (
+      <View style={styles.between}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Add/Update Rating</Text>
+          { this.state.errorRating === true ? (
+            <Text>
+              Please enter rating score to proceed.
+            </Text>
+          ) : null }
+          <View style={styles.stars}>
+            <Ionicons
+              name="star"
+              size={25}
+              style={styles.star}
+              onPress={() => this.updateScore(1)}
+            />
+            <Ionicons
+              name="star"
+              size={25}
+              style={styles.star}
+              onPress={() => this.updateScore(2)}
+            />
+            <Ionicons
+              name="star"
+              size={25}
+              style={styles.star}
+              onPress={() => this.updateScore(3)}
+            />
+            <Ionicons
+              name="star"
+              size={25}
+              style={styles.star}
+              onPress={() => this.updateScore(4)}
+            />
+            <Ionicons
+              name="star"
+              size={25}
+              style={styles.star}
+              onPress={() => this.updateScore(5)}
+            />
+          </View>
+          <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('Profile'); }}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  renderResponse = () => {
+    return this.renderRating();
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <ImageBackground source={require('../../../assets/background.png')} style={{ width: '100%', height: '100%' }}>
-          <View style={styles.between}>
-            <View style={styles.content}>
-              <Text style={styles.title}>Add/Update Rating</Text>
-              { this.state.errorRating === true ? (
-                <Text>
-                  Please enter rating score to proceed.
-                </Text>
-              ) : null }
-              <View style={styles.stars}>
-                <Ionicons
-                  name="star"
-                  size={25}
-                  style={styles.star}
-                  onPress={() => this.updateScore(1)}
-                />
-                <Ionicons
-                  name="star"
-                  size={25}
-                  style={styles.star}
-                  onPress={() => this.updateScore(2)}
-                />
-                <Ionicons
-                  name="star"
-                  size={25}
-                  style={styles.star}
-                  onPress={() => this.updateScore(3)}
-                />
-                <Ionicons
-                  name="star"
-                  size={25}
-                  style={styles.star}
-                  onPress={() => this.updateScore(4)}
-                />
-                <Ionicons
-                  name="star"
-                  size={25}
-                  style={styles.star}
-                  onPress={() => this.updateScore(5)}
-                />
-              </View>
-              <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.navigate('Profile'); }}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          {this.renderResponse()}
         </ImageBackground>
       </View>
     );
   }
 }
 
-export default connect(null, { addRating })(AddRating);
+function mapReduxStateToProps(reduxState) {
+  return {
+    current: reduxState.user.current,
+    self: reduxState.user.self,
+  };
+}
+
+export default connect(mapReduxStateToProps, { addRating, fetchUser, fetchSelf })(AddRating);
