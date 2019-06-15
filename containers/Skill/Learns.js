@@ -64,7 +64,7 @@ class Learns extends React.Component {
               <View style={styles.icon}><Ionicons
                 name="edit"
                 size={16}
-                onPress={() => this.props.nav.navigate('EditSkillLearn', { skill })}
+                onPress={() => this.props.nav.navigate('EditSkillLearn', skill)}
               />
               </View>
             </View>

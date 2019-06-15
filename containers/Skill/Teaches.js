@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 
 class Teaches extends React.Component {
   intoRating = (skill) => {
-    this.props.nav.navigate('AddRating', skill);
+    this.props.nav.navigate('AddRating', { skill, prev_state: this.props.prev_state });
   };
 
   arrAvg = (arr) => {

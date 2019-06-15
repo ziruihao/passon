@@ -202,7 +202,7 @@ class Profile extends React.Component {
         });
       });
 
-      this.props.fetch_chat(this.props.navigation.getParam('_id', null));
+      this.props.fetchChat(this.props.navigation.getParam('_id', null));
     });
   }
 
@@ -278,7 +278,7 @@ class Profile extends React.Component {
     if (this.props.user.teach !== null) {
       return (
         <View>
-          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
+          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
         </View>
       );
     } else {
@@ -292,7 +292,7 @@ class Profile extends React.Component {
     if (this.props.user.learn !== null) {
       return (
         <View>
-          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
+          <Learns learns={this.props.user.learn} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
         </View>
       );
     } else {
@@ -420,12 +420,7 @@ function mapReduxStateToProps(reduxState) {
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
-  };
-};
 
 export default connect(mapReduxStateToProps, {
-  mapDispatchToProps, fetchUser, fetchSelf, addMatch,
+  fetchChat, fetchUser, fetchSelf, addMatch,
 })(Profile);
