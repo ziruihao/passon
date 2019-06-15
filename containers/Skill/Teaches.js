@@ -91,8 +91,16 @@ class Teaches extends React.Component {
   };
 
   render() {
+    console.log('inside teaches');
+
+    console.log('user id');
+    console.log(this.props.user.id);
+
+    console.log('self id');
+    console.log(this.props.self.id);
+
     const teachSkills = this.props.teaches.map((skill) => {
-      if (this.props.user.id === this.props.self.id) {
+      if (this.props.user._id === this.props.self._id) {
         return (
           <View key={skill.id} style={styles.teachCard}>
             <View style={styles.top}>

@@ -275,6 +275,14 @@ class Profile extends React.Component {
   };
 
   renderTeaches() {
+    console.log('passing ids along');
+
+    console.log('user-id passed');
+    console.log(this.props.user._id);
+
+    console.log('self-id passed');
+    console.log(this.props.self._id);
+
     if (this.props.user.teach !== null) {
       return (
         <View>

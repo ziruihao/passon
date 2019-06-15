@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 class Learns extends React.Component {
   render() {
     const learnSkills = this.props.learns.map((skill) => {
-      if (this.props.user.id === this.props.self.id) {
+      if (this.props.user._id === this.props.self._id) {
         return (
           <View key={skill.id} style={styles.learnCard}>
             <View style={styles.top}>

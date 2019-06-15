@@ -97,7 +97,7 @@ class AddRating extends React.Component {
   }
 
   componentDidMount() {
-    console.log('here');
+    console.log(this.props.navigation);
     this.props.fetchSelf().then(() => {
       console.log('here');
       console.log(this.props.navigation.state.params);
