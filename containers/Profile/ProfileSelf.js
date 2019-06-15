@@ -228,7 +228,7 @@ class ProfileSelf extends Component {
           Mutually matched users:
         </Text>
         <Text>
-          {this.props.self.matched_users.map(user => {
+          {this.props.self.matched_users.map((user) => {
             console.log('in herezzz');
             return (
               <Text>
