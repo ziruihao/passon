@@ -190,7 +190,7 @@ class ProfileSelf extends Component {
 
   toggleTeach = (event) => {
     this.setState({ teach: event });
-  }
+  };
 
   renderTeaches() {
     if (this.props.self.teach !== null) {
@@ -219,6 +219,27 @@ class ProfileSelf extends Component {
       );
     }
   }
+
+  renderMatchedUsers = () => {
+    console.log(this.props.self.matched_users);
+    return (
+      <View>
+        <Text>
+          Mutually matched users:
+        </Text>
+        <Text>
+          {this.props.self.matched_users.map(user => {
+            console.log('in herezzz');
+            return (
+              <Text>
+                {user.firstName} {user.lastName}
+              </Text>
+            );
+          })}
+        </Text>
+      </View>
+    );
+  };
 
   render() {
     if (this.props.self === null) {
@@ -269,6 +290,7 @@ class ProfileSelf extends Component {
                   <Text style={styles.addSkillButtonText}>Add Skill</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderMatchedUsers()}
             </View>
           </ImageBackground>
         </View>
