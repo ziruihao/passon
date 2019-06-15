@@ -78,6 +78,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontFamily: 'quicksand-regular',
   },
+  sectionNoMatch: {
+    fontSize: 16,
+    color: colors.white,
+    margin: 10,
+    fontFamily: 'quicksand-bold',
+  },
   card: {
     backgroundColor: 'white',
     width: 297,
@@ -304,7 +310,6 @@ class Home extends Component {
     });
   }
 
-
   intoProfile(profile) {
     this.props.navigation.navigate('Profile', profile);
   }
@@ -341,6 +346,25 @@ class Home extends Component {
   };
 
   /**
+   * Render users or display 'no matches'
+   */
+  renderUsers = (users) => {
+    if (users.length !== 0) { // If no users match
+      return (
+        <View>
+          {users.map(user => this.renderUser({ item: user }))}
+        </View>
+      );
+    } else {
+      return ( // If users match
+        <View style={styles.sectionHeaderArea}>
+          <Text style={styles.sectionNoMatch}>No matches!</Text>
+        </View>
+      );
+    }
+  };
+
+  /**
    * Handles rendering the division between [single_matches] and [double_matches].
    */
   renderMatches = () => {
@@ -350,12 +374,12 @@ class Home extends Component {
           <Text style={styles.sectionHeader}>Double Matches</Text>
           <Text style={styles.sectionDescription}>A perfect match! These members have a skill you want to learn and want to learn a skill you can teach.</Text>
         </View>
-        {this.state.double_matches.map(user => this.renderUser({ item: user }))}
+        {this.renderUsers(this.state.double_matches)}
         <View style={styles.sectionHeaderArea}>
           <Text style={styles.sectionHeader}>Single Matches</Text>
           <Text style={styles.sectionDescription}>These members can teach a skill you want to learn.</Text>
         </View>
-        {this.state.single_matches.map(user => this.renderUser({ item: user }))}
+        {this.renderUsers(this.state.single_matches)}
       </View>
     );
   };
