@@ -110,13 +110,14 @@ export const getUsers = (req, res) => { // why do we need both req and res? why 
  * @param {*} res
  */
 export const getUser = (req, res) => {
-  User.findById(req.params.id).populate('teach').populate('learn').populate({
-    path: 'teach',
-    populate: {
-      path: 'ratings',
-      model: 'Rating',
-    },
-  })
+  User.findById(req.params.id).populate('teach').populate('learn').populate('matched_users')
+    .populate({
+      path: 'teach',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .populate({
       path: 'learn',
       populate: {
@@ -500,35 +501,33 @@ export const addSkillRating = (req, res) => {
 // API to update add rating and update if it does not exit
 export const addMatch = (req, res) => {
   User.findById(req.params.id).populate('matched_users')
-    .then((result1) => {
+    .then((tgtUser) => {
       console.log('target user');
-      console.log(result1);
+      console.log(tgtUser);
 
       User.findById(req.user.id)
-        .then((result2) => {
+        .then((selfUser) => {
           console.log('requesting user');
-          console.log(result2);
+          console.log(selfUser);
 
           console.log('matched_users');
-          console.log(result2.matched_users);
-          console.log(result2.matched_users.length);
+          console.log(selfUser.matched_users);
+          console.log(selfUser.matched_users.length);
 
           let found = false;
 
-          for (let i = 0; i < result2.matched_users.length && !found; i += 1) {
-            if (result2.matched_users[i]._id.equals(req.user.id)) {
+          for (let i = 0; i < selfUser.matched_users.length && !found; i += 1) {
+            if (selfUser.matched_users[i]._id.equals(req.user.id)) {
               found = true;
             }
           }
           if (!found) {
-            result1.matched_users.push(result2);
+            selfUser.matched_users.push(tgtUser);
 
-            result1.save().then(() => {
-              result1.save().then((response) => {
-                res.json(response);
-              }).catch(() => {
-                res.send({ msg: 'error saving' });
-              });
+            selfUser.save().then((response) => {
+              res.json(response);
+            }).catch(() => {
+              res.send({ msg: 'error saving' });
             });
           } else {
             res.send({ msg: 'user has already marked match' });
