@@ -412,6 +412,7 @@ class Profile extends React.Component {
                   <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderConnection()}
             </View>
           </ImageBackground>
         </View>
