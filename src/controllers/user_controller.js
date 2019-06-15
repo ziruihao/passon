@@ -496,3 +496,39 @@ export const addSkillRating = (req, res) => {
       res.send({ msg: 'error getting user' });
     });
 };
+
+// API to update add rating and update if it does not exit
+export const addMatch = (req, res) => {
+  User.findById(req.params.id)
+    .then((result1) => {
+      User.findById(req.user.id)
+        .then((result2) => {
+          let found = false;
+
+          for (let i = 0; i < result2.matched_users.length && !found; i += 1) {
+            if (result2.matched_users[i].user._id.equals(req.user.id)) {
+              found = true;
+            }
+          }
+          if (!found) {
+            result2.matched_users.push(result1);
+
+            result2.save().then(() => {
+              result2.save().then((response) => {
+                res.json(response);
+              }).catch(() => {
+                res.send({ msg: 'error saving' });
+              });
+            });
+          } else {
+            res.send({ msg: 'user has already marked match' });
+          }
+        })
+        .catch(() => {
+          res.send({ msg: 'error getting skill' });
+        });
+    })
+    .catch(() => {
+      res.send({ msg: 'error getting user' });
+    });
+};

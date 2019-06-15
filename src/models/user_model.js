@@ -12,6 +12,7 @@ const UserSchema = new Schema({
   learn: [{ type: Schema.Types.ObjectId, ref: 'Skill' }], // this skill model should have less info than the [teach] one, ONLY populate [title].
   profile_pic_url: String,
   university: String,
+  matched_users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 }, {
   toJSON: {
     virtuals: true,

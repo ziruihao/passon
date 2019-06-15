@@ -42,6 +42,9 @@ router.route('/self')
 router.route('/addRating')
   .post(requireAuth, User.addSkillRating);
 
+router.route('/addMatch/:id')
+  .post(requireAuth, User.addMatch);
+
 
 /**
  * MESSAGING ROUTES
