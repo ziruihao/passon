@@ -131,6 +131,8 @@ export const getUser = (req, res) => {
       delete removePersonalInfo._doc.email;
 
       res.json(removePersonalInfo._doc);
+
+      // res.json(result);
     })
     .catch((error) => {
       res.status(404).json({ error });
