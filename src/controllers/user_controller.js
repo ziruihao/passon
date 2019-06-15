@@ -146,13 +146,14 @@ export const getUser = (req, res) => {
  * @param {*} res
  */
 export const getSelf = (req, res) => {
-  User.findById(req.user.id).populate('teach').populate('learn').populate({
-    path: 'teach',
-    populate: {
-      path: 'ratings',
-      model: 'Rating',
-    },
-  })
+  User.findById(req.user.id).populate('teach').populate('learn').populate('matched_users')
+    .populate({
+      path: 'teach',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .populate({
       path: 'learn',
       populate: {
@@ -160,11 +161,16 @@ export const getSelf = (req, res) => {
         model: 'Rating',
       },
     })
-    .then((user) => {
-      res.send(user);
+    .then((result) => {
+      const removePersonalInfo = Object.assign({}, result);
+
+      delete removePersonalInfo._doc.password;
+      delete removePersonalInfo._doc.email;
+
+      res.json(removePersonalInfo._doc);
     })
     .catch((error) => {
-      res.status(404).json({ message: error.message });
+      res.status(404).json({ error });
     });
 };
 
