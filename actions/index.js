@@ -115,9 +115,9 @@ export function fetchUser(id) {
   return dispatch => new Promise(((resolve, reject) => {
     axios.get(`${ROOT_URL}/users/${id}`)
       .then((response) => {
-        console.log('resolving');
+        // console.log('resolving');
         dispatch({ type: ActionTypes.FETCH_USER, payload: response.data });
-        console.log('resolving2');
+        // console.log('resolving2');
         resolve(response.data);
       })
       .catch((error) => {

@@ -172,8 +172,36 @@ class Profile extends React.Component {
   componentDidMount() {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
-      this.props.fetch_user(this.props.navigation.getParam('_id', null));
-      this.props.fetch_self();
+      this.props.fetchUser(this.props.navigation.getParam('_id', null)).then(() => {
+        console.log('hello there');
+        this.props.fetchSelf().then(() => {
+          console.log('hello there2');
+
+          console.log('self');
+          console.log(this.props.self);
+
+          console.log('target');
+          console.log(this.props.user);
+
+          for (let i = 0; i < this.props.self.matched_users.length; i += 1) {
+            console.log('id1');
+            console.log(this.props.self.matched_users[i]._id);
+
+            console.log('id2');
+            console.log(this.props.user._id);
+
+            if (this.props.self.matched_users[i]._id === this.props.user._id) {
+              this.setState({ my_match: true });
+            }
+          }
+          for (let i = 0; i < this.props.user.matched_users.length; i += 1) {
+            if (this.props.user.matched_users[i]._id === this.props.self._id) {
+              this.setState({ tgt_match: true });
+            }
+          }
+        });
+      });
+
       this.props.fetch_chat(this.props.navigation.getParam('_id', null));
     });
   }
@@ -258,7 +286,7 @@ class Profile extends React.Component {
         <View />
       );
     }
-  };
+  }
 
   renderLearns() {
     if (this.props.user.learn !== null) {
@@ -272,11 +300,11 @@ class Profile extends React.Component {
         <View />
       );
     }
-  };
+  }
 
   addConnection = () => {
     console.log(this.props.user);
-    this.props.add_match(this.props.user._id);
+    this.props.addMatch(this.props.user._id);
     this.setState({ my_match: true });
   };
 
@@ -395,10 +423,9 @@ function mapReduxStateToProps(reduxState) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
-    fetch_self: () => { dispatch(fetchSelf()); },
-    fetch_user: (id) => { dispatch(fetchUser(id)); },
-    add_match: (id) => { dispatch(addMatch(id)); },
   };
 };
 
-export default connect(mapReduxStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapReduxStateToProps, {
+  mapDispatchToProps, fetchUser, fetchSelf, addMatch,
+})(Profile);
