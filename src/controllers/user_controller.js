@@ -8,6 +8,10 @@ import Rating from '../models/rating_model';
 
 dotenv.config({ silent: true });
 
+const univCheck = false;
+
+const validUnivs = ['dartmouth', 'brown'];
+
 // THE FOLLOWING FUNCTIONS DEAL WITH HANDLING USERS
 
 // encodes a new token for a user object
@@ -40,6 +44,18 @@ export const signup = (req, res, next) => {
   if (!firstName || !lastName || !email || !password || !university) {
     return res.status(422).send('You must provide name, email, password, and university.');
   } // also this error-checking can be done in the frontend so we're not sending this to the server
+
+  let found = false;
+
+  if (univCheck) {
+    validUnivs.forEach((univ) => {
+      if (!(email.toLowerCase().indexOf(univ) === -1)) found = true;
+    });
+    if (!found) {
+      res.status(404).json({ msg: 'Invalid university email.' });
+      return next;
+    }
+  }
 
   User.findOne({ email: req.body.email })
     .then((existingUser) => {
