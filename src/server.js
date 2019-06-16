@@ -15,6 +15,7 @@ import Skill from './models/skill_model';
 
 dotenv.config({ silent: true });
 
+// Make this true to reset the DB on startup
 const resetDB = false;
 
 const setUpDB = () => {
