@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, Button,
+  StyleSheet, View, Text,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts,
 } from '../../styles/base';
 
 const styles = StyleSheet.create({
@@ -91,14 +91,6 @@ class Teaches extends React.Component {
   };
 
   render() {
-    console.log('inside teaches');
-
-    console.log('user id');
-    console.log(this.props.user.id);
-
-    console.log('self id');
-    console.log(this.props.self.id);
-
     const teachSkills = this.props.teaches.map((skill) => {
       if (this.props.user._id === this.props.self._id) {
         return (
@@ -130,14 +122,6 @@ class Teaches extends React.Component {
             </View>
             <Text style={styles.years}>{skill.years} yrs | {this.arrAvg(skill.ratings)}</Text>
             <Text style={styles.bio}>{skill.bio}</Text>
-            {/* <Button title="Add rating"
-              onPress={() => this.intoRating(this.props.skill)}
-            /> */}
-            {/* <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => this.intoRating(this.props.skill)}>
-                <Text style={styles.addRatingText}>Add Rating</Text>
-              </TouchableOpacity>
-            </View> */}
           </View>
         );
       }

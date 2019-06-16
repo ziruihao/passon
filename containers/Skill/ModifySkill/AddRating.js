@@ -103,14 +103,7 @@ class AddRating extends React.Component {
     this.setState({ tgt_match: this.props.navigation.state.params.prev_state.tgt_match });
 
     this.props.fetchSelf().then(() => {
-      console.log('here');
-      console.log(this.props.navigation.state.params);
-      this.props.fetchUser(this.props.navigation.state.params.id).then(() => {
-        console.log('self');
-        console.log(this.props.self);
-        console.log('target');
-        console.log(this.props.current);
-      });
+      this.props.fetchUser(this.props.navigation.state.params.id);
     });
   }
 

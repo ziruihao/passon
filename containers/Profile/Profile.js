@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable consistent-return */
+/* eslint-disable react/no-unused-state */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -12,7 +13,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts, dimensions,
 } from '../../styles/base';
 import {
   fetchUser, fetchChat, fetchSelf, addMatch,
@@ -173,23 +174,8 @@ class Profile extends React.Component {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
       this.props.fetchUser(this.props.navigation.getParam('_id', null)).then(() => {
-        console.log('hello there');
         this.props.fetchSelf().then(() => {
-          console.log('hello there2');
-
-          console.log('self');
-          console.log(this.props.self);
-
-          console.log('target');
-          console.log(this.props.user);
-
           for (let i = 0; i < this.props.self.matched_users.length; i += 1) {
-            console.log('id1');
-            console.log(this.props.self.matched_users[i]._id);
-
-            console.log('id2');
-            console.log(this.props.user._id);
-
             if (this.props.self.matched_users[i]._id === this.props.user._id) {
               this.setState({ my_match: true });
             }
@@ -239,7 +225,7 @@ class Profile extends React.Component {
   };
 
   toggleTeach = (event) => {
-    this.setState((prevState) => {
+    this.setState(() => {
       return { teach: event };
     });
   };
@@ -274,15 +260,12 @@ class Profile extends React.Component {
     }
   };
 
+  addConnection = () => {
+    this.props.addMatch(this.props.user._id);
+    this.setState({ my_match: true });
+  };
+
   renderTeaches() {
-    console.log('passing ids along');
-
-    console.log('user-id passed');
-    console.log(this.props.user._id);
-
-    console.log('self-id passed');
-    console.log(this.props.self._id);
-
     if (this.props.user.teach !== null) {
       return (
         <View>
@@ -309,12 +292,6 @@ class Profile extends React.Component {
       );
     }
   }
-
-  addConnection = () => {
-    console.log(this.props.user);
-    this.props.addMatch(this.props.user._id);
-    this.setState({ my_match: true });
-  };
 
   renderConnection = () => {
     if (!this.state.my_match) {

@@ -2,7 +2,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
+  StyleSheet, View, Text, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
@@ -10,7 +10,7 @@ import { fetchUser, fetchSelf, signoutUser } from '../../actions';
 import Learns from '../Skill/Learns';
 import Teaches from '../Skill/Teaches';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts, dimensions,
 } from '../../styles/base';
 
 const profileImage = require('../../assets/profileLight.png');
@@ -221,7 +221,6 @@ class ProfileSelf extends Component {
   }
 
   renderMatchedUsers = () => {
-    console.log(this.props.self.matched_users);
     return (
       <View>
         <Text>
@@ -229,7 +228,6 @@ class ProfileSelf extends Component {
         </Text>
         <Text>
           {this.props.self.matched_users.map((user) => {
-            console.log('in herezzz');
             return (
               <Text>
                 {user.firstName} {user.lastName}
