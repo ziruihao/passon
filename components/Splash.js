@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { Font } from 'expo';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts,
 } from '../styles/base';
 import { signinUser } from '../actions';
 
@@ -50,12 +50,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
 const authTestUser = (props) => {
   props.signinUser({
     email: 'Passon',
     password: 'password',
   }, props.navigation);
 };
+
 class Splash extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +69,7 @@ class Splash extends Component {
   async componentDidMount() {
     await Font.loadAsync({
       'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-    }).then((response) => {
+    }).then(() => {
       this.setState({ fontLoaded: true });
     })
       .catch((error) => {
