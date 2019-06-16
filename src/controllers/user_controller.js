@@ -524,18 +524,8 @@ export const addSkillRating = (req, res) => {
 export const addMatch = (req, res) => {
   User.findById(req.params.id).populate('matched_users')
     .then((tgtUser) => {
-      console.log('target user');
-      console.log(tgtUser);
-
       User.findById(req.user.id)
         .then((selfUser) => {
-          console.log('requesting user');
-          console.log(selfUser);
-
-          console.log('matched_users');
-          console.log(selfUser.matched_users);
-          console.log(selfUser.matched_users.length);
-
           let found = false;
 
           for (let i = 0; i < selfUser.matched_users.length && !found; i += 1) {
