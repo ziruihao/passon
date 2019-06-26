@@ -302,6 +302,22 @@ class Profile extends React.Component {
           </TouchableOpacity>
         </View>
       );
+    } else if (this.state.my_match && !this.state.tgt_match) {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Waiting for them ...</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Already Connected</Text>
+          </TouchableOpacity>
+        </View>
+      );
     }
   };
 

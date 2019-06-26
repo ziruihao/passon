@@ -6,7 +6,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
-import { fetchUser, fetchSelf, signoutUser } from '../../actions';
+import {
+  fetchUser, fetchSelf, signoutUser, ROOT_URL,
+} from '../../actions';
 import Learns from '../Skill/Learns';
 import Teaches from '../Skill/Teaches';
 import {
@@ -152,13 +154,60 @@ class ProfileSelf extends Component {
 
     this.state = {
       teach: true,
+      mutual: [],
     };
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isFocused !== this.props.isFocused) {
-      this.props.fetchSelf();
-    }
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.props.fetchSelf()
+        .then(() => {
+          console.log('entered');
+
+          this.props.self.matched_users.map((user) => {
+            console.log(`${ROOT_URL}/users/${user.id}`);
+
+            const arr = [];
+
+            fetch(`${ROOT_URL}/users/${user.id}`)
+              .then((response) => {
+                console.log(response);
+                return response.json();
+              })
+              .then((myJson) => {
+                console.log(myJson);
+                console.log(myJson.matched_users);
+
+                let found = false;
+
+                console.log(myJson.matched_users.length);
+                for (let i = 0; i < myJson.matched_users.length; i += 1) {
+                  console.log(myJson.matched_users[i]._id);
+                  console.log('here');
+                  console.log(this.props.self._id);
+                  if (myJson.matched_users[i]._id === this.props.self._id) found = true;
+                }
+
+                console.log('here');
+                console.log(found);
+
+                if (found) {
+                  return (
+                    arr.push(`${user.firstName} ${user.lastName}`)
+                  );
+                }
+              });
+
+            this.setState({ mutual: arr });
+          });
+        });
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
 
   calcRating = (element) => {
@@ -220,6 +269,7 @@ class ProfileSelf extends Component {
     }
   }
 
+  // Source: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   renderMatchedUsers = () => {
     return (
       <View>
@@ -227,11 +277,9 @@ class ProfileSelf extends Component {
           Mutually matched users:
         </Text>
         <Text>
-          {this.props.self.matched_users.map((user) => {
+          {this.state.mutual.map((elem) => {
             return (
-              <Text>
-                {user.firstName} {user.lastName}
-              </Text>
+              <div>{elem}</div>
             );
           })}
         </Text>

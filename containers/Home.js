@@ -219,7 +219,6 @@ class Home extends Component {
     });
   }
 
-
   componentWillUnmount() {
     // Remove the event listener
     this.focusListener.remove();
