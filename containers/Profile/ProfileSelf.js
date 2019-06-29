@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
+import axios from 'axios/index';
 import {
   fetchUser, fetchSelf, signoutUser, ROOT_URL,
 } from '../../actions';
@@ -158,51 +159,34 @@ class ProfileSelf extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener('didFocus', () => {
-      this.props.fetchSelf()
-        .then(() => {
-          console.log('entered');
+  componentDidMount() {
+    const arr = [];
 
-          this.props.self.matched_users.map((user) => {
-            console.log(`${ROOT_URL}/users/${user.id}`);
+    this.props.fetchSelf()
+      .then(() => {
+        console.log('entered');
 
-            const arr = [];
+        this.props.self.matched_users.forEach((user) => {
+          console.log(`${ROOT_URL}/users/${user.id}`);
 
-            fetch(`${ROOT_URL}/users/${user.id}`)
-              .then((response) => {
-                console.log(response);
-                return response.json();
-              })
-              .then((myJson) => {
-                console.log(myJson);
-                console.log(myJson.matched_users);
+          axios.get(`${ROOT_URL}/users/${user.id}`)
+            .then((response) => {
+              console.log(response.data);
+              // return response.json();
 
-                let found = false;
+              let found = false;
 
-                console.log(myJson.matched_users.length);
-                for (let i = 0; i < myJson.matched_users.length; i += 1) {
-                  console.log(myJson.matched_users[i]._id);
-                  console.log('here');
-                  console.log(this.props.self._id);
-                  if (myJson.matched_users[i]._id === this.props.self._id) found = true;
-                }
+              for (let i = 0; i < response.data.matched_users.length; i += 1) {
+                if (response.data.matched_users[i]._id === this.props.self._id) found = true;
+              }
 
-                console.log('here');
-                console.log(found);
-
-                if (found) {
-                  return (
-                    arr.push(`${user.firstName} ${user.lastName}`)
-                  );
-                }
-              });
-
-            this.setState({ mutual: arr });
-          });
+              if (found) {
+                arr.push(`${user.firstName} ${user.lastName}`);
+                this.setState({ mutual: arr });
+              }
+            });
         });
-    });
+      });
   }
 
   componentWillUnmount() {
@@ -279,7 +263,7 @@ class ProfileSelf extends Component {
         <Text>
           {this.state.mutual.map((elem) => {
             return (
-              <div>{elem}</div>
+              <Text>{'- '}{elem}{'\n'}</Text>
             );
           })}
         </Text>
