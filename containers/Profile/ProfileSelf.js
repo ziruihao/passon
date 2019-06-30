@@ -2,15 +2,18 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Button, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
+  StyleSheet, View, Text, AsyncStorage, ImageBackground, TouchableOpacity, ScrollView, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
-import { fetchUser, fetchSelf, signoutUser } from '../../actions';
+import axios from 'axios/index';
+import {
+  fetchUser, fetchSelf, signoutUser, ROOT_URL,
+} from '../../actions';
 import Learns from '../Skill/Learns';
 import Teaches from '../Skill/Teaches';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts, dimensions,
 } from '../../styles/base';
 
 const profileImage = require('../../assets/profileLight.png');
@@ -152,13 +155,43 @@ class ProfileSelf extends Component {
 
     this.state = {
       teach: true,
+      mutual: [],
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.isFocused !== this.props.isFocused) {
-      this.props.fetchSelf();
-    }
+  componentDidMount() {
+    const arr = [];
+
+    this.props.fetchSelf()
+      .then(() => {
+        console.log('entered');
+
+        this.props.self.matched_users.forEach((user) => {
+          console.log(`${ROOT_URL}/users/${user.id}`);
+
+          axios.get(`${ROOT_URL}/users/${user.id}`)
+            .then((response) => {
+              console.log(response.data);
+              // return response.json();
+
+              let found = false;
+
+              for (let i = 0; i < response.data.matched_users.length; i += 1) {
+                if (response.data.matched_users[i]._id === this.props.self._id) found = true;
+              }
+
+              if (found) {
+                arr.push(`${user.firstName} ${user.lastName}`);
+                this.setState({ mutual: arr });
+              }
+            });
+        });
+      });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
 
   calcRating = (element) => {
@@ -190,7 +223,7 @@ class ProfileSelf extends Component {
 
   toggleTeach = (event) => {
     this.setState({ teach: event });
-  }
+  };
 
   renderTeaches() {
     if (this.props.self.teach !== null) {
@@ -219,6 +252,24 @@ class ProfileSelf extends Component {
       );
     }
   }
+
+  // Source: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  renderMatchedUsers = () => {
+    return (
+      <View>
+        <Text>
+          Mutually matched users:
+        </Text>
+        <Text>
+          {this.state.mutual.map((elem) => {
+            return (
+              <Text>{'- '}{elem}{'\n'}</Text>
+            );
+          })}
+        </Text>
+      </View>
+    );
+  };
 
   render() {
     if (this.props.self === null) {
@@ -269,6 +320,7 @@ class ProfileSelf extends Component {
                   <Text style={styles.addSkillButtonText}>Add Skill</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderMatchedUsers()}
             </View>
           </ImageBackground>
         </View>

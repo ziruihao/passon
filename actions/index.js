@@ -18,6 +18,9 @@ export const ActionTypes = {
   SAVE_TEACHERS: 'SAVE_TEACHERS',
   SAVE_LEARNERS: 'SAVE_LEARNERS',
   GET_CHAT: 'GET_CHAT',
+
+  // match
+  ADD_MATCH: 'ADD_MATCH',
 };
 
 // export const ROOT_URL = 'http://localhost:9090/api';
@@ -275,4 +278,16 @@ export function addRating(skill) {
         console.log(error);
       });
   };
+}
+
+export function addMatch(id) {
+  return () => new Promise(((resolve, reject) => {
+    axios.post(`${ROOT_URL}/addMatch/${id}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  }));
 }

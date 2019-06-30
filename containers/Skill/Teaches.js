@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, Button,
+  StyleSheet, View, Text,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts,
 } from '../../styles/base';
 
 const styles = StyleSheet.create({
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 
 class Teaches extends React.Component {
   intoRating = (skill) => {
-    this.props.nav.navigate('AddRating', skill);
+    this.props.nav.navigate('AddRating', { skill, prev_state: this.props.prev_state });
   };
 
   arrAvg = (arr) => {
@@ -92,7 +92,7 @@ class Teaches extends React.Component {
 
   render() {
     const teachSkills = this.props.teaches.map((skill) => {
-      if (this.props.user.id === this.props.self.id) {
+      if (this.props.user._id === this.props.self._id) {
         return (
           <View key={skill.id} style={styles.teachCard}>
             <View style={styles.top}>
@@ -122,14 +122,6 @@ class Teaches extends React.Component {
             </View>
             <Text style={styles.years}>{skill.years} yrs | {this.arrAvg(skill.ratings)}</Text>
             <Text style={styles.bio}>{skill.bio}</Text>
-            {/* <Button title="Add rating"
-              onPress={() => this.intoRating(this.props.skill)}
-            /> */}
-            {/* <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={() => this.intoRating(this.props.skill)}>
-                <Text style={styles.addRatingText}>Add Rating</Text>
-              </TouchableOpacity>
-            </View> */}
           </View>
         );
       }

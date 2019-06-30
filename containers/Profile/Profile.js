@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable consistent-return */
+/* eslint-disable react/no-unused-state */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -12,10 +13,10 @@ import {
   ImageBackground,
 } from 'react-native';
 import {
-  colors, fonts, padding, dimensions,
+  colors, fonts, dimensions,
 } from '../../styles/base';
 import {
-  fetchUser, fetchChat, fetchSelf, createChat,
+  fetchUser, fetchChat, fetchSelf, addMatch,
 } from '../../actions';
 import Learns from '../Skill/Learns';
 import Teaches from '../Skill/Teaches';
@@ -157,22 +158,37 @@ class Profile extends React.Component {
       backgroundColor: 'white',
     },
     headerTintColor: 'black',
-  }
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       teach: true,
+      my_match: false,
+      tgt_match: false,
     };
   }
 
   componentDidMount() {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
-      this.props.fetch_user(this.props.navigation.getParam('_id', null));
-      this.props.fetch_self();
-      this.props.fetch_chat(this.props.navigation.getParam('_id', null));
+      this.props.fetchUser(this.props.navigation.getParam('_id', null)).then(() => {
+        this.props.fetchSelf().then(() => {
+          for (let i = 0; i < this.props.self.matched_users.length; i += 1) {
+            if (this.props.self.matched_users[i]._id === this.props.user._id) {
+              this.setState({ my_match: true });
+            }
+          }
+          for (let i = 0; i < this.props.user.matched_users.length; i += 1) {
+            if (this.props.user.matched_users[i]._id === this.props.self._id) {
+              this.setState({ tgt_match: true });
+            }
+          }
+        });
+      });
+
+      this.props.fetchChat(this.props.navigation.getParam('_id', null));
     });
   }
 
@@ -209,10 +225,10 @@ class Profile extends React.Component {
   };
 
   toggleTeach = (event) => {
-    this.setState((prevState) => {
+    this.setState(() => {
       return { teach: event };
     });
-  }
+  };
 
   goToChat = () => {
     let first, last, userName, otherUserName;
@@ -242,13 +258,18 @@ class Profile extends React.Component {
       };
       this.props.navigation.navigate('Chat', pass);
     }
-  }
+  };
+
+  addConnection = () => {
+    this.props.addMatch(this.props.user._id);
+    this.setState({ my_match: true });
+  };
 
   renderTeaches() {
     if (this.props.user.teach !== null) {
       return (
         <View>
-          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} />
+          <Teaches teaches={this.props.user.teach} nav={this.props.navigation} user={this.props.user} self={this.props.self} prev_state={this.state} />
         </View>
       );
     } else {
@@ -271,6 +292,34 @@ class Profile extends React.Component {
       );
     }
   }
+
+  renderConnection = () => {
+    if (!this.state.my_match) {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => { this.addConnection(); }} style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Add Connection</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (this.state.my_match && !this.state.tgt_match) {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Waiting for them ...</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonMessage}>
+            <Text style={styles.buttonText}>Already Connected</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
 
   render() {
     if (this.props.user === null) {
@@ -313,6 +362,7 @@ class Profile extends React.Component {
                   <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderConnection()}
             </View>
           </ImageBackground>
         </View>
@@ -355,6 +405,7 @@ class Profile extends React.Component {
                   <Text style={styles.buttonText}>Message</Text>
                 </TouchableOpacity>
               </View>
+              {this.renderConnection()}
             </View>
           </ImageBackground>
         </View>
@@ -371,12 +422,7 @@ function mapReduxStateToProps(reduxState) {
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetch_chat: (otherUserId) => { dispatch(fetchChat(otherUserId)); },
-    fetch_self: () => { dispatch(fetchSelf()); },
-    fetch_user: (id) => { dispatch(fetchUser(id)); },
-  };
-};
 
-export default connect(mapReduxStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapReduxStateToProps, {
+  fetchChat, fetchUser, fetchSelf, addMatch,
+})(Profile);
