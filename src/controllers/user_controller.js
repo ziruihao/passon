@@ -8,6 +8,10 @@ import Rating from '../models/rating_model';
 
 dotenv.config({ silent: true });
 
+const univCheck = false;
+
+const validUnivs = ['dartmouth', 'brown'];
+
 // THE FOLLOWING FUNCTIONS DEAL WITH HANDLING USERS
 
 // encodes a new token for a user object
@@ -40,6 +44,18 @@ export const signup = (req, res, next) => {
   if (!firstName || !lastName || !email || !password || !university) {
     return res.status(422).send('You must provide name, email, password, and university.');
   } // also this error-checking can be done in the frontend so we're not sending this to the server
+
+  let found = false;
+
+  if (univCheck) {
+    validUnivs.forEach((univ) => {
+      if (!(email.toLowerCase().indexOf(univ) === -1)) found = true;
+    });
+    if (!found) {
+      res.status(404).json({ msg: 'Invalid university email.' });
+      return next;
+    }
+  }
 
   User.findOne({ email: req.body.email })
     .then((existingUser) => {
@@ -110,13 +126,50 @@ export const getUsers = (req, res) => { // why do we need both req and res? why 
  * @param {*} res
  */
 export const getUser = (req, res) => {
-  User.findById(req.params.id).populate('teach').populate('learn').populate({
-    path: 'teach',
-    populate: {
-      path: 'ratings',
-      model: 'Rating',
-    },
-  })
+  User.findById(req.params.id).populate('teach').populate('learn').populate('matched_users')
+    .populate({
+      path: 'teach',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
+    .populate({
+      path: 'learn',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
+    .then((result) => {
+      const removePersonalInfo = Object.assign({}, result);
+
+      delete removePersonalInfo._doc.password;
+      delete removePersonalInfo._doc.email;
+
+      res.json(removePersonalInfo._doc);
+
+      // res.json(result);
+    })
+    .catch((error) => {
+      res.status(404).json({ error });
+    });
+};
+
+/**
+ * Returns private information about a user, this route is protected.
+ * @param {*} req
+ * @param {*} res
+ */
+export const getSelf = (req, res) => {
+  User.findById(req.user.id).populate('teach').populate('learn').populate('matched_users')
+    .populate({
+      path: 'teach',
+      populate: {
+        path: 'ratings',
+        model: 'Rating',
+      },
+    })
     .populate({
       path: 'learn',
       populate: {
@@ -134,34 +187,6 @@ export const getUser = (req, res) => {
     })
     .catch((error) => {
       res.status(404).json({ error });
-    });
-};
-
-/**
- * Returns private information about a user, this route is protected.
- * @param {*} req
- * @param {*} res
- */
-export const getSelf = (req, res) => {
-  User.findById(req.user.id).populate('teach').populate('learn').populate({
-    path: 'teach',
-    populate: {
-      path: 'ratings',
-      model: 'Rating',
-    },
-  })
-    .populate({
-      path: 'learn',
-      populate: {
-        path: 'ratings',
-        model: 'Rating',
-      },
-    })
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((error) => {
-      res.status(404).json({ message: error.message });
     });
 };
 
@@ -485,6 +510,40 @@ export const addSkillRating = (req, res) => {
           }).catch(() => {
             res.send({ msg: 'error making rating' });
           });
+        })
+        .catch(() => {
+          res.send({ msg: 'error getting skill' });
+        });
+    })
+    .catch(() => {
+      res.send({ msg: 'error getting user' });
+    });
+};
+
+// API to update add rating and update if it does not exit
+export const addMatch = (req, res) => {
+  User.findById(req.params.id).populate('matched_users')
+    .then((tgtUser) => {
+      User.findById(req.user.id)
+        .then((selfUser) => {
+          let found = false;
+
+          for (let i = 0; i < selfUser.matched_users.length && !found; i += 1) {
+            if (selfUser.matched_users[i]._id.equals(req.user.id)) {
+              found = true;
+            }
+          }
+          if (!found) {
+            selfUser.matched_users.push(tgtUser);
+
+            selfUser.save().then((response) => {
+              res.json(response);
+            }).catch(() => {
+              res.send({ msg: 'error saving' });
+            });
+          } else {
+            res.send({ msg: 'user has already marked match' });
+          }
         })
         .catch(() => {
           res.send({ msg: 'error getting skill' });
